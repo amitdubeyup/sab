@@ -8,13 +8,13 @@ declare const $: any;
 @Component({
   selector: 'app-mobile',
   templateUrl: './mobile.component.html',
-  styleUrls: ['./mobile.component.css']
+  styleUrls: ['./mobile.component.css'],
 })
 export class MobileComponent implements OnInit {
   rechargeType = false;
   rechargeStage = 1;
   operatorList = [
-    { id: 1, name: 'Airtel', logo: 'assets/images/1555311132380.png'},
+    { id: 1, name: 'Airtel', logo: 'assets/images/1555311132380.png' },
     { id: 2, name: 'BSNL', logo: 'assets/images/1555325713574.png' },
     { id: 3, name: 'Jio', logo: 'assets/images/1548842919961.png' },
     { id: 4, name: 'Vi', logo: 'assets/images/1599763691135.png' },
@@ -44,7 +44,7 @@ export class MobileComponent implements OnInit {
     { id: 21, name: 'UP(EAST)' },
     { id: 22, name: 'UP(WEST) & Uttarakhand' },
     { id: 23, name: 'West Bengal' },
-    { id: 51, name: 'All India (except Delhi/Mumbai)' }
+    { id: 51, name: 'All India (except Delhi/Mumbai)' },
   ];
 
   rechargeModal: any = {
@@ -57,44 +57,54 @@ export class MobileComponent implements OnInit {
     amount: null,
   };
   displayPlan = false;
+  displayRecharge = false;
   pipeList: any;
   serviceData: any = {};
   constructor(
     public commonService: ApiService,
     public route: ActivatedRoute,
     public router: Router,
-    public location: Location) {
-  }
+    public location: Location
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   goBack(): any {
     this.location.back();
   }
+  toggle(): any {
+    this.displayRecharge = !this.displayRecharge;
+  }
   getPaymentPipe(Category: any): any {
     if (this.commonService.userPram.userId && this.commonService.userPram.rmn) {
-      this.commonService.isLoader=true;
-      this.commonService.getAuth('recharge/get-api-service?isMaxAmt=fales&ApiType=RECH&Category='+Category+'&maxAmount=0')
+      this.commonService.isLoader = true;
+      this.commonService
+        .getAuth(
+          'recharge/get-api-service?isMaxAmt=fales&ApiType=RECH&Category=' +
+            Category +
+            '&maxAmount=0'
+        )
         .subscribe(
           (res: any) => {
-            this.commonService.isLoader=false;
+            this.commonService.isLoader = false;
             if (res.isSuccess) {
               this.pipeList = res.respData;
-              if(this.pipeList)
-              {
+              if (this.pipeList) {
                 this.rechargeStage = 2;
-              }
-              else
-              {
-                  Swal.fire({ icon: 'warning', text: 'This service is temporarily unavailable,please try again later', confirmButtonText: 'Okay' });
+              } else {
+                Swal.fire({
+                  icon: 'warning',
+                  text: 'This service is temporarily unavailable,please try again later',
+                  confirmButtonText: 'Okay',
+                });
               }
             }
           },
           (err: any) => {
-            this.commonService.isLoader=false;
+            this.commonService.isLoader = false;
             alert('something went wrong!');
-          });
+          }
+        );
     }
   }
 
@@ -106,20 +116,37 @@ export class MobileComponent implements OnInit {
     }
     this.rechargeModal.mobile = Math.abs(event.target.value);
     if (this.rechargeModal.mobile.toString().length === 10) {
-      this.commonService.getAuth(`recharge/get-recharge-oprator?mobileNo=${this.rechargeModal.mobile}&docType=icore`)
+      this.commonService
+        .getAuth(
+          `recharge/get-recharge-oprator?mobileNo=${this.rechargeModal.mobile}&docType=icore`
+        )
         .subscribe(
           (res: any) => {
             if (res.isSuccess && res.respData) {
-              const data = (res.respData).split('|');
-              const operatorName = ((data[1]).split(':')[1]).toLowerCase();
-              const circleName = ((data[2]).split(':')[1]).toLowerCase();
-              const operatorData = this.operatorList.filter((element) => operatorName.includes((element.name).toLowerCase()));
-              const circleData = this.circleList.filter((element) => circleName.includes((element.name).toLowerCase()));
-              this.rechargeModal.operator = operatorData.length ? operatorData[0].id : this.operatorList[0].id;
-              this.rechargeModal.operatorLogo = operatorData.length ? operatorData[0].logo : this.operatorList[0].logo;
-              this.rechargeModal.operatorName = operatorData.length ? operatorData[0].name : this.operatorList[0].name;
-              this.rechargeModal.circle = circleData.length ? circleData[0].id : this.circleList[0].id;
-              this.rechargeModal.circleName = circleData.length ? circleData[0].name : this.circleList[0].name;
+              const data = res.respData.split('|');
+              const operatorName = data[1].split(':')[1].toLowerCase();
+              const circleName = data[2].split(':')[1].toLowerCase();
+              const operatorData = this.operatorList.filter((element) =>
+                operatorName.includes(element.name.toLowerCase())
+              );
+              const circleData = this.circleList.filter((element) =>
+                circleName.includes(element.name.toLowerCase())
+              );
+              this.rechargeModal.operator = operatorData.length
+                ? operatorData[0].id
+                : this.operatorList[0].id;
+              this.rechargeModal.operatorLogo = operatorData.length
+                ? operatorData[0].logo
+                : this.operatorList[0].logo;
+              this.rechargeModal.operatorName = operatorData.length
+                ? operatorData[0].name
+                : this.operatorList[0].name;
+              this.rechargeModal.circle = circleData.length
+                ? circleData[0].id
+                : this.circleList[0].id;
+              this.rechargeModal.circleName = circleData.length
+                ? circleData[0].name
+                : this.circleList[0].name;
             } else {
               this.rechargeModal.operator = this.operatorList[0].id;
               this.rechargeModal.operatorLogo = this.operatorList[0].logo;
@@ -138,7 +165,8 @@ export class MobileComponent implements OnInit {
             this.rechargeModal.circleName = this.circleList[0].name;
             this.rechargeModal.amount = 0;
             this.displayPlan = true;
-          });
+          }
+        );
     } else {
       this.displayPlan = false;
     }
@@ -170,9 +198,17 @@ export class MobileComponent implements OnInit {
 
   next(): void {
     if (this.rechargeModal.amount >= 10) {
-      this.getPaymentPipe((this.rechargeType === true ? 'Postpaid-' + this.rechargeModal?.operatorName : 'Prepaid-' + this.rechargeModal?.operatorName));
+      this.getPaymentPipe(
+        this.rechargeType === true
+          ? 'Postpaid-' + this.rechargeModal?.operatorName
+          : 'Prepaid-' + this.rechargeModal?.operatorName
+      );
     } else {
-      Swal.fire({ icon: 'warning', text: `Invalid ${this.rechargeType ? 'bill' : 'recharge'} amount`, confirmButtonText: 'Okay' });
+      Swal.fire({
+        icon: 'warning',
+        text: `Invalid ${this.rechargeType ? 'bill' : 'recharge'} amount`,
+        confirmButtonText: 'Okay',
+      });
     }
   }
 
@@ -181,69 +217,96 @@ export class MobileComponent implements OnInit {
   }
 
   confirm(): any {
-    if (this.rechargeModal.amount >= 10)
-    {
-    if(this.pipeList)
-    {
-      const savedPin = this.commonService.decryptUsingAES256(this.commonService.userPram.mPin);
-      if (this.rechargeModal.mPin === savedPin) {
-        this.onConfirm(this.pipeList.apiId);
+    if (this.rechargeModal.amount >= 10) {
+      if (this.pipeList) {
+        const savedPin = this.commonService.decryptUsingAES256(
+          this.commonService.userPram.mPin
+        );
+        if (this.rechargeModal.mPin === savedPin) {
+          this.onConfirm(this.pipeList.apiId);
+        } else {
+          Swal.fire({
+            icon: 'warning',
+            text: 'Please enter valid MPIN',
+            confirmButtonText: 'Okay',
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          text: 'This service is temporarily unavailable,please try again later',
+          confirmButtonText: 'Okay',
+        });
       }
-    else {
-      Swal.fire({ icon: 'warning', text: 'Please enter valid MPIN', confirmButtonText: 'Okay' });
-    }
-    }
-    else
-    {
-        Swal.fire({ icon: 'warning', text: 'This service is temporarily unavailable,please try again later', confirmButtonText: 'Okay' });
-    }
-    }
-    else {
-      Swal.fire({ icon: 'warning', text: `Invalid ${this.rechargeType ? 'bill' : 'recharge'} amount`, confirmButtonText: 'Okay' });
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        text: `Invalid ${this.rechargeType ? 'bill' : 'recharge'} amount`,
+        confirmButtonText: 'Okay',
+      });
     }
   }
   onConfirm(apiId: any): void {
     const walletBalance = this.commonService.pramwallet.walleT_BALANCE;
     if (this.rechargeModal.amount < walletBalance) {
-        this.commonService.isLoader = true;
-        const passingData = {
-          userId: this.commonService.userPram.userId,
-          memberId: this.commonService.userPram.memberId,
-          remitterId: this.commonService.userPram.memberId,
-          templateId: this.commonService.userPram.rechTemplate,
-          apId: apiId,
-          serviceType: this.rechargeType === true ? 'Postpaid': 'Prepaid',
-          paymentMode: 'RECH',
-          perTrnsAmount: this.rechargeModal.amount,
-          accNo: this.rechargeModal.mobile,
-          mobileNumber: this.commonService.userPram.rmn,
-          docType: 'RECH',
-          operators:this.rechargeType === true ? 'Postpaid-' + this.rechargeModal?.operatorName : 'Prepaid-' + this.rechargeModal?.operatorName,
-          narration: this.rechargeModal?.circleName,
-          operatorId:this.rechargeModal?.circle,
-          udf2: this.commonService.userPram.companyName+' | '+this.commonService.userPram.rmn+' | '+this.commonService.userPram.userType+''+this.commonService.userPram.id
-        };
-        this.commonService.postAES256('recharge/recharge', JSON.stringify(passingData))
-          .subscribe(
-            (res: any) => {
-              console.log(res);
-              if(res.isSuccess)
-              {
+      this.commonService.isLoader = true;
+      const passingData = {
+        userId: this.commonService.userPram.userId,
+        memberId: this.commonService.userPram.memberId,
+        remitterId: this.commonService.userPram.memberId,
+        templateId: this.commonService.userPram.rechTemplate,
+        apId: apiId,
+        serviceType: this.rechargeType === true ? 'Postpaid' : 'Prepaid',
+        paymentMode: 'RECH',
+        perTrnsAmount: this.rechargeModal.amount,
+        accNo: this.rechargeModal.mobile,
+        mobileNumber: this.commonService.userPram.rmn,
+        docType: 'RECH',
+        operators:
+          this.rechargeType === true
+            ? 'Postpaid-' + this.rechargeModal?.operatorName
+            : 'Prepaid-' + this.rechargeModal?.operatorName,
+        narration: this.rechargeModal?.circleName,
+        operatorId: this.rechargeModal?.circle,
+        udf2:
+          this.commonService.userPram.companyName +
+          ' | ' +
+          this.commonService.userPram.rmn +
+          ' | ' +
+          this.commonService.userPram.userType +
+          '' +
+          this.commonService.userPram.id,
+      };
+      this.commonService
+        .postAES256('recharge/recharge', JSON.stringify(passingData))
+        .subscribe(
+          (res: any) => {
+            console.log(res);
+            if (res.isSuccess) {
               this.commonService.isLoader = false;
-              Swal.fire({ icon: 'success', text: res.mhOutcome, confirmButtonText: 'OK' }).then(() => {
-                this.router.navigate(['/merchant/mobilerecharge/rech-status'], { queryParams: {  txnNo: res.txnNo, } });
+              Swal.fire({
+                icon: 'success',
+                text: res.mhOutcome,
+                confirmButtonText: 'OK',
+              }).then(() => {
+                this.router.navigate(['/merchant/mobilerecharge/rech-status'], {
+                  queryParams: { txnNo: res.txnNo },
+                });
               });
-             }
-             else
-             {
+            } else {
               this.commonService.isLoader = false;
-              Swal.fire({ icon: 'warning', text: res.mhOutcome, confirmButtonText: 'Okay' });
-             }
-            },
-            (err: any) => {
-              console.log(err);
-              this.commonService.isLoader = false;
-            });
+              Swal.fire({
+                icon: 'warning',
+                text: res.mhOutcome,
+                confirmButtonText: 'Okay',
+              });
+            }
+          },
+          (err: any) => {
+            console.log(err);
+            this.commonService.isLoader = false;
+          }
+        );
     } else {
       alert('Insufficient wallet balance!');
     }
@@ -263,5 +326,4 @@ export class MobileComponent implements OnInit {
     };
     this.displayPlan = false;
   }
-
 }

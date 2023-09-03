@@ -47,7 +47,10 @@ sup {
   font-size: 0.8rem;
 }
 
-input[type="file"], input[type="number"], input[type="text"], input[type="tel"] {
+input[type="file"],
+input[type="number"],
+input[type="text"],
+input[type="tel"] {
   font-weight: 500;
   color: #b39292;
 }
@@ -129,6 +132,7 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
 .operator-logo {
   margin-left: 20px;
 }
+
 .switch-button-label-span {
   color: rgb(255, 255, 255);
   /* text-shadow:
@@ -137,8 +141,9 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
    -0.5px 0.5px 0 #000,
    0.5px 0.5px 0 #000; */
 }
+
 .switch-button {
-  background:#feb800;
+  background: #feb800;
   border-radius: 5px;
   overflow: hidden;
   width: 240px;
@@ -155,6 +160,7 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
    0.5px 0.5px 0 #000; */
   /* border: 1px solid #000; */
 }
+
 .switch-button:before {
   content: "Postpaid";
   position: absolute;
@@ -168,6 +174,7 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
   z-index: 3;
   pointer-events: none;
 }
+
 .switch-button-checkbox {
   cursor: pointer;
   position: absolute;
@@ -179,11 +186,13 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
   opacity: 0;
   z-index: 2;
 }
-.switch-button-checkbox:checked + .switch-button-label:before {
+
+.switch-button-checkbox:checked+.switch-button-label:before {
   transform: translateX(120px);
   transition: transform 300ms linear;
 }
-.switch-button-checkbox + .switch-button-label {
+
+.switch-button-checkbox+.switch-button-label {
   position: relative;
   padding: 8px 0;
   display: block;
@@ -192,7 +201,8 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
   margin: 0;
   font-size: 12px;
 }
-.switch-button-checkbox + .switch-button-label:before {
+
+.switch-button-checkbox+.switch-button-label:before {
   content: "";
   background: #540fa2;
   height: 100%;
@@ -204,30 +214,49 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
   transform: translateX(0);
   transition: transform .3s;
 }
-.switch-button-checkbox + .switch-button-label .switch-button-label-span {
+
+.switch-button-checkbox+.switch-button-label .switch-button-label-span {
   position: relative;
 }
-.switch-wrapper-div{
+
+.switch-wrapper-div {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    font-family: sans-serif;
-    padding: 10px 0px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  font-family: sans-serif;
+  padding: 10px 0px;
 }
+
 .bbp-logo1 {
   border-radius: 0px;
   background: #fff;
   height: 78px;
   margin-left: 61%;
 }
+
 .card .body {
   font-weight: 400;
   color: #444;
   padding: 20px;
   min-height: 390px;
+}
+
+.header {
+  position: relative;
+}
+
+.info {
+  cursor: pointer;
+  font-style: italic;
+  font-size: 15px;
+  padding: 5px 10px 5px 7px;
+  border: 1px solid #8080804f;
+  border-radius: 50%;
+  position: absolute;
+  top: 15px;
 }
