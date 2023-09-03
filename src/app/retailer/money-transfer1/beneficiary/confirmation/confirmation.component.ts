@@ -47,14 +47,14 @@ export class ConfirmationComponent implements OnInit {
     });
      console.log(this.paramsData);
     this.getRemitterCommission();
-    // this.getLocation();   
+    // this.getLocation();
     this.commonService.getPosition().then(pos=>
       {
          console.log(`Positon: ${pos.lng} ${pos.lat}`);
          this.lat = pos.lat;
          this.lag = pos.lng;
         //  console.log('lat, long', this.lat, this.lag)
-        }); 
+        });
   }
 
   getRemitterCommission(): void {
@@ -177,7 +177,7 @@ export class ConfirmationComponent implements OnInit {
                   txnNo: res.txnNo,
                 }));
                 this.commonService.fetchWalletDetails();
-                this.router.navigate(['/rt/money-transfer/beneficiary/receipt'], { queryParams: {remitterId:this.remitterDetails.RemitterId,paymentMode:this.paymentMode,data: jsonData } });
+                this.router.navigate(['/merchant/money-transfer/beneficiary/receipt'], { queryParams: {remitterId:this.remitterDetails.RemitterId,paymentMode:this.paymentMode,data: jsonData } });
               });
               }
               else
@@ -195,9 +195,9 @@ export class ConfirmationComponent implements OnInit {
         {
           this.commonService.isLoader = false;
           Swal.fire({ icon: 'warning', text: 'Please Select Wallet', confirmButtonText: 'Ok' });
-       
+
         }
-             
+
       } else {
         Swal.fire({ icon: 'error', text: 'Invalid PIN', confirmButtonText: 'Ok' });
       }

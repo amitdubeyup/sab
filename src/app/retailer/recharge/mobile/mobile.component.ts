@@ -181,7 +181,7 @@ export class MobileComponent implements OnInit {
   }
 
   confirm(): any {
-    if (this.rechargeModal.amount >= 10) 
+    if (this.rechargeModal.amount >= 10)
     {
     if(this.pipeList)
     {
@@ -231,7 +231,7 @@ export class MobileComponent implements OnInit {
               {
               this.commonService.isLoader = false;
               Swal.fire({ icon: 'success', text: res.mhOutcome, confirmButtonText: 'OK' }).then(() => {
-                this.router.navigate(['/rt/mobilerecharge/rech-status'], { queryParams: {  txnNo: res.txnNo, } });
+                this.router.navigate(['/merchant/mobilerecharge/rech-status'], { queryParams: {  txnNo: res.txnNo, } });
               });
              }
              else

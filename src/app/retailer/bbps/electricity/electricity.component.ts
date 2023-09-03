@@ -107,7 +107,7 @@ export class ElectricityComponent implements OnInit {
               {
               //  this.getoprators('ELECTRICITY','mobik');
               }
-            } 
+            }
             else {
               alert('Invalid payment amount.');
             }
@@ -213,7 +213,7 @@ export class ElectricityComponent implements OnInit {
                 this.commonService.isLoader = false;
                 Swal.fire({ icon: res.isSuccess ? 'success' : 'error', text: res.mhOutcome, confirmButtonText: 'OK' }).then(() => {
                   if (res.isSuccess) {
-                    this.router.navigate(['/rt/bbps/receipt'], { queryParams: { txnNo: res.txnNo } });
+                    this.router.navigate(['/merchant/bbps/receipt'], { queryParams: { txnNo: res.txnNo } });
                   }
                 });
               },
@@ -227,7 +227,7 @@ export class ElectricityComponent implements OnInit {
       } else {
         Swal.fire({ icon: 'warning', text: 'Insufficient wallet balance', confirmButtonText: 'OK' });
       }
-    } 
+    }
     else {
       Swal.fire({ icon: 'warning', text: 'Invalid payment amount,Contact to system admin', confirmButtonText: 'OK' });
     }
@@ -262,7 +262,7 @@ export class ElectricityComponent implements OnInit {
 
   printReceipt(data: any): any {
     if (data) {
-      this.router.navigate(['/rt/bill-payment/receipt'], { queryParams: { txnNo: data } });
+      this.router.navigate(['/merchant/bill-payment/receipt'], { queryParams: { txnNo: data } });
     }
   }
 }

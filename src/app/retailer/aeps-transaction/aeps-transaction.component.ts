@@ -38,7 +38,7 @@ export class AepsTransactionComponent implements OnInit {
   pipeList: any;
   chargeAmt: number=0;
   netTotal: number=0;
-  isModelSlip: boolean=false;  
+  isModelSlip: boolean=false;
   filePath: any;
   beneDetails:any={}
   beneDetApprove:any;
@@ -168,7 +168,7 @@ export class AepsTransactionComponent implements OnInit {
     }
     else if (this.activeTab === 5) {
       this.getRetailerCommission('AEPS2L');
-    }  
+    }
   }
   getPaymentPipe(Category:any, maxAmount: any): any {
     this.commonService.isLoader = true;
@@ -178,7 +178,7 @@ export class AepsTransactionComponent implements OnInit {
           (res: any) => {
             console.log(res);
             this.commonService.isLoader = false;
-            if (res.isSuccess) {              
+            if (res.isSuccess) {
               if (res.respData.apiId === '768cde9b-c1e6-11eb-aa88-00ffa370980e' || res.respData.apiId==='ac1ea406-5de3-11ed-afb4-00be432ac5fc' || res.respData.apiId==='0ceadbdf-4414-11ed-8d86-00be432ac5fc') {
                 this.pipeList = res.respData;
                 if(this.pipeList && this.pipeList.rateType=='R')
@@ -188,27 +188,27 @@ export class AepsTransactionComponent implements OnInit {
                   }
                   else
                   {
-                    this.chargeAmt = this.pipeList.capAmt; 
+                    this.chargeAmt = this.pipeList.capAmt;
                   }
                   this.netTotal=parseInt(this.creditMoneyModal.amount,10)+this.chargeAmt;
                 }
                 else{
                   if (this.pipeList.rate>0) {
-                    this.chargeAmt=(parseInt(this.creditMoneyModal.amount,10) * this.pipeList.rate)/100;     
+                    this.chargeAmt=(parseInt(this.creditMoneyModal.amount,10) * this.pipeList.rate)/100;
                   }
                   else
                   {
-                    this.chargeAmt = this.pipeList.capAmt; 
+                    this.chargeAmt = this.pipeList.capAmt;
                   }
                   this.netTotal=parseInt(this.creditMoneyModal.amount,10)+this.chargeAmt;
                 }
-              } 
+              }
               else
               {
                 this.pipeList=null;
                 alert('you are not authorized for transfer to bank ');
               }
-            } 
+            }
             else {
               this.pipeList=null;
               alert('you are not authorized for transfer to bank ');
@@ -242,16 +242,16 @@ export class AepsTransactionComponent implements OnInit {
     }
     else if (this.activeTab === 5) {
       this.getRetailerCommission('AEPS2L');
-    }  
+    }
   }
   lastrchar(str: any): any {
     return str.substring(str.length-4, str.length);
   }
-   
- // function to get difference between from date and to date 
+
+ // function to get difference between from date and to date
  getDiffDays(sDate: any, eDate: any) {
   var startDate = new Date(sDate);
-  var endDate = new Date(eDate);  
+  var endDate = new Date(eDate);
   var Time = endDate.getTime() - startDate.getTime();
   return Time / (1000 * 3600 * 24);
 }
@@ -262,7 +262,7 @@ export class AepsTransactionComponent implements OnInit {
     const difference_date = this.getDiffDays(fromDt, toDt);
     if(difference_date>30){
       Swal.fire({ icon: 'success', text: 'Please select valid date - Report Restrict to one month', confirmButtonText: 'OK' });
-    }	
+    }
     if (this.commonService.userPram.userId && this.commonService.userPram.memberId) {
       this.commonService.isLoader = true;
       this.commonService.getAuth('aeps/impst/get-aepstransaction?memberId=' + this.commonService.userPram.memberId + '&fromDt=' + fromDt + '&toDt=' + toDt + '&isStatus=' + this.isStatus + '&docType=' + docType+'&st='+this.searchType+'&txnId='+this.txnNo)
@@ -303,10 +303,10 @@ exportAsXLSX(): any {
     excelData.push(obj);
   });
   this.excelService.exportAsExcelWitheHeader(header,excelData, 'Aeps-Report.xlsx','I1');
-} 
+}
 
  printReceipt(data: any): any {
-  this.router.navigate(['/rt/aeps/aeps-print'], { queryParams: { txnNo: data } });
+  this.router.navigate(['/merchant/aeps/aeps-print'], { queryParams: { txnNo: data } });
 }
 
 }

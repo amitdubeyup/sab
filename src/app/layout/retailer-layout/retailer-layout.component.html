@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="navbar-left">
             <div class="navbar-btn">
-                <a href="javascript:void(0)" (click)="openlink('/rt/dashboard')">
+                <a href="javascript:void(0)" (click)="openlink('/merchant/dashboard')">
                 <img src="assets/images/logo.png" alt="Logo" class="img-fluid logo hidden-lg">
                 <img src="assets/images/favicon.png" alt="Logo" class="img-fluid logo mobile-show">
                </a>
@@ -78,17 +78,17 @@
     <div class="sidebar-scroll">
         <nav id="left-sidebar-nav" class="sidebar-nav">
             <ul id="main-menu" class="metismenu">
-                <li class="active"><a  href="javascript:void(0)" (click)="openlink('/rt/dashboard')"><i class="icon-home"></i><span>Dashboard</span></a></li>
-                <li><a href="javascript:void(0)" (click)="openlink('/rt/business_summary')"><i class="icon-calendar"></i><span>Bussiness Summary</span></a></li>
+                <li class="active"><a  href="javascript:void(0)" (click)="openlink('/merchant/dashboard')"><i class="icon-home"></i><span>Dashboard</span></a></li>
+                <li><a href="javascript:void(0)" (click)="openlink('/merchant/business_summary')"><i class="icon-calendar"></i><span>Bussiness Summary</span></a></li>
                 <li>
                     <a href="javascript:void(0)" (click)="openMenu()" ><i class="icon-globe"></i><span>Transaction</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-down"></i></span></a>
                     <ul *ngIf="activeMainMenu">
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/transaction-list')">Money Transaction</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/transaction-list/recharge-utility')">Recharge/Utility</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/transaction-list')">Money Transaction</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/transaction-list/recharge-utility')">Recharge/Utility</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" (click)="openlink('/rt/account-list')" ><i class="icon-notebook"></i><span>Account Statement</span></a>
+                    <a href="javascript:void(0)" (click)="openlink('/merchant/account-list')" ><i class="icon-notebook"></i><span>Account Statement</span></a>
 
                 </li>
 
@@ -96,26 +96,26 @@
                     <a href="javascript:void(0)" (click)="openMenu4()" ><i class="icon-globe"></i><span>AEPS Report</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-down"></i></span></a>
                     <ul *ngIf="activeMainMenu4">
                         <li><a href="javascript:void(0)" (click)="openlink('rt/aeps-report')">Transaction</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/aeps-report/statement')">Statement</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/aeps-report/statement')">Statement</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:void(0)" (click)="openMenu2()" ><i class="icon-globe"></i><span>Money Request</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-down"></i></span></a>
                     <ul *ngIf="activeMainMenu2">
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request/newrequest')">New Request</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request')">Request Pending</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request')">All Request</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/money-request/newrequest')">New Request</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/money-request')">Request Pending</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/money-request')">All Request</a></li>
                     </ul>
                 </li>
-                <li><a href="javascript:void(0)" (click)="openlink('/rt/pendingrefund')" ><i class="fa fa-refresh"></i><span>Refund Pending</span></a></li>
+                <li><a href="javascript:void(0)" (click)="openlink('/merchant/pendingrefund')" ><i class="fa fa-refresh"></i><span>Refund Pending</span></a></li>
                 <li>
                     <a href="javascript:void(0)" (click)="openMenu2()" ><i class="icon-settings"></i><span>Setting</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-down"></i></span></a>
                     <ul *ngIf="activeMainMenu2">
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request/newrequest')">BC Certificate</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request')">Eazy Deposit Slip</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/profile')">Profile</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/setting/passwordchange')">Reset Password</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/setting/mpinchange')">Reset MPIN</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/money-request/newrequest')">BC Certificate</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/money-request')">Eazy Deposit Slip</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/profile')">Profile</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/setting/passwordchange')">Reset Password</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/merchant/setting/mpinchange')">Reset MPIN</a></li>
                         <li><a href="javascript:void(0)" (click)="commonService.logout()">LogOut</a></li>
                         <li>
                             <div class="card text-white bg-info text-center">

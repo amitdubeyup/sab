@@ -22,7 +22,7 @@ export class SignComponent implements OnInit {
   onPopState(event: any) {
   }
   ngOnInit(): void {
-    // this.getLocation(); 
+    // this.getLocation();
     localStorage.removeItem('userPram');
     localStorage.removeItem('userAuth');
     localStorage.removeItem('authExpiry');
@@ -71,7 +71,7 @@ export class SignComponent implements OnInit {
             sessionStorage.setItem('password', this.login.password);
           }
           if (res.loginRes.memberType === 'RT') {
-            this.router.navigate(['/rt/dashboard']);
+            this.router.navigate(['/merchant/dashboard']);
           }
           if (res.loginRes.memberType === 'DS') {
             this.router.navigateByUrl('/ds/dashboard');
@@ -121,7 +121,7 @@ export class SignComponent implements OnInit {
             sessionStorage.setItem('password', this.login.password);
           }
           if (res.loginRes.memberType === 'RT') {
-            this.router.navigate(['/rt/dashboard']);
+            this.router.navigate(['/merchant/dashboard']);
           }
           if (res.loginRes.memberType === 'DS') {
             this.router.navigateByUrl('/ds/dashboard');
@@ -158,13 +158,13 @@ export class SignComponent implements OnInit {
         localStorage.setItem('userPram', btoa(JSON.stringify(res.loginRes)));
         this.commonService.userAuth = jwt_decode(res.xauth);
         localStorage.setItem('userAuth', res.xauth);
-        localStorage.setItem('authExpiry', btoa(res.xauthexpire));   
+        localStorage.setItem('authExpiry', btoa(res.xauthexpire));
         if (this.rememberMe) {
           sessionStorage.setItem('rmn', this.login.rmn);
           sessionStorage.setItem('password', this.login.password);
         }
         if ((res.loginRes.memberType === 'RT')) {
-          this.router.navigateByUrl('/rt/dashboard');
+          this.router.navigateByUrl('/merchant/dashboard');
         }
         if (res.loginRes.memberType === 'DS') {
           this.router.navigateByUrl('/ds/dashboard');

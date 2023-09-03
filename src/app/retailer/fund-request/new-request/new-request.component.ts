@@ -76,7 +76,7 @@ export class NewRequestComponent implements OnInit {
     private winRef: WindowRefService,
     private razorpayService: ExternalLibraryService) {
       this.route.queryParams.subscribe((params: any) => {
-        if (params.pram) {          
+        if (params.pram) {
           this.fundRequest = JSON.parse(this.commonService.decryptUsingAES256(params.pram));
           this.fundRequest.DepositDate = new Date(this.fundRequest.DepositDate);
           console.log( this.fundRequest);
@@ -89,8 +89,8 @@ export class NewRequestComponent implements OnInit {
     this.toDt.setDate(this.toDt.getDate());
     this.activeDt.setDate(this.activeDt.getDate());
     this.fetchBankList();
-    this.getBank();  
-      this.usermenuright=JSON.parse(this.commonService?.userPram?.usermenuright);      
+    this.getBank();
+      this.usermenuright=JSON.parse(this.commonService?.userPram?.usermenuright);
       this.isimoprt=this.usermenuright.find((e: any) => e.type === 'FUND' && e.value==true)?.type=='FUND'?true:false;
       this.commonService.serviceBehaviourData$.subscribe((res) => {
         const servicePrivilegesData = localStorage.getItem('serviceBehaviour') ? localStorage.getItem('serviceBehaviour') : null;
@@ -99,7 +99,7 @@ export class NewRequestComponent implements OnInit {
           if(this.servicePrivileges)
           {
             this.isfundRequest=this.servicePrivileges.find((e: any) => e.type === 'PG' && e.value==true )?.type=='PG'?true:false;
-           
+
             this.isfundRequest1=this.servicePrivileges.find((e: any) => e.type === 'FUNDREQUEST' && e.value==true )?.type=='FUNDREQUEST'?true:false;
 
             let isRazor=this.servicePrivileges.find((e: any) => e.type === 'RAZR' && e.value==true )?.type=='RAZR'?true:false;
@@ -112,7 +112,7 @@ export class NewRequestComponent implements OnInit {
             {
               this.isfundRequest1=this.usermenuright.find((e: any) => e.type === 'FUNDREQUEST' && e.value==true )?.type=='FUNDREQUEST'?true:false;
             }
-         
+
             if(isRazor && isWire)
             {
               this.isRazor=false;
@@ -125,15 +125,15 @@ export class NewRequestComponent implements OnInit {
             {
               this.isRazor=false;
             }
-          } 
+          }
         }
-      }); 
-     
+      });
+
     }
-    // function to get difference between from date and to date 
+    // function to get difference between from date and to date
     getDiffDays(sDate: any, eDate: any) {
       var startDate = new Date(sDate);
-      var endDate = new Date(eDate);  
+      var endDate = new Date(eDate);
       var Time = endDate.getTime() - startDate.getTime();
       return Time / (1000 * 3600 * 24);
      }
@@ -197,7 +197,7 @@ export class NewRequestComponent implements OnInit {
     this.isModel = !this.isModel;
   }
    btnclose(): any {
-    this.router.navigateByUrl('/rt/money-request');
+    this.router.navigateByUrl('/merchant/money-request');
   }
   onFileSelect(event: any): any {
     if (event.target.files.length>0) {
@@ -246,8 +246,8 @@ export class NewRequestComponent implements OnInit {
       if (res.isSuccess) {
         this.fundRequest = new FundRequest();
         this.fundRequest.Amount="";
-        Swal.fire({ icon: 'success', text: 'Your request initiated successfully!', confirmButtonText: 'OK' }).then(() => { 
-          this.router.navigateByUrl('/rt/money-request');
+        Swal.fire({ icon: 'success', text: 'Your request initiated successfully!', confirmButtonText: 'OK' }).then(() => {
+          this.router.navigateByUrl('/merchant/money-request');
          });
       } else {
         Swal.fire({ icon: 'error', text: res.mhOutcome, confirmButtonText: 'OK' });
@@ -304,7 +304,7 @@ export class NewRequestComponent implements OnInit {
             this.commonService.isLoader = false;
             if (res.isSuccess) {
               this.isNext=true;
-                if(this.fundRequest.Id) 
+                if(this.fundRequest.Id)
                 {
                     this.boundDet.txnNo=this.fundRequest.TxnId;
                 }
@@ -313,7 +313,7 @@ export class NewRequestComponent implements OnInit {
                   this.boundDet.txnNo=res.txn;
                 }
                 this.boundDet.pan=res.pan;
-             
+
             }
           },
           (err: any) => {

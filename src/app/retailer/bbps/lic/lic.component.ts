@@ -66,7 +66,7 @@ export class LicComponent implements OnInit {
   }
   getOperatorPipe(): any {
     this.commonService.isLoader = true;
-    if (this.commonService.userPram.userId && this.commonService.userPram.rmn) {     
+    if (this.commonService.userPram.userId && this.commonService.userPram.rmn) {
       this.commonService.getAuth('recharge/get-api-service?isMaxAmt=false&ApiType=BBPS&Category=LIC&maxAmount=0')
         .subscribe(
           (res: any) => {
@@ -168,12 +168,12 @@ export class LicComponent implements OnInit {
         this.commonService.isLoader = false;
         if (res.isSuccess && res.respData && res.respData.isSuccess) {
           Swal.fire({ icon: 'success', text: res.mhOutcome, confirmButtonText: 'OK' });
-      
+
           this.paymentSection = false;
           this.billerDetails = res.respData;
           this.utilityModal.paymentAmount = res.respData.billamount;
           this.getPaymentPipe(res.respData.billamount);
-        } 
+        }
         else {
           Swal.fire({ icon: 'error', text: res.mhOutcome, confirmButtonText: 'OK' });
         }
@@ -224,7 +224,7 @@ export class LicComponent implements OnInit {
                 this.commonService.isLoader = false;
                 Swal.fire({ icon: res.isSuccess ? 'success' : 'error', text: res.mhOutcome, confirmButtonText: 'OK' }).then(() => {
                   if (res.isSuccess) {
-                    this.router.navigate(['/rt/bbps/receipt'], { queryParams: { txnNo: res.txnNo } });
+                    this.router.navigate(['/merchant/bbps/receipt'], { queryParams: { txnNo: res.txnNo } });
                   }
                 });
               },
@@ -269,11 +269,11 @@ export class LicComponent implements OnInit {
             this.commonService.isLoader = false;
           });
     }
-    
+
   }
   printReceipt(data: any): any {
     if (data) {
-      this.router.navigate(['/rt/bbps/receipt'], { queryParams: { txnNo: data } });
+      this.router.navigate(['/merchant/bbps/receipt'], { queryParams: { txnNo: data } });
     }
   }
 }

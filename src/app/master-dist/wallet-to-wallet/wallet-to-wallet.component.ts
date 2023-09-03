@@ -106,7 +106,7 @@ export class WalletToWalletComponent {
           paymentMode: 'WALLET',
           numberOfTrns: 1,
           perTrnsAmount: this.wallet.amount,
-          totalTrnsAmount: this.wallet.amount,         
+          totalTrnsAmount: this.wallet.amount,
           Ifsc: '',
           intent: this.wallet.remark,
           docType: 'P1',
@@ -124,7 +124,7 @@ export class WalletToWalletComponent {
               this.commonService.isLoader = false;
               Swal.fire({ icon: 'success', text: res.mhOutcome, confirmButtonText: 'OK' }).then(() => {
                  this.commonService.fetchWalletDetails();
-                 this.router.navigate(['/rt/dashboard']);
+                 this.router.navigate(['/merchant/dashboard']);
               });
             },
             (err: any) => {

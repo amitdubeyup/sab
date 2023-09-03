@@ -79,7 +79,7 @@ export class FundRequestComponent implements OnInit {
     public route: ActivatedRoute,
     public router: Router,
     private winRef: WindowRefService,
-    public dialog: MatDialog, 
+    public dialog: MatDialog,
     public datePipe:DatePipe,
     private razorpayService: ExternalLibraryService) {
     //  this.maxDt.setDate(new Date());
@@ -89,11 +89,11 @@ export class FundRequestComponent implements OnInit {
     this.fromDt.setDate(this.fromDt.getDate());
     this.toDt.setDate(this.toDt.getDate());
     this.activeDt.setDate(this.activeDt.getDate());
-    
+
     this.fetchBankList();
     this.getBank();
 
-      this.usermenuright=JSON.parse(this.commonService?.userPram?.usermenuright);      
+      this.usermenuright=JSON.parse(this.commonService?.userPram?.usermenuright);
       this.isimoprt=this.usermenuright.find((e: any) => e.type === 'FUND' && e.value==true)?.type=='FUND'?true:false;
       this.commonService.serviceBehaviourData$.subscribe((res) => {
         const servicePrivilegesData = localStorage.getItem('serviceBehaviour') ? localStorage.getItem('serviceBehaviour') : null;
@@ -102,7 +102,7 @@ export class FundRequestComponent implements OnInit {
           if(this.servicePrivileges)
           {
             this.isfundRequest=this.servicePrivileges.find((e: any) => e.type === 'PG' && e.value==true )?.type=='PG'?true:false;
-           
+
             this.isfundRequest1=this.servicePrivileges.find((e: any) => e.type === 'FUNDREQUEST' && e.value==true )?.type=='FUNDREQUEST'?true:false;
 
             let isRazor=this.servicePrivileges.find((e: any) => e.type === 'RAZR' && e.value==true )?.type=='RAZR'?true:false;
@@ -115,7 +115,7 @@ export class FundRequestComponent implements OnInit {
             {
               this.isfundRequest1=this.usermenuright.find((e: any) => e.type === 'FUNDREQUEST' && e.value==true )?.type=='FUNDREQUEST'?true:false;
             }
-         
+
             if(isRazor && isWire)
             {
               this.isRazor=false;
@@ -128,10 +128,10 @@ export class FundRequestComponent implements OnInit {
             {
               this.isRazor=false;
             }
-            
-          } 
+
+          }
         }
-      }); 
+      });
       if(this.isRazor)
       {
         this.razorpayService
@@ -148,14 +148,14 @@ export class FundRequestComponent implements OnInit {
       .subscribe();
       }
     }
-    // function to get difference between from date and to date 
+    // function to get difference between from date and to date
     getDiffDays(sDate: any, eDate: any) {
       var startDate = new Date(sDate);
-      var endDate = new Date(eDate);  
+      var endDate = new Date(eDate);
       var Time = endDate.getTime() - startDate.getTime();
       return Time / (1000 * 3600 * 24);
      }
-  
+
   handleChange(event: any): any {
     this.isModelOnline=false;
     this.activeTab=event.index;
@@ -263,20 +263,20 @@ export class FundRequestComponent implements OnInit {
 
   // Fund Request Start
   openModal(): any {
-    this.router.navigate(['/rt/money-request/newrequest']);
+    this.router.navigate(['/merchant/money-request/newrequest']);
   }
 
   editRequest(data: FundRequest): any {
     data.DepositDate = new Date(data.DepositDate);
     this.fundRequest = data;
     const jsonData = this.commonService.encryptUsingAES256(JSON.stringify(this.fundRequest));
-    this.router.navigate(['/rt/money-request/newrequest'], { queryParams: { pram: jsonData } });
+    this.router.navigate(['/merchant/money-request/newrequest'], { queryParams: { pram: jsonData } });
   }
 
   openModalOnline(): any {
     this.isModelOnline = !this.isModelOnline;
   }
-  payWithRazorOnline(){ 
+  payWithRazorOnline(){
     if(this.fundRequestOnline && this.fundRequestOnline?.Amount)
     {
       if(this.isRazor)
@@ -284,7 +284,7 @@ export class FundRequestComponent implements OnInit {
       this.isModelOnline=false;
       let order_id=this.datePipe.transform(new Date(), 'ddMMyyhhmmssSS');
       let options:any = {
-        "key":"rzp_live_k8SlRpS2ugoDkD",//"rzp_test_NGKw04IquSVto6" 
+        "key":"rzp_live_k8SlRpS2ugoDkD",//"rzp_test_NGKw04IquSVto6"
         "amount":parseFloat(this.fundRequestOnline?.Amount)*100,
         "name": "SOUL PAY",
         "currency": "INR",
@@ -292,7 +292,7 @@ export class FundRequestComponent implements OnInit {
         "image": "../assets/images/logo.png",
         "modal": {
           "escape": false
-        }, 
+        },
         "prefill": {
           "name": this.commonService?.userPram?.userName,
           "contact": '',
@@ -315,13 +315,13 @@ export class FundRequestComponent implements OnInit {
             this.fundRequestOnline.TxnMode=this.commonService.encryptUsingAES256("7");
             this.fundRequestOnline.BankId=10013;
             this.fundRequestOnline.TxnId=order_id;
-            this.fundRequestOnline.MobileNo= this.commonService?.userPram?.rmn;  
+            this.fundRequestOnline.MobileNo= this.commonService?.userPram?.rmn;
             this.fundRequestOnline.MemberId=this.commonService.userPram.memberId;
             this.fundRequestOnline.IsStatus="approved";
             this.fundRequestOnline.docType="PG";
             this.fundRequestOnline.UpdatedBy = this.commonService.userPram.memberId;
-            this.fundRequestOnline.updDesc ='Approved through PG';            
-            this.fundRequestOnline.utr =response.razorpay_payment_id;            
+            this.fundRequestOnline.updDesc ='Approved through PG';
+            this.fundRequestOnline.utr =response.razorpay_payment_id;
             this.commonService.postAuth('membersapi/fund-request-online', this.fundRequestOnline).subscribe((res: any) => {
               this.commonService.isLoader = false;
               if (res.isSuccess) {
@@ -329,10 +329,10 @@ export class FundRequestComponent implements OnInit {
                 this.fetchFundRequestList();
                 this.activeTab=1;
                 Swal.fire({ icon: 'success', text: 'Payment successfully!', confirmButtonText: 'OK' });
-                this.isModelOnline=false; 
-                       
+                this.isModelOnline=false;
+
               } else {
-                this.commonService.isLoader = false;    
+                this.commonService.isLoader = false;
                 this.fundRequestOnline={};
                 Swal.fire({ icon: 'error', text: res.mhOutcome, confirmButtonText: 'OK' });
               }
@@ -344,13 +344,13 @@ export class FundRequestComponent implements OnInit {
             });
           }
       });
-      options.modal.ondismiss = (() => { 
+      options.modal.ondismiss = (() => {
         this.fundRequestOnline={};
         Swal.fire({ icon: 'error', text: 'Transaction cancelled.', confirmButtonText: 'OK' });
-        this.commonService.isLoader = false;   
+        this.commonService.isLoader = false;
       });
       let rzp = new this.winRef.nativeWindow.Razorpay(options);
-      rzp.on(function (response:any){        
+      rzp.on(function (response:any){
         console.log("le",response);
               alert(response.error.code);
               alert(response.error.description);
@@ -390,33 +390,33 @@ export class FundRequestComponent implements OnInit {
         this.commonService.displayToaster('something went wrong', 'error');
       });
     }
-  }  
+  }
  }
- openImport(): void { 
-  let dialogRef = this.dialog.open(ImportComponent, { 
-    width: '1000px', 
-    data: { uid:''} 
-  }); 
-  dialogRef.afterClosed().subscribe(result => { 
+ openImport(): void {
+  let dialogRef = this.dialog.open(ImportComponent, {
+    width: '1000px',
+    data: { uid:''}
+  });
+  dialogRef.afterClosed().subscribe(result => {
     this.fetchFundRequestList();
     this.commonService.isLoader = false;
-  }); 
- } 
- printbound(data:any): void { 
-  let dialogRef = this.dialog.open(PrintBoundComponent, { 
-    width: '850px', 
+  });
+ }
+ printbound(data:any): void {
+  let dialogRef = this.dialog.open(PrintBoundComponent, {
+    width: '850px',
     maxHeight: '90vh',
     data: data
-  }); 
-  dialogRef.afterClosed().subscribe(result => { 
+  });
+  dialogRef.afterClosed().subscribe(result => {
     this.commonService.isLoader = false;
-  }); 
- } 
+  });
+ }
  exportAsXLSX(): any {
   const excelData: any = [];
   this.requestList.forEach((el: any) => {
     const obj = [
-      el.TxnId,   
+      el.TxnId,
       this.getPaymentMode(el.TxnMode),
       el.BankName,
       this.commonService.formatDate(el.DepositDate, 'dd/mm/yyyy'),
@@ -425,7 +425,7 @@ export class FundRequestComponent implements OnInit {
       el.RecieverNote,
       el.CreateOn,
       el.ApprovedDt,
-      el.IsStatus      
+      el.IsStatus
     ];
     excelData.push(obj);
   });
@@ -475,7 +475,7 @@ export class FundRequestComponent implements OnInit {
             this.commonService.isLoader = false;
             if (res.isSuccess) {
               this.isNext=true;
-                if(this.fundRequest.Id) 
+                if(this.fundRequest.Id)
                 {
                     this.boundDet.txnNo=this.fundRequest.TxnId;
                 }
@@ -484,7 +484,7 @@ export class FundRequestComponent implements OnInit {
                   this.boundDet.txnNo=res.txn;
                 }
                 this.boundDet.pan=res.pan;
-             
+
             }
           },
           (err: any) => {

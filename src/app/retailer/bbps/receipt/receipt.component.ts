@@ -61,7 +61,7 @@ export class ReceiptComponent implements OnInit {
               }
               else
               {
-                this.commonService.isLoader = true;               
+                this.commonService.isLoader = true;
               }
             }
             console.log('Transaction Details: ', this.transactionDetails);
@@ -76,14 +76,14 @@ export class ReceiptComponent implements OnInit {
   cancel(): void {
     if(this.remitterId!=undefined && this.remitterId!="" && this.paymentMode !=undefined && this.paymentMode!="")
     {
-      this.router.navigate(['/rt/money-transfer/beneficiary'], { queryParams: { remitterId: this.remitterId, paymentMode: this.paymentMode}});
+      this.router.navigate(['/merchant/money-transfer/beneficiary'], { queryParams: { remitterId: this.remitterId, paymentMode: this.paymentMode}});
     }
     else
     {
     this.location.back();
     }
   }
-  printPage(type:any) {    
+  printPage(type:any) {
     this.isPrint=type;
     this.commonService.isLoader=true;
     setTimeout(() => {
@@ -117,7 +117,7 @@ export class ReceiptComponent implements OnInit {
             setTimeout(function(){popupWindow.print();}, 500);
             popupWindow.onfocus = function () {
                popupWindow.close();
-            }  
+            }
           }
 
           popupWindow.onabort = event => {
@@ -133,6 +133,6 @@ export class ReceiptComponent implements OnInit {
     }, 500);
 
   }
-  
+
 }
 

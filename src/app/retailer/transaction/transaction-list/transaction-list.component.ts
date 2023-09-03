@@ -45,10 +45,10 @@ export class TransactionListComponent implements OnInit {
     this.toDt.setDate(this.toDt.getDate());
     this.getRetailerCommission('DMT');
   }
-   // function to get difference between from date and to date 
+   // function to get difference between from date and to date
    getDiffDays(sDate: any, eDate: any) {
     var startDate = new Date(sDate);
-    var endDate = new Date(eDate);  
+    var endDate = new Date(eDate);
     var Time = endDate.getTime() - startDate.getTime();
     return Time / (1000 * 3600 * 24);
     }
@@ -61,7 +61,7 @@ export class TransactionListComponent implements OnInit {
       this.getRetailerCommission('DMT');
       this.showblogo = false;
     }
-   
+
   }
 
   handleSearch(docTab: any): any {
@@ -108,7 +108,7 @@ export class TransactionListComponent implements OnInit {
             });
       }
     }
- 
+
   }
   // to open complaint popup
   openComplaintPopup(cp: any){
@@ -129,7 +129,7 @@ export class TransactionListComponent implements OnInit {
     let postData: any = {};
     postData.CustomerName = this.complaintModel.customerName;
     postData.MobileNo = this.complaintModel.mobileNo;
-    postData.TxnNo = this.complaintModel.txn_no;    
+    postData.TxnNo = this.complaintModel.txn_no;
     postData.ParticipationType = this.complaintModel.participationType;
     postData.ServiceReason = this.complaintModel.serviceReason;
     postData.Description = this.complaintModel.description.trim();
@@ -212,7 +212,7 @@ export class TransactionListComponent implements OnInit {
   const jsonData = this.commonService.encryptUsingAES256(JSON.stringify({
         txnNo: cp.txn_id,
     }));
-    this.router.navigate(['/rt/money-transfer/beneficiary/receipt'], { queryParams: { data: jsonData } });
+    this.router.navigate(['/merchant/money-transfer/beneficiary/receipt'], { queryParams: { data: jsonData } });
   }
   exportAsXLSX(): any {
     const excelData: any = [];
@@ -221,7 +221,7 @@ export class TransactionListComponent implements OnInit {
         el.txn_no,
         el.trasaction_date,
         el.updatedOn,
-        this.returnName(el), 
+        this.returnName(el),
         this.returnBene(el),
         el.amount,
         el.charge,
@@ -241,7 +241,7 @@ export class TransactionListComponent implements OnInit {
      {
      header = ['Txn','Tran Date','Updated Date','Send By','Received By','Tran Amount','Charge','Remarks','Status','UTR','Response'];
      }
-     else 
+     else
      {
      header = ['Txn','Tran Date','Updated Date','Name/Mobile','Naration','Tran Amount','Charge','Service','Status','UTR','Response'];
      }
@@ -338,7 +338,7 @@ export class TransactionListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {this.handleSearch(this.activeTab) });
   }
-  
+
   hideComplaintPopup(){
     this.complaintModelPopup = !this.complaintModelPopup;
     this.complaintModel = {};

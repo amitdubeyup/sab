@@ -35,10 +35,10 @@ export class SenderComponent implements OnInit {
     this.moduleM.remitterLName = '';
     this.moduleM.address = 'Gurgaon';
     this.moduleM.zipCode = '122001';
-    this.moduleM.dob = '1993-01-03'; 
-    this.getOperatorPipe();  
+    this.moduleM.dob = '1993-01-03';
+    this.getOperatorPipe();
   }
- 
+
   changeText(myText: any): void {
     return myText.value;
   }
@@ -49,9 +49,9 @@ export class SenderComponent implements OnInit {
         .subscribe(
           (res: any) => {
             this.commonService.isLoader = false;
-            if (res.isSuccess && res.respData) 
+            if (res.isSuccess && res.respData)
             {
-              this.fetchpipeList=res.respData;              
+              this.fetchpipeList=res.respData;
             }
           },
           (err: any) => {
@@ -67,8 +67,8 @@ export class SenderComponent implements OnInit {
   addRemitter(): void {
      if((this.moduleM.remitterFName)==(this.moduleM.remitterLName))
     {
-      Swal.fire({ icon: 'error', text: "First Name and Last Name must not be Same", confirmButtonText: 'OK' });      
-     } 
+      Swal.fire({ icon: 'error', text: "First Name and Last Name must not be Same", confirmButtonText: 'OK' });
+     }
     else
     {
       this.commonService.isLoader = true;
@@ -85,7 +85,7 @@ export class SenderComponent implements OnInit {
           {
           Swal.fire({ icon: 'success', text: res.mhOutcome, confirmButtonText: 'Okay!' }).then((result) => {
             if (result.isConfirmed) {
-              this.router.navigate(['/rt/money-transfer/beneficiary'], { queryParams: { remitterId: res.remitterId, paymentMode: this.paymentMode} });
+              this.router.navigate(['/merchant/money-transfer/beneficiary'], { queryParams: { remitterId: res.remitterId, paymentMode: this.paymentMode} });
             }
           });
          }
@@ -101,7 +101,7 @@ export class SenderComponent implements OnInit {
         });
     }
 
-   
+
   }
 
   OtpRsend(): void {
@@ -109,8 +109,8 @@ export class SenderComponent implements OnInit {
     {
       if((this.moduleM.remitterFName)==(this.moduleM.remitterLName))
       {
-        Swal.fire({ icon: 'error', text: "First Name and Last Name must not be Same", confirmButtonText: 'OK' });      
-      } 
+        Swal.fire({ icon: 'error', text: "First Name and Last Name must not be Same", confirmButtonText: 'OK' });
+      }
       else
       {
         this.commonService.isLoader = true;
@@ -127,7 +127,7 @@ export class SenderComponent implements OnInit {
             {
             Swal.fire({ icon: 'success', text: res.mhOutcome, confirmButtonText: 'Okay!' }).then((result) => {
               if (result.isConfirmed) {
-                this.router.navigate(['/rt/money-transfer/beneficiary'], { queryParams: { remitterId: res.remitterId, paymentMode: this.paymentMode} });
+                this.router.navigate(['/merchant/money-transfer/beneficiary'], { queryParams: { remitterId: res.remitterId, paymentMode: this.paymentMode} });
               }
             });
            }
@@ -147,7 +147,7 @@ export class SenderComponent implements OnInit {
     {
       this.onSubmit();
     }
-   
+
  }
   updateMobile(event: any): any {
     console.log('event value-->', event)
@@ -157,20 +157,20 @@ export class SenderComponent implements OnInit {
     this.displaySearchList = false;
   }
 
-  // validate mobile 
+  // validate mobile
   validateMobile(event: any): any{
     const mobile = event.target.value.replace(/^[a-zA-Z]*$/, '');
     this.moduleM.mobileNo = mobile;
     if(((mobile.length != 10) && (this.transferType == 'mobile')))
     {
       this.proper = true;
-     } 
+     }
     else
     {
-      this.proper = false;    
+      this.proper = false;
     }
   }
-  // validate account 
+  // validate account
   validateAccount(event: any): any{
     const mobile = event.target.value.replace(/\D/gm, '');
     this.moduleM.mobileNo = mobile;
@@ -178,25 +178,25 @@ export class SenderComponent implements OnInit {
     {
       this.proper = true;
       console.log('false')
-     } 
+     }
     else
     {
-      this.proper = false;    
-      console.log('true')      
+      this.proper = false;
+      console.log('true')
     }
   }
 
-  // validate first name and last name  
+  // validate first name and last name
   validate(): any{
     if((this.moduleM.remitterFName.value)==(this.moduleM.remitterLName.value))
     {
       console.log('first name and last name is equal')
       this.proper = true;
-     } 
+     }
     else
     {
       console.log('first name and last name is not equal')
-      this.proper = false;    
+      this.proper = false;
     }
   }
   onSubmit(): void {
@@ -237,10 +237,10 @@ export class SenderComponent implements OnInit {
         });
   }
   onBeneficiary(data: any): any {
-    this.router.navigate(['/rt/money-transfer/beneficiary'], { queryParams: { remitterId: data.RemitterId, paymentMode: this.paymentMode,acc:'' } });
+    this.router.navigate(['/merchant/money-transfer/beneficiary'], { queryParams: { remitterId: data.RemitterId, paymentMode: this.paymentMode,acc:'' } });
   }
   onBeneficiaryView(data: any): any {
-    this.router.navigate(['/rt/money-transfer/beneficiary'], { queryParams: { remitterId: data.RemitterId, paymentMode: this.paymentMode,acc:data.BeneficiaryAcc } });
+    this.router.navigate(['/merchant/money-transfer/beneficiary'], { queryParams: { remitterId: data.RemitterId, paymentMode: this.paymentMode,acc:data.BeneficiaryAcc } });
   }
 
 }

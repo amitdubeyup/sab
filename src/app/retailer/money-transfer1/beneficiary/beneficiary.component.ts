@@ -54,7 +54,7 @@ export class BeneficiaryComponent implements OnInit {
       this.commonService.fetchWalletDetails();
     }
     else {
-      this.router.navigate(['/rt/money-transfer']);
+      this.router.navigate(['/merchant/money-transfer']);
     }
 
   }
@@ -96,7 +96,7 @@ export class BeneficiaryComponent implements OnInit {
       this.remitterDetails.FinoLimit = 0;
       this.remitterDetails.RazorLimit = this.selectedWallet.transferLimit;
     }
-    
+
   }
 
   getRemitterDetails(): any {
@@ -129,7 +129,7 @@ export class BeneficiaryComponent implements OnInit {
           (res: any) => {
             this.commonService.isLoader = false;
             if (res.isSuccess) {
-              this.beneficiaryDetails = JSON.parse(this.commonService.decryptUsingAES256(res.respData));             
+              this.beneficiaryDetails = JSON.parse(this.commonService.decryptUsingAES256(res.respData));
             }
           },
           (err: any) => {
@@ -145,7 +145,7 @@ export class BeneficiaryComponent implements OnInit {
         .subscribe(
           (res: any) => {
             this.commonService.isLoader = false;
-            if(res.isSuccess) {             
+            if(res.isSuccess) {
                if (pipeid==='08d94c23-18bf-4ce5-8a9f-a31aac9a19f7' || pipeid === '22fe61a0-83bf-401c-bfc0-788a717838f1' || pipeid==='a1e442b5-0cab-43f9-a3d8-37725956bc5b' || pipeid==='ac1ea406-5de3-11ed-afb4-00be432ac5fc') {
                 this.remitterDetails.BankitLimit = 0;
                 this.remitterDetails.PaySprintLimit = res.limit;
@@ -169,7 +169,7 @@ export class BeneficiaryComponent implements OnInit {
             this.commonService.isLoader = false;
             if (res.isSuccess) {
               this.pipeList = res.respData;
-              if (res.respData.length > 0) {                
+              if (res.respData.length > 0) {
                 this.selectedWallet = this.pipeList[0];
                 if (this.selectedWallet.apiId === '4d95ef67-d29a-11eb-9ccf-00ffa370980e') {
                   this.remitterDetails.BankitLimit = this.selectedWallet.transferLimit;
@@ -199,14 +199,14 @@ export class BeneficiaryComponent implements OnInit {
                   this.remitterDetails.PaySprintLimit = 0;
                   this.remitterDetails.FinoLimit = 0;
                   this.remitterDetails.RazorLimit = this.selectedWallet.transferLimit;
-                
+
                 }
               }
               else
               {
                 Swal.fire({ icon: 'warning', text: 'Wallet disabled , Please Contact to System Admin', confirmButtonText: 'Ok' });
               }
-             
+
             }
           },
           (err: any) => {
@@ -221,10 +221,10 @@ export class BeneficiaryComponent implements OnInit {
       paymentMode: this.paymentMode,
     }));
     if (addType === 'add') {
-      this.router.navigate(['/rt/money-transfer/beneficiary/addbene'], { queryParams: { data: jsonData } });
+      this.router.navigate(['/merchant/money-transfer/beneficiary/addbene'], { queryParams: { data: jsonData } });
     }
     else {
-      this.router.navigate(['/rt/money-transfer/beneficiary/importbene'], { queryParams: { data: jsonData } });
+      this.router.navigate(['/merchant/money-transfer/beneficiary/importbene'], { queryParams: { data: jsonData } });
     }
   }
 
@@ -306,12 +306,12 @@ export class BeneficiaryComponent implements OnInit {
           }
         },
         (err: any) => {
-        });  
+        });
      }
     else
     {
       this.processPaymentData(data)
-    }      
+    }
    }
 
   processPaymentData(data: any): any {
@@ -333,7 +333,7 @@ export class BeneficiaryComponent implements OnInit {
       else {
         Swal.fire({ icon: 'warning', text: 'Remitter not registered in Wallet.', showCancelButton: true, cancelButtonText: 'Cancel', confirmButtonText: 'Register' }).then((modalRes: any) => {
           if (modalRes.isConfirmed) {
-            
+
           }
         });
       }
@@ -350,7 +350,7 @@ export class BeneficiaryComponent implements OnInit {
       beneficiaryDetails: this.selectedData,
       orderid:uuid()
     }));
-    this.router.navigate(['/rt/money-transfer/beneficiary/confirmation'], { queryParams: { data: jsonData } });
+    this.router.navigate(['/merchant/money-transfer/beneficiary/confirmation'], { queryParams: { data: jsonData } });
   }
 
   cancel(): any {
@@ -430,7 +430,7 @@ export class BeneficiaryComponent implements OnInit {
       memberId: this.commonService.userPram.memberId,
       remitterId: cp.RemitterId,
       beneficiaryId: cp.BeneficiaryId,
-      mobileNumber : this.remitterDetails.MobileNo, 
+      mobileNumber : this.remitterDetails.MobileNo,
       WalletId: this.commonService.pramwallet.wallet_id,
       agentCode: this.commonService.userPram.id,
       customerId: this.remitterDetails.MobileNo,

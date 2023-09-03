@@ -78,14 +78,14 @@ export class ReceiptComponent implements OnInit {
   cancel(): void {
     if(this.remitterId!=undefined && this.remitterId!="" && this.paymentMode !=undefined && this.paymentMode!="")
     {
-      this.router.navigate(['/rt/merchant-transfer/beneficiary'], { queryParams: { remitterId: this.remitterId, paymentMode: this.paymentMode}});
+      this.router.navigate(['/merchant/merchant-transfer/beneficiary'], { queryParams: { remitterId: this.remitterId, paymentMode: this.paymentMode}});
     }
     else
     {
     this.location.back();
     }
   }
-  printPage(type:any) {    
+  printPage(type:any) {
     this.isPrint=type;
     this.commonService.isLoader=true;
     setTimeout(() => {
@@ -119,7 +119,7 @@ export class ReceiptComponent implements OnInit {
             setTimeout(function(){popupWindow.print();}, 500);
             popupWindow.onfocus = function () {
                popupWindow.close();
-            }  
+            }
           }
 
           popupWindow.onabort = event => {
@@ -135,6 +135,6 @@ export class ReceiptComponent implements OnInit {
     }, 500);
 
   }
-  
+
 }
 
