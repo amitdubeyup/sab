@@ -43,10 +43,10 @@
   </div>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-md-lg col-md-12 col-sm-12">
         <div class="row clearfix">
           <div class="col-lg-2 col-sm-3 mobile-menu" (click)="navigatePage('/merchant/money-transfer')">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/money_transfer.png">
@@ -58,7 +58,7 @@
             </div>
           </div>
           <div class="col-lg-2 col-sm-3 mobile-menu" (click)="navigatePage('/merchant/merchant-transfer')">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/wallet-transfer.svg">
@@ -70,7 +70,7 @@
             </div>
           </div>
           <div class="col-lg-2 col-sm-3 mobile-menu" (click)="navigatePage('/merchant/aeps')">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/aeps2.png">
@@ -82,7 +82,7 @@
             </div>
           </div>
           <div class="col-lg-2 col-sm-3 mobile-menu" (click)="navigatePage('/merchant/mobilerecharge')">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/mobile_recharge.png">
@@ -94,7 +94,7 @@
             </div>
           </div>
           <div class="col-lg-2 col-sm-3 mobile-menu" (click)="navigatePage('/merchant/bbps')">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/bbps.svg">
@@ -106,7 +106,7 @@
             </div>
           </div>
           <div class="col-lg-2 col-sm-3 mobile-menu">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/travel_icon1.png">
@@ -119,7 +119,7 @@
           </div>
 
           <div class="col-lg-2 col-sm-3 mobile-menu">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/cc_icon.png">
@@ -132,7 +132,7 @@
           </div>
 
           <div class="col-lg-2 col-sm-3 mobile-menu" (click)="navigatePage('/merchant/wallet-to-wallet')">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/fund_icon.png">
@@ -144,7 +144,7 @@
             </div>
           </div>
           <div class="col-lg-2 col-sm-3 mobile-menu">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/lic_icon.jpg">
@@ -156,7 +156,7 @@
             </div>
           </div>
           <div class="col-lg-2 col-sm-3 mobile-menu">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/insurance.svg">
@@ -168,7 +168,7 @@
             </div>
           </div>
           <div class="col-lg-2 col-sm-3 mobile-menu">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/cms.svg">
@@ -180,7 +180,7 @@
             </div>
           </div>
           <div class="col-lg-2 col-sm-3 mobile-menu">
-            <div class="card">
+            <div class="cards">
               <div class="user-account">
                 <div class="user_div">
                   <img class="img-size" src="assets/images/natural-gas.svg">
@@ -191,115 +191,72 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="card top_counter">
-              <div class="body">
-                <div class="icon text-warning"><i class="fa fa-area-chart"></i></div>
-                <div class="container-fluid">
-                  <div class="text">Money Transfer</div>
-                  <h5 class="number">{{recentList?.FundsTransfers| currency : 'INR' : true : '1.0-0'}}</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card top_counter">
-              <div class="body">
-                <div class="icon text-warning"><i class="fa fa-area-chart"></i></div>
-                <div class="container-fluid">
-                  <div class="text">Fund Request</div>
-                  <h5 class="number">{{recentList?.FundsReceived | currency : 'INR' : true : '1.0-0'}}</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card top_counter">
-              <div class="body">
-                <div class="icon text-warning"><i class="fa fa-area-chart"></i></div>
-                <div class="container-fluid">
-                  <div class="text">Recharge/Utilities</div>
-                  <h5 class="number">{{recentList?.Utilities--recentList?.Recharges | currency : 'INR' : true : '1.0-0'}}</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card top_counter bg-green">
-              <div class="body">
-                <div class="icon text-warning"><i class="fa fa-area-chart"></i></div>
-                <div class="container-fluid">
-                  <div class="text">AEPS</div>
-                  <h5 class="number">{{recentList?.AepsAmount| currency : 'INR' : true : '1.0-0'}}</h5>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-md-lg col-md-12 col-sm-12"><br /><br /></div>
+      <div class="col-md-lg col-md-12 col-sm-12">
         <div class="row clearfix">
-          <div class="col-md-6">
+          <div class="col-lg-3 col-md-3 col-sm-3">
             <div class="card top_counter">
               <div class="body text-center">
                 <div class="text">Money Transfer</div>
-                <h5 class="number">{{recentList?.FundsTransfers | currency : 'INR' : true : '1.0-0'}}</h5>
+                <h5 class="number">{{recentList?.FundsTransfers ?? 0 | currency : 'INR' : true : '1.0-0'}}</h5>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-lg-3 col-md-3 col-sm-3">
             <div class="card top_counter">
               <div class="body  text-center">
-                <div class="text">Fund</div>
-                <h5 class="number">{{recentList?.FundsReceived | currency : 'INR' : true : '1.0-0'}}</h5>
+                <div class="text">Fund Request</div>
+                <h5 class="number">{{recentList?.FundsReceived ?? 0 | currency : 'INR' : true : '1.0-0'}}</h5>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-lg-3 col-md-3 col-sm-3">
             <div class="card top_counter">
               <div class="body  text-center">
                 <div class="text">Utilities Paid</div>
-                <h5 class="number">{{recentList?.Utilities--recentList?.Recharges | currency : 'INR' : true : '1.0-0'}}</h5>
+                <h5 class="number">{{recentList?.Utilities ?? 0 - recentList?.Recharges ?? 0 | currency : 'INR' : true : '1.0-0'}}</h5>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-lg-3 col-md-3 col-sm-3">
             <div class="card top_counter bg-green">
               <div class="body  text-center">
                 <div class="text">AEPS</div>
-                <h5 class="number">{{recentList?.AepsAmount| currency : 'INR' : true : '1.0-0'}}</h5>
+                <h5 class="number">{{recentList?.AepsAmount ?? 0 | currency : 'INR' : true : '1.0-0'}}</h5>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-lg-3 col-md-3 col-sm-3">
             <div class="card top_counter bg-green">
               <div class="body  text-center">
                 <div class="text">In Pocess</div>
-                <h5 class="number">{{recentList?.AepsAmount| currency : 'INR' : true : '1.0-0'}}</h5>
+                <h5 class="number">{{recentList?.AepsAmount ?? 0 | currency : 'INR' : true : '1.0-0'}}</h5>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-lg-3 col-md-3 col-sm-3">
             <div class="card top_counter bg-green">
               <div class="body  text-center">
                 <div class="text">Pending</div>
-                <h5 class="number">{{recentList?.AepsAmount| currency : 'INR' : true : '1.0-0'}}</h5>
+                <h5 class="number">{{recentList?.AepsAmount ?? 0 | currency : 'INR' : true : '1.0-0'}}</h5>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-lg-3 col-md-3 col-sm-3">
             <div class="card top_counter bg-green">
               <div class="body  text-center">
                 <div class="text">Refund Pending</div>
-                <h5 class="number">{{recentList?.AepsAmount| currency : 'INR' : true : '1.0-0'}}</h5>
+                <h5 class="number">{{recentList?.AepsAmount ?? 0 | currency : 'INR' : true : '1.0-0'}}</h5>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-lg-3 col-md-3 col-sm-3">
             <div class="card top_counter bg-green">
               <div class="body  text-center">
                 <div class="text">Refunded</div>
-                <h5 class="number">{{recentList?.AepsAmount| currency : 'INR' : true : '1.0-0'}}</h5>
+                <h5 class="number">{{recentList?.AepsAmount ?? 0 | currency : 'INR' : true : '1.0-0'}}</h5>
               </div>
             </div>
           </div>
@@ -308,7 +265,7 @@
     </div>
     <div class="row clearfix">
       <div class="col-md-12">
-        <div class="card">
+        <div class="cards">
           <div class="card-body wrapper-slider-image">
             <div class="widget-dashboard-image">
               <ngb-carousel *ngIf="banners?.messageList">
