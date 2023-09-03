@@ -20,7 +20,7 @@ const appRoutes: Routes = [
     loadChildren: () => import('./sign/sign.module').then(m => m.SignModule)
   },
   {
-    path: 'rt',
+    path: 'merchant',
     canActivate: [RetailerGuard],
     loadChildren: () => import('./retailer/retailer.module').then(m => m.RetailerModule)
   },

@@ -28,7 +28,7 @@ export class UserRightComponent {
       { code: 'P', desc: '%' },
       { code: 'R', desc: 'Rs.' }
     ];
-  
+
   featurePrivileges: any = [
     { type: 'DMT1', key: 'Money Transfer', value: true },
     { type: 'DMT2', key: 'Merchant Payment', value: false },
@@ -85,7 +85,7 @@ export class UserRightComponent {
       this.memberId = params.memberId;
       let roleType: any = null;
       if ((this.mtCode === 'RT') || (this.mtCode === 'CS')) {
-        roleType = 'rt';
+        roleType = 'merchant';
       }
       if (this.mtCode === 'ASM') {
         roleType = 'asm';
@@ -109,7 +109,7 @@ export class UserRightComponent {
    // this.location.back();
   }
   handleChange(e: any): any {
-    this.activeTab = e.index; 
+    this.activeTab = e.index;
     this.getbank();
     this.getpg();
     this.getUserPrivileges();
@@ -161,7 +161,7 @@ export class UserRightComponent {
   }
 
   onSubmit(): void {
-    const passingData: any = []; 
+    const passingData: any = [];
     this.commonService.isLoader = true;
     const postData = {
       memberId: this.memberId,
@@ -213,9 +213,9 @@ export class UserRightComponent {
             this.accData.walletDrType=res.respData?.walletDrType;
             this.accData.wallateDrCharge=res.respData?.wallateDrCharge;
             this.accData.MemberName=res.respData?.memberName;
-            this.accData.MobileNo=res.respData?.mobileNo;  
+            this.accData.MobileNo=res.respData?.mobileNo;
             if (res.respData.userPriviledge) {
-              const featurePrivileges: any = JSON.parse(res.respData.userPriviledge);       
+              const featurePrivileges: any = JSON.parse(res.respData.userPriviledge);
               if (this.mtCode === 'AD' || this.mtCode === 'SA')
               {
                 this.featurePrivileges=this.featurePrivileges;
@@ -223,7 +223,7 @@ export class UserRightComponent {
                   featurePrivileges.forEach((elementTwo: any) => {
                     if (elementOne.key === elementTwo.key) {
                       elementOne.value = elementTwo.value;
-                    }                  
+                    }
                   });
                 });
               }
@@ -234,11 +234,11 @@ export class UserRightComponent {
                   featurePrivileges.forEach((elementTwo: any) => {
                     if (elementOne.key === elementTwo.key) {
                       elementOne.value = elementTwo.value;
-                    }                    
+                    }
                   });
                 });
               }
-            }        
+            }
           }
         },
         (err: any) => {
