@@ -1,10 +1,13 @@
-
 <div class="row m-1">
   <div class="col-lg-6">
-
-    <div class="card">
-      <div class="header bline">
-        <h5 class="card-title">DTH Bill Details</h5>
+    <div class="card" style="margin-top: 15px;">
+      <div class="row" style="margin: 0px;padding: 0px;border-bottom: 1px solid #8080804f;">
+        <div class="col-sm-6">
+          <div class="header" (click)="goBack()">DTH Bill Details</div>
+        </div>
+        <div class="col-sm-6 text-right">
+          <div class="header text-right" (click)="toggle()" title="Recent Bills Overview"><i class="fa fa-info info"></i></div>
+        </div>
       </div>
       <div class="body">
         <div class="payment-section" *ngIf="paymentSection">
@@ -13,9 +16,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label class="form-label">Operator<span class="required ml-1">*</span> </label>
-                  <ng-select [items]="boardList" placeholder="Select Operator" bindLabel="name" bindValue="id"
-                    name="board" [(ngModel)]="utilityModal.board" #board="ngModel"
-                    [ngClass]="{ 'is-invalid': utilityForm.submitted && board.invalid }" required>
+                  <ng-select [items]="boardList" placeholder="Select Operator" bindLabel="name" bindValue="id" name="board" [(ngModel)]="utilityModal.board" #board="ngModel" [ngClass]="{ 'is-invalid': utilityForm.submitted && board.invalid }" required>
                   </ng-select>
                   <div *ngIf="utilityForm.submitted && board.invalid" class="invalid-feedback">
                     <div *ngIf="board.errors">Operator is required.</div>
@@ -25,9 +26,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label class="form-label">Customer ID<span class="required ml-1">*</span></label>
-                  <input type="text" appRtNumberOnly class="form-control" name="caNumber"
-                    [(ngModel)]="utilityModal.caNumber" placeholder="Customer ID" #caNumber="ngModel"
-                    [ngClass]="{ 'is-invalid': utilityForm.submitted && caNumber.invalid }" required>
+                  <input type="text" appRtNumberOnly class="form-control" name="caNumber" [(ngModel)]="utilityModal.caNumber" placeholder="Customer ID" #caNumber="ngModel" [ngClass]="{ 'is-invalid': utilityForm.submitted && caNumber.invalid }" required>
                   <div *ngIf="utilityForm.submitted && caNumber.invalid" class="invalid-feedback">
                     <div *ngIf="caNumber.errors">Customer ID is required.</div>
                   </div>
@@ -36,9 +35,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label class="form-label">Mobile Number<span class="required ml-1">*</span></label>
-                  <input type="text" OnlyNumber maxlength="10" minlength="10" class="form-control"
-                    placeholder="Mobile Number" name="mobileNumber" [(ngModel)]="utilityModal.mobileNumber"
-                    #mobileNumber="ngModel" pattern="[1-9]{1}[0-9]{9}"
+                  <input type="text" OnlyNumber maxlength="10" minlength="10" class="form-control" placeholder="Mobile Number" name="mobileNumber" [(ngModel)]="utilityModal.mobileNumber" #mobileNumber="ngModel" pattern="[1-9]{1}[0-9]{9}"
                     [ngClass]="{ 'is-invalid': utilityForm.submitted && mobileNumber.invalid }" required>
                   <div *ngIf="utilityForm.submitted && mobileNumber.invalid" class="invalid-feedback">
                     <div *ngIf="mobileNumber.errors">Mobile number is required.</div>
@@ -48,9 +45,7 @@
               <div class="col-sm-12" *ngIf="utilityModal.board=='4'?true:false">
                 <div class="form-group">
                   <label class="form-label">Bill Unit<span class="required ml-1">*</span></label>
-                  <input type="number" class="form-control" placeholder="Bill Unit" name="unit"
-                    [(ngModel)]="utilityModal.unit" #unit="ngModel"
-                    [ngClass]="{ 'is-invalid': utilityForm.submitted && unit.invalid }" required>
+                  <input type="number" class="form-control" placeholder="Bill Unit" name="unit" [(ngModel)]="utilityModal.unit" #unit="ngModel" [ngClass]="{ 'is-invalid': utilityForm.submitted && unit.invalid }" required>
                   <div *ngIf="utilityForm.submitted && unit.invalid" class="invalid-feedback">
                     <div *ngIf="unit.errors">Bill Unit is required.</div>
                   </div>
@@ -67,17 +62,15 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-6">
-    <div class="card">
+  <div class="col-lg-6" *ngIf="displayDTH">
+    <div class="card" style="margin-top: 15px;">
       <div class="header bline">
         <h5 class="card-title">Recent Bills Overview</h5>
       </div>
       <div class="body">
-        <p-table class="table-rt" #dt [value]="billList" [rowHover]="true" [rows]="100" [showCurrentPageReport]="false"
-          [rowsPerPageOptions]="[10,20,50]" [paginator]="false"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
-          [globalFilterFields]="['trasaction_date','beneficiary_acc','Operator']">
-  
+        <p-table class="table-rt" #dt [value]="billList" [rowHover]="true" [rows]="100" [showCurrentPageReport]="false" [rowsPerPageOptions]="[10,20,50]" [paginator]="false" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [filterDelay]="0" [globalFilterFields]="['trasaction_date','beneficiary_acc','Operator']">
+
           <ng-template pTemplate="header">
             <tr>
               <th>S.R.</th>
@@ -89,13 +82,13 @@
               <th pSortableColumn="beneficiary_acc">
                 <div class="p-d-flex p-jc-between p-ai-center">
                   CA Number
-  
+
                 </div>
               </th>
               <th pSortableColumn="Operator">
                 <div class="p-d-flex p-jc-between p-ai-center">
                   Operator
-  
+
                 </div>
               </th>
               <th pSortableColumn="amount">
@@ -138,6 +131,3 @@
     </div>
   </div>
 </div>
-
-
-
