@@ -36,19 +36,19 @@ export class ExcelService {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('DataSheet', {views:[{state: 'frozen', xSplit: 0, ySplit:1}]});
     worksheet.autoFilter = 'A1:'+shortRange;
-  
+
     const headerRow = worksheet.addRow(header);
     // Cell Style : Fill and Border
     headerRow.eachCell((cell, number) => {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        //fgColor: { argb: 'FFCCFFE5' },      
-       // bgColor: { argb: '1a4f71' }
+        //fgColor: { argb: 'FFCCFFE5' },
+       // bgColor: { argb: '540fa2' }
       };
       cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
     });
-  
+
     //const usersJson: any[] = Array.of(json);
 
     worksheet.addRows(json);
@@ -60,7 +60,7 @@ export class ExcelService {
     //   pattern: 'solid',
     //   fgColor: { argb: 'FFCCFFE5' }
     // };
-  
+
    // footerRow.getCell(1).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
     //Merge Cells
    // worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
@@ -73,18 +73,18 @@ export class ExcelService {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('DataSheet', {views:[{state: 'frozen', xSplit: 0, ySplit:1}]});
     worksheet.autoFilter = 'A1:'+shortRange;
-  
+
     const headerRow = worksheet.addRow(header);
     // Cell Style : Fill and Border
     headerRow.eachCell((cell, number) => {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-       // fgColor: { argb: '1a4f71' },      
+       // fgColor: { argb: '540fa2' },
         //bgColor: { argb: 'fffff' }
       };
     });
-  
+
     //const usersJson: any[] = Array.of(json);
 
     worksheet.addRows(json);
@@ -96,7 +96,7 @@ export class ExcelService {
     //   pattern: 'solid',
     //   fgColor: { argb: 'FFCCFFE5' }
     // };
-  
+
     //footerRow.getCell(1).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
     //Merge Cells
     // worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);

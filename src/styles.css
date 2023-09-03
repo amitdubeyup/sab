@@ -88,7 +88,7 @@
 }
 
 .table-rt .p-datatable .p-datatable-thead>tr>th {
-  background: #1a4f71;
+  background: #540fa2;
   color: #fff;
   padding: 6px !important;
   font-weight: 700 !important;
@@ -323,7 +323,7 @@ button.p-datepicker-trigger {
 }
 
 .customer-badge.status-proposal {
-  background-color: #1a4f71;
+  background-color: #540fa2;
   color: #110f0f
 }
 
@@ -340,7 +340,7 @@ button.p-datepicker-trigger {
 
 .p-paginator {
   justify-content: right !important;
-  background-color: #1a4f71;
+  background-color: #540fa2;
 }
 
 .p-datatable-header {
@@ -528,7 +528,7 @@ button.p-datepicker-trigger {
 
 .testimonial4 blockquote {
   background: #fff4ff none repeat scroll 0 0;
-  border: 3px solid #1a4f71;
+  border: 3px solid #540fa2;
   color: #777;
   line-height: 20px;
   padding: 2px;
@@ -552,7 +552,7 @@ button.p-datepicker-trigger {
 }
 
 .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-  background: #1a4f71;
+  background: #540fa2;
   ;
   color: #fff;
 }
@@ -565,7 +565,7 @@ button.p-datepicker-trigger {
 }
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  background-color: #380e47;
+  background-color: #540fa2;
   color: #fff;
 }
 
@@ -658,16 +658,15 @@ button.p-datepicker-trigger {
 }
 
 .p-tabview-nav-content {
-  background-color: #1a4f71;
+  background-color: #540fa2;
 }
 
 .btn-primary {
-  /* background: #1a4f71; */
-  background: #112256;
+  background: #540fa2;
 }
 
 .testimonial4 blockquote.warning::after {
-  border-color: #1a4f71 transparent transparent transparent;
+  border-color: #540fa2 transparent transparent transparent;
 }
 
 .testimonial4 blockquote::after {
@@ -698,7 +697,7 @@ button.p-datepicker-trigger {
 }
 
 .block-header h2 {
-  color: #1a4f71;
+  color: #540fa2;
   font-weight: bold;
 }
 

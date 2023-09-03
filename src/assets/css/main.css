@@ -3403,7 +3403,7 @@ html.fullscreen-bg #wrapper {
     {
         display: inline-block;
     }
-    
+
 }
 
 .navbar-fixed-top .navbar-btn {
@@ -3878,7 +3878,7 @@ html.fullscreen-bg #wrapper {
 
 .sidebar-nav {
     margin: 0 2px;
- 
+
 }
 
 .sidebar-nav ul {
@@ -4273,7 +4273,6 @@ label {
     background-color: #fff;
     font-size: 14px;
     height: auto;
-    border-left: 5px solid;
 }
 
 .form-control:focus {

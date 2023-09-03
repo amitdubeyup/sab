@@ -19,38 +19,38 @@
     color: #7020BF;
   }
   .fa-pencil-alt {
-    color: #1a4f71 !important;
+    color: #540fa2 !important;
     font-size: 15px;
     margin-left: 5px;
   }
-  
+
   .p-selectable-row td {
     padding: 10px !important;
   }
-  
+
   input[type=checkbox], input[type=radio] {
     width: 15px;
     height: 15px;
   }
-  
+
   .form-check-inline {
     margin-left: 10px;
   }
-  
+
   .form-check-inline label {
     margin-bottom: 0px;
     margin-left: 5px;
   }
-  
+
   .active-tr {
     box-shadow: 0px 5px 15px 5px #a6d5fa;
     z-index: 9999;
   }
-  
+
   .active-tr, .active-tr td {
     background-color: #ebf2fa;
   }
-  
+
   .disabled-tr, .disabled-tr td {
     background-color: #fff;
     z-index: 0;
@@ -59,49 +59,49 @@
     margin: 0px;
       background-color: #D5E9FF;
       border-radius: 15px;
-      border: 2px solid #1a4f71;
+      border: 2px solid #540fa2;
       position: absolute;
       top: 83px;
       width: 100%;
   }
-  table.beneficiary-table tbody tr th{font-size: 14px; font-weight: bold;border-top: 1px solid #1a4f71;}
+  table.beneficiary-table tbody tr th{font-size: 14px; font-weight: bold;border-top: 1px solid #540fa2;}
   table.beneficiary-table tbody tr th:nth-child(2), table.beneficiary-table tbody tr th:nth-child(5){color: #f00;}
   .beneficiary-table td {
-    color: #1a4f71;
+    color: #540fa2;
   font-size: 14px;
   font-weight: 600;
   }
-  
-  
-  
+
+
+
   .mt-4, .my-4 {
     margin-top: 1.5rem!important;
     margin-bottom: 1.5rem !important;
     background: transparent;
   }
-  
+
   .transaction-table .primary {
-    background-color: #1a4f71;
+    background-color: #540fa2;
   }
-  
+
   .submit-button {
     margin-top: 10px;
     margin-left: 10px;
     min-width: 75px;
     margin-bottom: 10px;
   }
-  
+
   .mpin-table label, .mpin-table input {
     margin: 10px 0px;
   }
-  
+
   .mpin-table .head {
-    background-color: #1a4f71;
+    background-color: #540fa2;
     color: #fff;
     padding: 10px;
     margin-bottom: 20px;
   }
-  
+
   .amount-table table tr:nth-child(2) th, .amount-table table tr.tfoot td{background:#F0F4F7;}
   .amount-table table {
     background-color: #fff;
@@ -109,29 +109,29 @@
     border:1px solid #DEE2E6;
     border-collapse: collapse;
     box-shadow: 0px 3px 12px #00000029;
-  
-  
+
+
   }
   .amount-table table tr td, .amount-table table tr th{border:1px solid #DEE2E6;}
   .confirmation-table table {
     background-color: #fff;
     margin: 0px;
   }
-  
+
   .mpin-table {
     margin: 0px;
     background: #fff;
     border: 1px solid #707070;
     box-shadow: 0px 3px 12px #00000029;
   }
-  
+
   .mpin-table .col-12 {
     margin: 0px;
     padding: 0px;
   }
-  
+
   .primary {
-    background-color: #1a4f71;
+    background-color: #540fa2;
     color: #fff;
     font-weight: 400;
   }
@@ -146,31 +146,31 @@
     font-size: 18px;
     font-weight: bold;
   }
-  .price-text-center span{color: #1a4f71;}
+  .price-text-center span{color: #540fa2;}
   .pos-relative{position: relative;}
   .payment-confirmation {
     margin: 0px;
     padding: 0px;
     background: #fff;
   }
-  
+
   .payment-confirmation {
     margin: 30px 0px 20px 0px;
     padding: 0px;
   }
-  
+
   .payment-header {
-    background-color: #1a4f71;
+    background-color: #540fa2;
     color: #fff;
     width: 100%;
     padding: 10px;
   }
-  
+
   .payment-header-row {
     margin: 0px;
     padding: 0px;
   }
-  
+
   .payment-logo {
     margin: 0px;
     padding: 0px;
@@ -179,13 +179,13 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .header-logo {
     width: 70px;
     height: auto;
     border-radius: 5px;
   }
-  
+
   .payment-text {
     margin: 0px;
     padding: 0px;
@@ -194,28 +194,28 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .payment-table {
     margin: 0px;
     padding: 0px;
     margin-top: 30px;
   }
-  
+
   .address-header {
     margin: 0px;
     padding: 0px;
   }
-  
+
   .address-header-row {
     margin: 0px;
     padding: 0px;
     background: #fff;
   }
-  
+
   .address-header-row div {
     padding: 10px;
   }
-  
+
   .payment-table th, .payment-table td {
     padding: 15px 30px;
   }
@@ -224,7 +224,7 @@
     margin: 0px;
     background-color: #D5E9FF;
     border-radius: 0px;
-    border: 2px solid #1a4f71;
+    border: 2px solid #540fa2;
     position: relative;
     top: 10px;
     width: 100%;
@@ -243,4 +243,3 @@
      pointer-events: none!important;
      color: black!important;
   }
-  

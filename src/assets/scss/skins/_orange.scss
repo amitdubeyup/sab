@@ -1,12 +1,12 @@
 ﻿$white: #ffffff;
-$orange-dark: #380e47 !default;
+$orange-dark: #540fa2 !default;
 $orange-darklight: #6f7b7d;
 $orange-light: #e8e8e8;
 $orange-primary: #feb800 !default;
 $orange-secondary: #1a79ee !default;
 
 $ct-series-colors: (
-	a: #380e47,
+	a: #540fa2,
 	b: #feb800,
 	c: #ffd974,
 	d: #e4dbc2,
@@ -17,7 +17,7 @@ $ct-series-colors: (
 .theme-orange{
 
     ::selection {
-        color: $white; 
+        color: $white;
         background: $orange-primary;
     }
     .page-loader-wrapper{
@@ -33,7 +33,7 @@ $ct-series-colors: (
         .icon-menu i{
             color: $white;
         }
-    }    
+    }
     .sidebar-nav .metismenu{
         >li{
             &.active>a{
@@ -51,7 +51,7 @@ $ct-series-colors: (
         a{
             color: $orange-dark;
         }
-        
+
         a:hover,
         a:focus{
             background: $orange-primary;
@@ -76,9 +76,9 @@ $ct-series-colors: (
         .user-account{
             color: $orange-dark;
             .user_div{
-                border-color: $orange-light; 
+                border-color: $orange-light;
                 .user-photo{
-                    border-color: $orange-primary; 
+                    border-color: $orange-primary;
                 }
             }
             .dropdown-menu{
@@ -91,13 +91,13 @@ $ct-series-colors: (
                             color: $orange-primary;
                         }
                     }
-                }                
+                }
             }
         }
     }
     .fancy-checkbox {
         input[type="checkbox"] {
-    
+
             &:checked + span:before {
                 background: $orange-primary;
                 border-color: $orange-primary;
@@ -107,11 +107,11 @@ $ct-series-colors: (
     .chat-widget {
         li {
             &.right {
-                
+
                 .chat-info {
                     background: $orange-primary;
                     color: $white;
-    
+
                     &:before{
                         border-left: 10px solid $orange-primary;
                     }
@@ -122,7 +122,7 @@ $ct-series-colors: (
     .right_chat li a:hover{
         .media-object {
             border-color: $orange-primary;
-        }        
+        }
     }
     .fc .fc-view-container .fc-view.fc-basic-view>table>thead tr th.fc-widget-header{
         background: $orange-primary;
@@ -172,8 +172,8 @@ $ct-series-colors: (
                 stroke: $series-color;
             }
 
-            .ct-area, 
-            .ct-slice-donut-solid, 
+            .ct-area,
+            .ct-slice-donut-solid,
             .ct-slice-pie,
             .ct-bar {
                 fill: $series-color;

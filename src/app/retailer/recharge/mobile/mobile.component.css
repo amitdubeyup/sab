@@ -19,7 +19,7 @@
 }
 
 .utility-sub-heading {
-  color: #380e47;
+  color: #540fa2;
   margin-left: 10px;
 }
 
@@ -56,7 +56,7 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
   position: absolute;
   right: 15px;
   top: 0px;
-  color: #380e47;
+  color: #540fa2;
   font-size: 0.7rem;
   cursor: pointer;
 }
@@ -75,7 +75,7 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
 .recharge-2 {
   font-size: 1.5rem;
   font-weight: 500;
-  color: #380e47;
+  color: #540fa2;
   margin-top: 5px;
   text-align: left;
 }
@@ -117,7 +117,7 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
 .recharge-9 {
   font-size: 1.5rem;
   font-weight: 500;
-  color: #380e47;
+  color: #540fa2;
   margin-top: 5px;
   text-align: right;
 }
@@ -132,7 +132,7 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
 .switch-button-label-span {
   color: rgb(255, 255, 255);
   /* text-shadow:
-   -0.5px -0.5px 0 #000,  
+   -0.5px -0.5px 0 #000,
    0.5px -0.5px 0 #000,
    -0.5px 0.5px 0 #000,
    0.5px 0.5px 0 #000; */
@@ -149,7 +149,7 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
   padding-right: 120px;
   position: relative;
   /* text-shadow:
-   -0.5px -0.5px 0 #000,  
+   -0.5px -0.5px 0 #000,
    0.5px -0.5px 0 #000,
    -0.5px 0.5px 0 #000,
    0.5px 0.5px 0 #000; */
@@ -194,7 +194,7 @@ input[type="file"], input[type="number"], input[type="text"], input[type="tel"] 
 }
 .switch-button-checkbox + .switch-button-label:before {
   content: "";
-  background: #380e47;
+  background: #540fa2;
   height: 100%;
   width: 100%;
   position: absolute;

@@ -1,69 +1,69 @@
  <nav class="navbar navbar-fixed-top">
-    <div class="container-fluid">        
+    <div class="container-fluid">
         <div class="navbar-left">
             <div class="navbar-btn">
                 <a href="javascript:void(0)" (click)="openlink('/rt/dashboard')">
-                <img src="assets/images/logo.png" alt="Logo" class="img-fluid logo hidden-lg">    
-                <img src="assets/images/favicon01.png" alt="Logo" class="img-fluid logo mobile-show">      
+                <img src="assets/images/logo.png" alt="Logo" class="img-fluid logo hidden-lg">
+                <img src="assets/images/favicon.png" alt="Logo" class="img-fluid logo mobile-show">
                </a>
-               
+
             </div>
             <a href="javascript:void(0);" (click)="onmenu();" class="icon-menu btn-toggle-fullwidth pr-2 f-24"><i class="icon-list"></i></a>
-            <ul class="nav navbar-nav hidden-lg mobile-show logo-pading"> 
-                <li> <a href="javascript:void(0);" (click)="onmenumobile();" class="btn-toggle-offcanvas"><i class="icon-list"></i></a></li>         
+            <ul class="nav navbar-nav hidden-lg mobile-show logo-pading">
+                <li> <a href="javascript:void(0);" (click)="onmenumobile();" class="btn-toggle-offcanvas"><i class="icon-list"></i></a></li>
             </ul>
-            <!-- <ul class="nav navbar-nav hidden-xs"> 
+            <!-- <ul class="nav navbar-nav hidden-xs">
                 <li>
-                    <div class="top-container text-white">			
+                    <div class="top-container text-white">
                         <img src="assets/images/149071.png" class="img-fluid profile-image" width="70">
                         <div class="ml-3">
                             <h5 class="name">{{commonService.userPram?.companyName}}</h5>
                             <p class="mail">{{commonService.userPram?.userType+''+commonService.userPram?.id}} | {{commonService.userPram?.rmn}}</p>
                         </div>
                     </div>
-                </li>                                   
+                </li>
             </ul> -->
-           
-               
+
+
         </div>
-        <div class="navbar-right">                      
-            <div id="navbar-menu ">              
-                <ul class="nav navbar-nav"> 
+        <div class="navbar-right">
+            <div id="navbar-menu ">
+                <ul class="nav navbar-nav">
                     <li>
-                        <div class="top-container">		
+                        <div class="top-container">
                             <div class="ml-3 card-border">
                                 <h5 class="name text-center">Distributor</h5>
                                 <p class="mail m-b-0">{{commonService.asmData?.dsMemberName}} - {{commonService.asmData?.dsMobileNo}}</p>
                             </div>
                         </div>
-                    </li>  
+                    </li>
                     <li (click)="commonService.fetchWalletDetails()">
-                        <div class="top-container">		
+                        <div class="top-container">
                             <div class="ml-3 card-border">
                                 <h5 class="name">Wallet:  &#8377; {{pramwallet?.walleT_BALANCE ?pramwallet?.walleT_BALANCE.toFixed(2) : 0}}</h5>
                                 <p class="mail m-b-0">AEPS: &#8377; {{pramwallet?.aepsBalance ?pramwallet?.aepsBalance.toFixed(2) : 0}}</p>
                             </div>
                         </div>
-                    </li> 
+                    </li>
                      <li>
-                    <div class="top-container text-white">			
+                    <div class="top-container text-white">
                         <img src="assets/images/149071.png" class="img-fluid profile-image" width="50">
                         <div class="ml-3">
                             <h5 class="name">{{commonService.userPram?.companyName}}</h5>
                             <p class="mail">{{commonService.userPram?.userType+''+commonService.userPram?.id}} | {{commonService.userPram?.rmn}}</p>
                         </div>
                     </div>
-                </li>    
+                </li>
 
 
 
 
 
-                                     
+
                 </ul>
-                <ul class="nav navbar-nav hidden-xs"> 
+                <ul class="nav navbar-nav hidden-xs">
                     <li><a href="javascript:void(0)" class="icon-menu" (click)="commonService.logout()"><i class="icon-power"></i></a></li>
-                </ul>                
+                </ul>
             </div>
         </div>
 
@@ -75,8 +75,8 @@
         <a href="javascript:void(0)"><img src="assets/images/sambhav_pay_logo2.png"  alt="Logo" class="img-fluid logo"></a>
         <button type="button" (click)="onmenuclose();" class="btn-toggle-offcanvas btn btn-sm btn-default float-right {{activeMainmobile==true?'btn-toggle-mobile':''}}"><i class="lnr lnr-menu fa fa-chevron-circle-left"></i></button>
     </div>
-    <div class="sidebar-scroll">     
-        <nav id="left-sidebar-nav" class="sidebar-nav">            
+    <div class="sidebar-scroll">
+        <nav id="left-sidebar-nav" class="sidebar-nav">
             <ul id="main-menu" class="metismenu">
                 <li class="active"><a  href="javascript:void(0)" (click)="openlink('/rt/dashboard')"><i class="icon-home"></i><span>Dashboard</span></a></li>
                 <li><a href="javascript:void(0)" (click)="openlink('/rt/business_summary')"><i class="icon-calendar"></i><span>Bussiness Summary</span></a></li>
@@ -84,56 +84,56 @@
                     <a href="javascript:void(0)" (click)="openMenu()" ><i class="icon-globe"></i><span>Transaction</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-down"></i></span></a>
                     <ul *ngIf="activeMainMenu">
                         <li><a href="javascript:void(0)" (click)="openlink('/rt/transaction-list')">Money Transaction</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/transaction-list/recharge-utility')">Recharge/Utility</a></li> 
+                        <li><a href="javascript:void(0)" (click)="openlink('/rt/transaction-list/recharge-utility')">Recharge/Utility</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:void(0)" (click)="openlink('/rt/account-list')" ><i class="icon-notebook"></i><span>Account Statement</span></a>
-  
-                </li>               
+
+                </li>
 
                 <li>
                     <a href="javascript:void(0)" (click)="openMenu4()" ><i class="icon-globe"></i><span>AEPS Report</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-down"></i></span></a>
                     <ul *ngIf="activeMainMenu4">
                         <li><a href="javascript:void(0)" (click)="openlink('rt/aeps-report')">Transaction</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/aeps-report/statement')">Statement</a></li> 
+                        <li><a href="javascript:void(0)" (click)="openlink('/rt/aeps-report/statement')">Statement</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:void(0)" (click)="openMenu2()" ><i class="icon-globe"></i><span>Money Request</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-down"></i></span></a>
                     <ul *ngIf="activeMainMenu2">
                         <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request/newrequest')">New Request</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request')">Request Pending</a></li> 
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request')">All Request</a></li> 
+                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request')">Request Pending</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request')">All Request</a></li>
                     </ul>
                 </li>
-                <li><a href="javascript:void(0)" (click)="openlink('/rt/pendingrefund')" ><i class="fa fa-refresh"></i><span>Refund Pending</span></a></li> 
+                <li><a href="javascript:void(0)" (click)="openlink('/rt/pendingrefund')" ><i class="fa fa-refresh"></i><span>Refund Pending</span></a></li>
                 <li>
                     <a href="javascript:void(0)" (click)="openMenu2()" ><i class="icon-settings"></i><span>Setting</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-down"></i></span></a>
                     <ul *ngIf="activeMainMenu2">
                         <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request/newrequest')">BC Certificate</a></li>
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request')">Eazy Deposit Slip</a></li> 
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/profile')">Profile</a></li> 
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/setting/passwordchange')">Reset Password</a></li> 
-                        <li><a href="javascript:void(0)" (click)="openlink('/rt/setting/mpinchange')">Reset MPIN</a></li> 
-                        <li><a href="javascript:void(0)" (click)="commonService.logout()">LogOut</a></li> 
+                        <li><a href="javascript:void(0)" (click)="openlink('/rt/money-request')">Eazy Deposit Slip</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/rt/profile')">Profile</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/rt/setting/passwordchange')">Reset Password</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/rt/setting/mpinchange')">Reset MPIN</a></li>
+                        <li><a href="javascript:void(0)" (click)="commonService.logout()">LogOut</a></li>
                         <li>
                             <div class="card text-white bg-info text-center">
                                 <div class="card-body">
                                     <h5 class="card-title">Distributor</h5>
                                     <p class="card-text"><strong> {{commonService.asmData?.dsMemberName}}</strong></p>
-                                    <p class="card-text">{{commonService.asmData?.dsMobileNo}}</p>                            
+                                    <p class="card-text">{{commonService.asmData?.dsMobileNo}}</p>
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </li>
-               
+
                 <li>
-                    
+
                 </li>
             </ul>
-        </nav>   
+        </nav>
     </div>
 </div>
 
@@ -149,7 +149,7 @@
           <div class="dot"></div>
           <div class="dot"></div>
           <div class="dot"></div>
-        <div class="loading"></div> 
-      </div>       
+        <div class="loading"></div>
+      </div>
     </div>
   </div>
