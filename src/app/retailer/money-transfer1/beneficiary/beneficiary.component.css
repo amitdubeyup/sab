@@ -6,7 +6,7 @@
     margin: 5PX;
   }
 
-  
+
 .search {
     padding: 5px 10px !important;
   }
@@ -16,7 +16,7 @@
     font-size: 15px;
     margin-left: 5px;
   }
-  
+
   .p-selectable-row td {
     padding: 12px !important;
   }
@@ -34,16 +34,16 @@
     scrollbar-width: thin;
     min-height: 200px;
   }
-  
+
   .form-check-inline {
     margin-left: 10px;
   }
-  
+
   .form-check-inline label {
     margin-bottom: 0px;
     margin-left: 5px;
   }
-  
+
   .add-import {
     display: flex;
     flex-direction: row;
@@ -64,17 +64,17 @@
     color: #fff;
     margin-right: 5px;
   }
-  
+
   .trnfer {
     margin-top: 5px;
     margin-left: 15px;
   }
-  
+
   .disabled-tr, .disabled-tr td {
     background-color: #fff;
     z-index: 0;
   }
-  
+
   .beneficiary-table-row {
     margin: 0px;
     background-color: #509ff97d;
@@ -83,103 +83,103 @@
     border: 2px solid #3f60cb;
     border-top: 0px;
   }
-  
+
   .beneficiary-table td {
     color: #5252cebf;
   }
-  
+
   .card-body.main-card {
     margin-bottom: 0px;
     background: #fff;
   }
-  
+
   .mt-4, .my-4 {
     margin-top: 1.5rem!important;
     margin-bottom: 1.5rem !important;
     background: transparent;
   }
-  
+
   .transaction-table .primary {
     background-color: #3f60cb;
   }
-  
+
   .submit-button {
     margin-top: 20px;
     margin-left: 10px;
     min-width: 75px;
   }
-  
+
   .mpin-table label, .mpin-table input {
     margin: 10px 0px;
   }
-  
+
   .mpin-table .head {
     background-color: #3f60cb;
     color: #fff;
     padding: 10px;
     margin-bottom: 20px;
   }
-  
+
   .transfer-amount-confirmation {
     margin: 0px;
   }
-  
+
   .amount-table {
     background-color: #fff;
     margin: 0px;
     padding: 0px;
   }
-  
+
   .confirmation-table {
     background-color: #fff;
     margin: 0px;
     padding: 0px;
   }
-  
+
   .mpin-table {
     margin: 0px;
   }
-  
+
   .mpin-table .col-12 {
     margin: 0px;
     padding: 0px;
   }
-  
+
   .primary {
     background-color: #3f60cb;
     color: #fff;
     font-weight: 400;
   }
-  
+
   .price-text-center {
     text-align: center;
     color: #5252cebf;
     padding: 15px 12px 6px 12px;
   }
-  
+
   .payment-confirmation {
     margin: 0px;
     padding: 0px;
     background: #fff;
   }
-  
+
   .payment-confirmation {
     margin: 30px 0px 20px 0px;
     padding: 0px;
   }
-  
+
   .payment-header {
     background-color: #3f60cb;
     color: #fff;
     width: 100%;
     padding: 10px;
   }
-  
+
   .payment-header-row {
     margin: 0px;
     padding: 0px;
   }
-  
+
   .payment-logo {
     margin: 0px;
     padding: 0px;
@@ -188,13 +188,13 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .header-logo {
     width: 70px;
     height: auto;
     border-radius: 5px;
   }
-  
+
   .payment-text {
     margin: 0px;
     padding: 0px;
@@ -203,28 +203,28 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .payment-table {
     margin: 0px;
     padding: 0px;
     margin-top: 30px;
   }
-  
+
   .address-header {
     margin: 0px;
     padding: 0px;
   }
-  
+
   .address-header-row {
     margin: 0px;
     padding: 0px;
     background: #fff;
   }
-  
+
   .address-header-row div {
     padding: 10px;
   }
-  
+
   .payment-table th, .payment-table td {
     padding: 15px 30px;
   }
@@ -237,7 +237,7 @@
     color: #fff;
     padding: 8px;
     border-radius:5px;
-  
+
   }
   :host ::ng-deep {
       /* Responsive */

@@ -1,23 +1,33 @@
-.nav-tab-money li a{border:1px solid #540fa2;font-size: 14px;}
-  .nav-tab-money li:nth-child(1) a{border-top-right-radius: 0px; border-bottom-right-radius: 0px;}
-  .nav-tab-money li:nth-child(2) a{border-top-left-radius: 0px; border-bottom-left-radius: 0px;}
-  .transfer-label {
-    margin: 10px 0px 20px;
-      border-top: 1px dashed #540fa2;
-      padding-top: 15px;
-  }
-  .error-msg {
-    text-align: center;
-    color: red;
-    font-size: 13px;
-    font-weight: 500;
-  }
-  .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-    color: #fff;
-    background-color: #540fa2;
-  }
-  .form-control {
-    font-size: 27px;
-    font-weight: bold;
-    color: #12ac12;
-  }
+.nav-tab-money li a {
+  border: 1px solid #540fa2;
+  font-size: 14px;
+}
+
+.nav-tab-money li:nth-child(1) a {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.nav-tab-money li:nth-child(2) a {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.transfer-label {
+  margin: 10px 0px 20px;
+  border-top: 1px dashed #540fa2;
+  padding-top: 15px;
+}
+
+.error-msg {
+  text-align: center;
+  color: red;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+  color: #fff;
+  background-color: #540fa2;
+}

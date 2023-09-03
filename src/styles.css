@@ -782,3 +782,9 @@ button.p-datepicker-trigger {
 .number {
   margin-top: 10px;
 }
+
+.table-rt .p-datatable .p-datatable-thead>tr>th,
+.table-rt .p-datatable .p-datatable-tbody>tr>td,
+.table-sales-invoice .p-datatable .p-datatable-tfoot>tr>td {
+  border-color: #000;
+}
