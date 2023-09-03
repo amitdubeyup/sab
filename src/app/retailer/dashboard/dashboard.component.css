@@ -1,32 +1,31 @@
-.user-account .user_div {
-    border: 1px solid #feb904;
-  }
-  .rt-ds
-  {
-    color: #000;
-    font-weight: 900;
-  }
-  .card .body
-  {
-   padding: 28px !important;
-  }
-  .img-size
-  {
-    height: 50px;
-  }
-  .user-account {
-    margin: 9px;
-  }
-  .col-sm-3{
-    padding-right: 4px !important;
-    padding-left: 4px !important;
-    max-width: 200px;
-  }
-  .col-sm-3 .col-lg-2{
-    padding-right: 4px !important;
-    padding-left: 4px !important;
-    max-width: 200px;
-  }
+.user-account .rt-ds {
+  color: #000;
+  font-weight: 900;
+}
+
+.card .body {
+  padding: 28px !important;
+}
+
+.img-size {
+  height: 50px;
+}
+
+.user-account {
+  margin: 9px;
+}
+
+.col-sm-3 {
+  padding-right: 4px !important;
+  padding-left: 4px !important;
+  max-width: 200px;
+}
+
+.col-sm-3 .col-lg-2 {
+  padding-right: 4px !important;
+  padding-left: 4px !important;
+  max-width: 200px;
+}
 
 .card {
   margin-bottom: 10px !important;

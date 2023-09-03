@@ -688,10 +688,6 @@ button.p-datepicker-trigger {
   color: #00aaff;
 }
 
-.user-account .user_div {
-  border: none !important;
-}
-
 .theme-purple .navbar-fixed-top1 {
   background: #799fb8;
 }
@@ -754,4 +750,21 @@ button.p-datepicker-trigger {
 
 .theme-purple .sidebar-nav .metismenu a {
   color: #fff;
+}
+
+.user_div {
+  background: #540fa2;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #fff !important;
+}
+
+.img-size {
+  width: 100% !important;
+  height: fit-content !important;
+}
+
+.rt-ds {
+  font-size: 10px !important;
 }
