@@ -1,0 +1,22 @@
+.wrapper-button-control .btn-theme-users{background: #fff; color: #000; font-size: 13px; padding: 5px 10px; border-radius: 50px; border: 1px solid #3f60cb;}
+.wrapper-button-control .btn-theme-users.active{background: #3f60cb; color: #fff;}
+.btn-theme-users {
+  margin-left: 5px;
+}
+#textright{
+  text-align:right;
+}
+
+@media only screen and (max-width: 768px) {
+#textright{
+  text-align:inherit;
+  margin-bottom:10px;
+}
+.header-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  font-weight: 600;
+  top: -10px;
+  position: relative;
+}
+}

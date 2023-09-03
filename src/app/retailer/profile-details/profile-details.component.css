@@ -1,0 +1,99 @@
+.content .card-body {
+  padding: 0px;
+  margin-top: 20px;
+}
+
+.card-section {
+  border: 1px solid #c0e6ec;
+}
+
+.details {
+  font-size: 1rem;
+  padding: 5px;
+  border: 1px solid #c0e6ec;
+}
+#cardbody{
+  height:300px;
+}
+.title {
+  text-align: left;
+  padding: 10px 10px 10px 10px;
+  background: #1a4f71;
+  color: #fff;
+}
+.p-header {
+  padding: 10px;
+  margin: 0px;
+}
+
+.p-footer {
+  margin: 0px;
+  background-color: #6fa4e0;
+  color: #fff;
+}
+
+.p-image {
+  text-align: center;
+}
+
+.p-image img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.p-shop {
+  text-align: center;
+  padding: 8px;
+  font-size: 0.9rem;
+}
+
+.p-id-name {
+  text-align: center;
+  font-size: 0.7rem;
+  padding: 4px;
+}
+
+.p-footer-box {
+  padding: 10px;
+}
+
+.count {
+  text-align: center;
+}
+
+.tag {
+  text-align: center;
+}
+
+.left-tag {
+  text-align: left;
+  padding: 10px 0px;
+}
+
+.right-tag {
+  text-align: right;
+  padding: 10px 0px;
+}
+
+.section {
+  border-bottom: 1px solid #c0e6ec;
+  margin: 0px;
+}
+
+.highlight {
+  background: #f8be45;
+  color: #fff;
+  padding: 1px 10px;
+  border-radius: 15px;
+}
+
+.download {
+  color: #f8be45;
+  cursor: pointer;
+}
+@media only screen and (max-width: 768px) {
+#cardbody{
+  height:auto;
+}
+}

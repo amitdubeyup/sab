@@ -1,0 +1,14 @@
+.card .body {
+    font-weight: 400;
+    color: #444;
+    padding: 20px;
+    min-height: 330px;
+  }
+  h6 {
+    font-weight: 700 !important; 
+    font-size: 12px !important;
+  }
+  label {
+    font-weight: 800 !important;
+    font-size: 12px !important;
+  }

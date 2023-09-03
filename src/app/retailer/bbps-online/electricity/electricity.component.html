@@ -1,0 +1,362 @@
+<app-retailer-layout></app-retailer-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Electricity</h2>
+      </div>
+
+    </div>
+  </div>
+  <div class="container-fluid">
+    <p-tabView [scrollable]="true">
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+          <span>Electricity</span>
+        </ng-template>
+        <div class="row m-1">
+          <div class="col-lg-6 ">
+            <div class="card">
+              <div class="cardhead card-header">
+                <h5 class="card-title">Electricity Bill Details</h5>
+              </div>
+              <div class="card-body">
+
+                <div class="payment-section" *ngIf="paymentSection">
+                  <form (ngSubmit)="utilityForm.form.valid && fetchBiller()" autocomplete="off" #utilityForm="ngForm">
+                    <div class="row common">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label class="form-label">Select Board<span class="required ml-1">*</span></label>
+                          <ng-select [items]="boardList" placeholder="Select Board" bindLabel="name" bindValue="id"
+                            name="board" [(ngModel)]="utilityModal.board" #board="ngModel"
+                            [ngClass]="{ 'is-invalid': utilityForm.submitted && board.invalid }" required>
+                          </ng-select>
+                          <div *ngIf="utilityForm.submitted && board.invalid" class="invalid-feedback">
+                            <div *ngIf="board.errors">Board is required.</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label class="form-label">CA Number<span class="required ml-1">*</span></label>
+                          <input type="text" appRtNumberOnly class="form-control" name="caNumber"
+                            [(ngModel)]="utilityModal.caNumber" placeholder="CA Number" #caNumber="ngModel"
+                            [ngClass]="{ 'is-invalid': utilityForm.submitted && caNumber.invalid }" required>
+                          <div *ngIf="utilityForm.submitted && caNumber.invalid" class="invalid-feedback">
+                            <div *ngIf="caNumber.errors">CA number is required.</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label class="form-label">Mobile Number<span class="required ml-1">*</span></label>
+                          <input type="text" OnlyNumber maxlength="10" minlength="10" class="form-control"
+                            placeholder="Mobile Number" name="mobileNumber" [(ngModel)]="utilityModal.mobileNumber"
+                            #mobileNumber="ngModel" pattern="[1-9]{1}[0-9]{9}"
+                            [ngClass]="{ 'is-invalid': utilityForm.submitted && mobileNumber.invalid }" required>
+                          <div *ngIf="utilityForm.submitted && mobileNumber.invalid" class="invalid-feedback">
+                            <div *ngIf="mobileNumber.errors">Mobile number is required.</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12" *ngIf="utilityModal.board=='4'?true:false">
+                        <div class="form-group">
+                          <label class="form-label">Bill Unit<span class="required ml-1">*</span></label>
+                          <input type="number" class="form-control" placeholder="Bill Unit" name="unit"
+                            [(ngModel)]="utilityModal.unit" #unit="ngModel"
+                            [ngClass]="{ 'is-invalid': utilityForm.submitted && unit.invalid }" required>
+                          <div *ngIf="utilityForm.submitted && unit.invalid" class="invalid-feedback">
+                            <div *ngIf="unit.errors">Bill Unit is required.</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-primary">
+                          Fetch Bill
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="payment-section" *ngIf="!paymentSection && billerDetails">
+                  <form (ngSubmit)="utilityPayForm.form.valid && payNow()" #utilityPayForm="ngForm">
+                    <div class="row common wrapper-recharge-amount" *ngIf="billerDetails?.isSuccess">
+                      <div class="col-sm-12">
+                        <div>
+                          <div class="biller-heading">Bill Details</div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="row mb-4">
+                          <div class="col-sm-4">
+                            <label> Operator Name:</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <h6>
+                              <a href="javascript:void(0)">{{getBoard(utilityModal.board)}}</a>
+                            </h6>
+                          </div>
+                        </div>
+                        <div class="row mb-4">
+                          <div class="col-sm-4">
+                            <label> Customer Name:</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <h6>
+                              <a href="javascript:void(0)">{{billerDetails?.customerName}}</a>
+                            </h6>
+                          </div>
+                        </div>
+                        <div class="row mb-4">
+                          <div class="col-sm-4">
+                            <label> CA Number:</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <h6>
+                              <a href="javascript:void(0)">{{utilityModal.caNumber}}</a>
+                            </h6>
+                          </div>
+                        </div>
+                        <div class="row mb-4">
+                          <div class="col-sm-4">
+                            <label>Mobile Number:</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <h6>
+                              {{billerDetails?.tel}}
+                            </h6>
+                          </div>
+                        </div>
+                        <div class="row mb-4">
+                          <div class="col-sm-4">
+                            <label>Bill Number:</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <h6>
+                              <a href="javascript:void(0)">{{billerDetails?.billNumber}}</a>
+                            </h6>
+                          </div>
+                        </div>
+                        <div class="row mb-4">
+                          <div class="col-sm-4">
+                            <label>Bill Date:</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <h6>
+                              {{billerDetails?.billdate}}
+                            </h6>
+                          </div>
+                        </div>
+                        <div class="row mb-4">
+                          <div class="col-sm-4">
+                            <label>Bill Due Date:</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <h6>
+                              {{billerDetails?.duedate}}
+                            </h6>
+                          </div>
+                        </div>
+                        <div class="row mb-4">
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="form-label">Bill Amount(&#8377;)<sup>*</sup></label>
+                              <input type="number" class="form-control" name="paymentAmount"
+                                [(ngModel)]="utilityModal.paymentAmount" [readonly]="!activeTab">
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="form-label">Charge<sup>*</sup></label>
+                              <input type="text" disabled OnlyNumber autocomplete="off" class="form-control"
+                                name="chargeAmt" [(ngModel)]="chargeAmt">
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="form-label">Net Total<sup>*</sup></label>
+                              <input type="text" disabled OnlyNumber autocomplete="off" class="form-control"
+                                name="netTotal" [(ngModel)]="netTotal">
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="form-label">MPIN*<sup>*</sup></label>
+                              <input type="password" class="form-control" name="mPin" [(ngModel)]="utilityModal.mPin"
+                                #mPin="ngModel" [ngClass]="{ 'is-invalid': utilityPayForm.submitted && mPin.invalid }"
+                                required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row mb-4">
+                          <div class="col-sm-12 text-center">
+                            <button type="button" class="btn btn-primary" (click)="back()">Back</button>&nbsp;
+                            <button type="submit" [disabled]="commonService.isLoader" class="btn btn-primary">Make
+                              Payment</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="cardhead card-header">
+                <h5 class="card-title">Recent Bills Overview</h5>
+              </div>
+              <div class="card-body">
+                <p-table class="table-rt" #dt [value]="billList" [rowHover]="true" [rows]="100"
+                  [showCurrentPageReport]="false" [rowsPerPageOptions]="[10,20,50]" [paginator]="false"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+                  [globalFilterFields]="['trasaction_date','beneficiary_acc','Operator']">
+
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>S.R.</th>
+                      <th pSortableColumn="trasaction_date">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          Transaction Date
+                          <p-sortIcon field="trasaction_date"></p-sortIcon>
+                        </div>
+                      </th>
+                      <th pSortableColumn="beneficiary_acc">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          CA Number
+                          <p-sortIcon field="beneficiary_acc"></p-sortIcon>
+
+                        </div>
+                      </th>
+                      <th pSortableColumn="Operator">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          Operator
+                          <p-sortIcon field="Operator"></p-sortIcon>
+
+                        </div>
+                      </th>
+                      <th pSortableColumn="amount">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          Amount
+                          <p-sortIcon field="amount"></p-sortIcon>
+                        </div>
+                      </th>
+                      <th pSortableColumn="status">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          Status
+                          <p-sortIcon field="status"></p-sortIcon>
+                        </div>
+                      </th>
+                      <th>#</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                    <tr class="p-selectable-row">
+                      <td>{{i+1}}.</td>
+                      <td>
+                        {{cp.trasaction_date| date: 'MM/dd/yyyy hh:mm aa'}}
+                      </td>
+                      <td>
+                        {{cp.beneficiary_acc}}
+                      </td>
+                      <td>{{cp.Operator}}</td>
+                      <td>
+                        {{cp.amount | currency: 'INR': true: '1.2-2'}}
+                      </td>
+                      <td>{{cp.status}}</td>
+                      <td><i (click)="printReceipt(cp.txn_id)" class="fa fa-print" aria-hidden="true"></i></td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="7">No records found.</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+          <span>Gas</span>
+        </ng-template>
+        <app-gas></app-gas>
+      </p-tabPanel>
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+          <span>Water</span>
+        </ng-template>
+        <app-water></app-water>
+      </p-tabPanel>
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+          <span style="display:block ruby; white-space: nowrap;">Life Insurance</span>
+        </ng-template>
+
+        <app-lic></app-lic>
+
+      </p-tabPanel>
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+          <span>Insurance</span>
+        </ng-template>
+        <app-insurance></app-insurance>
+      </p-tabPanel>
+      
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+          <span>Landline</span>
+        </ng-template>
+        <app-landline></app-landline>
+      </p-tabPanel>
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+          <span>Broadband</span>
+        </ng-template>
+        <app-broadband></app-broadband>
+      </p-tabPanel>
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+          <span style="display:block ruby; white-space: nowrap;">LPG Booking</span>
+        </ng-template>
+        <app-gas-cylinder></app-gas-cylinder>
+      </p-tabPanel>
+      <!-- <p-tabPanel>
+          <ng-template pTemplate="header">
+            <i class="pi-book"></i>
+            <span style="display:block ruby; white-space: nowrap;">Part Payment</span>
+          </ng-template>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+            est laborum.
+          </p>
+        </p-tabPanel> -->
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+          <span>Fastag</span>
+        </ng-template>
+        <app-fastag></app-fastag>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
+<

@@ -1,0 +1,17 @@
+.card-body {
+    padding: 1em;
+  }
+  
+  .utility-heading {
+    display: inline-block;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+
+  .utility-sub-heading {
+    color: #3f60cb;
+    margin-left: 10px;
+  }
+  

@@ -1,0 +1,183 @@
+
+<app-retailer-layout></app-retailer-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Profile Details</h2>
+      </div>
+    </div>
+  </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-5">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card-section">
+                  <div class="title">Personal Information</div>
+                  <div class="profile">
+                    <div class="row p-header">
+                      <div class="col-sm-12">
+                        <div class="p-image">
+                          <img [src]="getFilePath(profileData?.retailerInformation?.profilepic)" alt="Profile Pic" />
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="p-shop" style="text-transform: uppercase;">
+                          {{profileData?.CompanyName}}
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="p-id-name" style="text-transform: uppercase;">
+                          {{profileData?.UserCode}} | {{profileData?.Name}}
+                        </div>
+                      </div>
+                    </div>                     
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="card-section">
+                  <div class="title">Outlet Information</div>
+                  <div class="information">
+                    <table class="table">
+                      <tr><td>Mobile</td><td>{{profileData?.retailerInformation?.Mobile}}</td></tr>
+                      <tr><td>Email</td><td>{{profileData?.retailerInformation?.Email}}</td></tr>
+                      <tr><td>DOB</td><td>{{profileData?.retailerInformation?.DOB}}</td></tr>
+                      <tr><td>Address</td><td>{{profileData?.retailerInformation?.Address}}</td></tr>
+                      <tr><td>State</td><td> {{profileData?.retailerInformation?.CityState}}</td></tr>
+                      <tr><td>PIN Code</td><td>{{profileData?.retailerInformation?.PinCode}}</td></tr>
+                      <tr><td>Status</td><td> {{profileData?.outletInformation?.Status=='A'?'Active':'DeActive'}}</td></tr>
+                      <tr><td>Outlet Name</td><td>{{profileData?.outletInformation?.OutletName}}</td></tr>
+                      <tr><td>Outlet Type</td><td>{{profileData?.outletInformation?.OutletType}}</td></tr>
+                      <tr><td>Distributor</td><td>{{profileData?.outletInformation?.DistributorName}}</td></tr>
+                      <tr><td>Address</td><td>{{profileData?.outletInformation?.DistributorAddress}}</td></tr>
+                     
+                    </table>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-7">
+            
+              <div class="card-section">
+                <div class="title">Money Transfer Charges</div>
+                <p-table class="table-home" #dmtChargesTable [value]="dmtChargesList" dataKey="id" [rowHover]="true"
+                  [rows]="200" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,1200]"
+                  [paginator]="false"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+                  [globalFilterFields]="['wallet', 'amount','remark','date','status']">                     
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>#</th>
+                      <th>Type</th>                         
+                      <th>Commission</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                    <tr class="p-selectable-row">
+                      <td>{{i+1}}.</td>
+                      <td>{{cp?.ApiName}}</td>                          
+                      <td>{{cp?.RtComm}}</td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="5">No records found.</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+              <div class="card-section">
+                <div class="title">Recharge Charges</div>
+                <p-table class="table-home" #utilityChargesTable [value]="utilityChargesList" dataKey="id"
+                  [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                   [paginator]="false"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+                  [globalFilterFields]="['wallet', 'amount','remark','date','status']">                    
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>#</th>
+                      <th>Type</th>                         
+                      <th>Commission</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                    <tr class="p-selectable-row">
+                      <td>{{i+1}}.</td>
+                      <td>{{cp?.ApiName}}</td>                          
+                      <td>{{cp?.RtComm}}</td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="5">No records found.</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+              <div class="card-section">
+                <div class="title">BBPS Charges</div>
+                <p-table class="table-home" #bbpsListTbl [value]="bbpsList" dataKey="id"
+                  [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                   [paginator]="false"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+                  [globalFilterFields]="['wallet', 'amount','remark','date','status']">                    
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>#</th>
+                      <th>Type</th>                         
+                      <th>Commission</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                    <tr class="p-selectable-row">
+                      <td>{{i+1}}.</td>
+                      <td>{{cp?.ApiName}}</td>                          
+                      <td>{{cp?.RtComm}}</td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="5">No records found.</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+              <div class="card-section">
+                <div class="title">AEPS Charges</div>
+                <p-table class="table-home" #aepsListTbl [value]="aepsList" dataKey="id"
+                  [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                  [paginator]="false"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+                  [globalFilterFields]="['wallet', 'amount','remark','date','status']">                    
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>#</th>
+                      <th>Type</th>                         
+                      <th>Commission</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                    <tr class="p-selectable-row">
+                      <td>{{i+1}}.</td>
+                      <td>{{cp?.ApiName}}</td>                          
+                      <td>{{cp?.RtComm}}</td>
+
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="5">No records found.</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+

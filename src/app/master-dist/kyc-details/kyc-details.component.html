@@ -1,0 +1,383 @@
+<app-md-layout></app-md-layout>
+<div  id="main-content">
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Member KYC Details</h4>
+        <h6>Distributor / KYC Details</h6>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Member KYC Details</h5>
+        <div class="row">
+          <div class="col-sm-12 col-xl-12">
+            <form id="kyc-form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" name="form" pFocusTrap
+              autocomplete="off">
+              <div class="modal-body">
+                <div class="row border-button">
+                  <div class="col-xl-6 form-field">
+                    <label>Full Name</label>
+                    <input type="text" disabled class="form-control" name="fullName" [(ngModel)]="kycDetail.fullName"
+                      #fullName="ngModel" required [ngClass]="{ 'is-invalid': f.submitted && fullName.invalid }" />
+                    <div *ngIf="f.submitted && fullName.invalid" class="invalid-feedback">
+                      <div *ngIf="fullName.errors"> Full Name is required</div>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Email</label>
+                    <input type="text" disabled class="form-control" name="email" [(ngModel)]="kycDetail.email" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Mobile Number</label>
+                    <input type="text" class="form-control" disabled name="mobileNumber"
+                      [(ngModel)]="kycDetail.mobileNumber" #mobileNumber="ngModel" required
+                      [ngClass]="{ 'is-invalid': f.submitted && mobileNumber.invalid }" />
+                    <div *ngIf="f.submitted && mobileNumber.invalid" class="invalid-feedback">
+                      <div *ngIf="mobileNumber.errors"> Mobile Number is required</div>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Shop Name</label>
+                    <input type="text" disabled class="form-control" name="shopName" [(ngModel)]="kycDetail.shopName"
+                      #shopName="ngModel" required [ngClass]="{ 'is-invalid': f.submitted && shopName.invalid }" />
+                    <div *ngIf="f.submitted && shopName.invalid" class="invalid-feedback">
+                      <div *ngIf="shopName.errors">Shop Name is required</div>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Shop Picture</label>
+                    <input type="file" accept="image/*" class="form-control file"
+                      (change)="onFormSubmitFileSave($event, 'shop')" />
+                    <input type="hidden" class="form-control" name="shopPicture" [(ngModel)]="kycDetail.shopPicture" />
+                  </div>
+                  <div class="col-xl-3 form-field">
+                    <label>DOB</label>
+                    <input type="date" class="form-control" name="dob" [(ngModel)]="kycDetail.dob" />
+                  </div>
+                  <div class="col-xl-3 form-field">
+                    <label>Agent (aeps) Code</label>
+                    <input type="text" class="form-control" name="agentCode" [(ngModel)]="kycDetail.agentCode" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Address Details</label>
+                    <textarea type="text" class="form-control" name="homeAddress" [(ngModel)]="kycDetail.homeAddress"
+                      #homeAddress="ngModel" required
+                      [ngClass]="{ 'is-invalid': f.submitted && homeAddress.invalid }"></textarea>
+
+                    <div *ngIf="f.submitted && homeAddress.invalid" class="invalid-feedback">
+                      <div *ngIf="homeAddress.errors">Address is required</div>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Shop/Office Address</label>
+                    <textarea type="text" class="form-control" name="shopAddress" [(ngModel)]="kycDetail.shopAddress"
+                      #shopAddress="ngModel" required
+                      [ngClass]="{ 'is-invalid': f.submitted && shopAddress.invalid }"></textarea>
+                    <div *ngIf="f.submitted && shopAddress.invalid" class="invalid-feedback">
+                      <div *ngIf="shopAddress.errors">Shop/Office Address is required</div>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>State</label>
+                    <ng-select [items]="stateList" bindLabel="name" bindValue="id" name="state"
+                      [(ngModel)]="kycDetail.state" #state="ngModel" required
+                      [ngClass]="{ 'is-invalid': f.submitted && state.invalid }">
+                    </ng-select>
+                    <div *ngIf="f.submitted && state.invalid" class="invalid-feedback">
+                      <div *ngIf="state.errors">State is required</div>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Pin Code</label>
+                    <input type="text" minlength="6" pattern="[0-9]*" maxlength="6" class="form-control" name="pinCode"
+                      [(ngModel)]="kycDetail.pinCode" #pinCode="ngModel" required
+                      [ngClass]="{ 'is-invalid': f.submitted && pinCode.invalid }" />
+                    <div *ngIf="f.submitted && pinCode.invalid" class="invalid-feedback">
+                      <div *ngIf="pinCode.errors">Pin Code is required</div>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Profile Picture</label>
+                    <input type="file" accept="image/*" class="form-control file"
+                      (change)="onFormSubmitFileSave($event, 'profile')" />
+                    <input type="hidden" class="form-control" name="profilePicture"
+                      [(ngModel)]="kycDetail.profilePicture" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>GST Number</label>
+                    <input type="text" class="form-control" disabled name="gstNumber"
+                      [(ngModel)]="kycDetail.gstNumber" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Pan Card</label>
+                    <input type="text" class="form-control" name="panCard" [(ngModel)]="kycDetail.panCard" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Pan Card Picture</label>
+                    <input type="file" accept="image/*" class="form-control file"
+                      (change)="onFormSubmitFileSave($event, 'PAN')" />
+                    <input type="hidden" class="form-control" name="panCardPicture"
+                      [(ngModel)]="kycDetail.panCardPicture" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Aadhar Card</label>
+                    <input type="text" class="form-control" name="aadharCard" [(ngModel)]="kycDetail.aadharCard" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Aadhar Card Front Picture</label>
+                    <input type="file" accept="image/*" class="form-control file"
+                      (change)="onFormSubmitFileSave($event, 'ADHARF')" />
+                    <input type="hidden" class="form-control" name="aadharCardFrontPicture"
+                      [(ngModel)]="kycDetail.aadharCardFrontPicture" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Aadhar Card Back Picture</label>
+                    <input type="file" accept="image/*" class="form-control file"
+                      (change)="onFormSubmitFileSave($event, 'ADHARB')" />
+                    <input type="hidden" class="form-control" name="aadharCardBackPicture"
+                      [(ngModel)]="kycDetail.aadharCardBackPicture" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Cheque Picture</label>
+                    <input type="file" class="form-control file" (change)="onFormSubmitFileSave($event, 'CHEQUE')" />
+                    <input type="hidden" class="form-control" name="chequePicture"
+                      [(ngModel)]="kycDetail.chequePicture" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Application Form Picture</label>
+                    <input type="file" accept="image/*" class="form-control file"
+                      (change)="onFormSubmitFileSave($event, 'APPLICATION')" />
+                    <input type="hidden" class="form-control" name="applicationFormPicture"
+                      [(ngModel)]="kycDetail.applicationFormPicture" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Amount</label>
+                    <input type="number" class="form-control" name="amount" [(ngModel)]="kycDetail.amount" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>Transaction ID</label>
+                    <input type="text" class="form-control" name="transactionId"
+                      [(ngModel)]="kycDetail.transactionId" />
+                  </div>
+                  <div class="col-xl-6 form-field">
+                    <label>KYC Status</label>
+                    <ng-select [items]="kycStatus" disabled bindLabel="name" bindValue="id" name="isStatus"
+                      [(ngModel)]="kycDetail.isStatus">
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <a href="javascript:void(0)" (click)="close()" class="btn btn-secondary waves-effect">
+                  Close
+                </a>
+                <button type="submit" class="btn btn-primary waves-effect">
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- <div id="wrapper">
+  <app-distributor-header></app-distributor-header>
+  <div class="content-page" [ngClass]="{'small-content': commonService?.collapseSideMenu, 'large-content': !commonService?.collapseSideMenu}">
+    <div class="container-fluid">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12 col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="header-title">Members KYC Detail</h4>
+                <div class="row">
+                  <div class="col-sm-12 col-xl-12">
+                    <form id="kyc-form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" name="form" pFocusTrap autocomplete="off">
+                      <div class="modal-body">
+                        <div class="row border-button">
+                          <div class="col-xl-6 form-field">
+                            <label>Full Name</label>
+                            <input type="text" disabled class="form-control" name="fullName"
+                              [(ngModel)]="kycDetail.fullName" #fullName="ngModel" required
+                              [ngClass]="{ 'is-invalid': f.submitted && fullName.invalid }"/>
+                              <div *ngIf="f.submitted && fullName.invalid" class="invalid-feedback">
+                                <div *ngIf="fullName.errors"> Full Name is required</div>
+                            </div>
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Email</label>
+                            <input type="text" disabled class="form-control" name="email" [(ngModel)]="kycDetail.email" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Mobile Number</label>
+                            <input type="text" class="form-control" disabled name="mobileNumber"
+                              [(ngModel)]="kycDetail.mobileNumber"  #mobileNumber="ngModel" required
+                              [ngClass]="{ 'is-invalid': f.submitted && mobileNumber.invalid }"/>
+                              <div *ngIf="f.submitted && mobileNumber.invalid" class="invalid-feedback">
+                                <div *ngIf="mobileNumber.errors"> Mobile Number is required</div>
+                            </div>
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Shop Name</label>
+                            <input type="text" disabled class="form-control" name="shopName"
+                              [(ngModel)]="kycDetail.shopName" #shopName="ngModel" required
+                              [ngClass]="{ 'is-invalid': f.submitted && shopName.invalid }"/>
+                              <div *ngIf="f.submitted && shopName.invalid" class="invalid-feedback">
+                                <div *ngIf="shopName.errors">Shop Name is required</div>
+                            </div>
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Shop Picture</label>
+                            <input type="file" accept="image/*" class="form-control file"
+                              (change)="onFormSubmitFileSave($event, 'shop')" />
+                            <input type="hidden" class="form-control" name="shopPicture"
+                              [(ngModel)]="kycDetail.shopPicture" />
+                          </div>
+                          <div class="col-xl-3 form-field">
+                            <label>DOB</label>
+                            <input type="date" class="form-control" name="dob"
+                              [(ngModel)]="kycDetail.dob" />
+                          </div>
+                          <div class="col-xl-3 form-field">
+                            <label>Agent (aeps) Code</label>
+                            <input type="text" class="form-control" name="agentCode"
+                              [(ngModel)]="kycDetail.agentCode" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Address Details</label>
+                            <textarea type="text" class="form-control" name="homeAddress"
+                              [(ngModel)]="kycDetail.homeAddress" #homeAddress="ngModel" required
+                              [ngClass]="{ 'is-invalid': f.submitted && homeAddress.invalid }"></textarea>
+
+                            <div *ngIf="f.submitted && homeAddress.invalid" class="invalid-feedback">
+                              <div *ngIf="homeAddress.errors">Address is required</div>
+                          </div>
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Shop/Office Address</label>
+                            <textarea type="text" class="form-control" name="shopAddress"
+                              [(ngModel)]="kycDetail.shopAddress" #shopAddress="ngModel" required
+                              [ngClass]="{ 'is-invalid': f.submitted && shopAddress.invalid }"></textarea>
+                              <div *ngIf="f.submitted && shopAddress.invalid" class="invalid-feedback">
+                                <div *ngIf="shopAddress.errors">Shop/Office Address is required</div>
+                            </div>
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>State</label>
+                            <ng-select [items]="stateList" bindLabel="name" bindValue="id" name="state"
+                              [(ngModel)]="kycDetail.state" #state="ngModel" required
+                              [ngClass]="{ 'is-invalid': f.submitted && state.invalid }">
+                            </ng-select>
+                            <div *ngIf="f.submitted && state.invalid" class="invalid-feedback">
+                              <div *ngIf="state.errors">State is required</div>
+                          </div>
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Pin Code</label>
+                            <input type="text" minlength="6"  pattern="[0-9]*" maxlength="6" class="form-control" name="pinCode"
+                              [(ngModel)]="kycDetail.pinCode" #pinCode="ngModel" required
+                              [ngClass]="{ 'is-invalid': f.submitted && pinCode.invalid }"/>
+                              <div *ngIf="f.submitted && pinCode.invalid" class="invalid-feedback">
+                                <div *ngIf="pinCode.errors">Pin Code is required</div>
+                            </div>
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Profile Picture</label>
+                            <input type="file" accept="image/*" class="form-control file"
+                            (change)="onFormSubmitFileSave($event, 'profile')" />
+                            <input type="hidden" class="form-control" name="profilePicture"
+                              [(ngModel)]="kycDetail.profilePicture" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>GST Number</label>
+                            <input type="text" class="form-control" disabled name="gstNumber"
+                              [(ngModel)]="kycDetail.gstNumber" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Pan Card</label>
+                            <input type="text" class="form-control" name="panCard"
+                              [(ngModel)]="kycDetail.panCard" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Pan Card Picture</label>
+                            <input type="file" accept="image/*" class="form-control file"
+                            (change)="onFormSubmitFileSave($event, 'PAN')" />
+                            <input type="hidden" class="form-control" name="panCardPicture"
+                              [(ngModel)]="kycDetail.panCardPicture" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Aadhar Card</label>
+                            <input type="text" class="form-control" name="aadharCard"
+                              [(ngModel)]="kycDetail.aadharCard" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Aadhar Card Front Picture</label>
+                            <input type="file" accept="image/*" class="form-control file"
+                            (change)="onFormSubmitFileSave($event, 'ADHARF')" />
+                            <input type="hidden" class="form-control" name="aadharCardFrontPicture"
+                              [(ngModel)]="kycDetail.aadharCardFrontPicture" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Aadhar Card Back Picture</label>
+                            <input type="file" accept="image/*" class="form-control file"
+                            (change)="onFormSubmitFileSave($event, 'ADHARB')" />
+                            <input type="hidden" class="form-control" name="aadharCardBackPicture"
+                              [(ngModel)]="kycDetail.aadharCardBackPicture" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Cheque Picture</label>
+                            <input type="file" class="form-control file"
+                            (change)="onFormSubmitFileSave($event, 'CHEQUE')" />
+                            <input type="hidden" class="form-control" name="chequePicture"
+                              [(ngModel)]="kycDetail.chequePicture" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Application Form Picture</label>
+                            <input type="file" accept="image/*" class="form-control file"
+                            (change)="onFormSubmitFileSave($event, 'APPLICATION')" />
+                            <input type="hidden" class="form-control" name="applicationFormPicture"
+                              [(ngModel)]="kycDetail.applicationFormPicture" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Amount</label>
+                            <input type="number" class="form-control" name="amount" [(ngModel)]="kycDetail.amount" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>Transaction ID</label>
+                            <input type="text" class="form-control" name="transactionId"
+                              [(ngModel)]="kycDetail.transactionId" />
+                          </div>
+                          <div class="col-xl-6 form-field">
+                            <label>KYC Status</label>
+                            <ng-select [items]="kycStatus" disabled bindLabel="name" bindValue="id" name="isStatus"
+                              [(ngModel)]="kycDetail.isStatus">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <a href="javascript:void(0)" (click)="close()" class="btn btn-secondary waves-effect" >
+                          Close
+                        </a>
+                        <button type="submit" class="btn btn-primary waves-effect" >
+                          Save
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="pageloader" *ngIf="isloder"></div> -->

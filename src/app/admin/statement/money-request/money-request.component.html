@@ -1,0 +1,369 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Money Request Statement</h2>
+      </div>
+      <div class="col-md-6 col-sm-12 text-right">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html"></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <p-table class="table-rt table-wrapper-commision" id="excel-table" #dt [value]="statementList" [rowHover]="true"
+    [rows]="100" [showCurrentPageReport]="true" [rowsPerPageOptions]="[100,250,500,750,1000,2000]"
+     [paginator]="true"
+    currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+    [globalFilterFields]="['txn_no','trasaction_date','mode_of_payment','status','beneficiary_name','ApiName','ReferenceNo','toNarration','narration','beneficiary_number','beneficiary_acc','bank','UserName']">
+    <ng-template pTemplate="caption">
+      <div class="row table-header">
+        <div class="col-md-3 col-sm-6 pb-1">
+          <ng-select [virtualScroll]="true" [items]="memberList" placeholder="User Type" bindLabel="desc"
+          bindValue="code" name="desc" [(ngModel)]="selectedMemberList" #ffff="ngModel">
+        </ng-select>
+        
+        </div>
+        <div class="col-md-3 col-sm-6 pb-1">
+          <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Select User" bindLabel="name"
+            bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+          </ng-select>
+        </div>
+        <div class="col-sm-2 pb-1">
+          <ng-select [items]="sharedMethodService.SearchType" placeholder="Type" bindLabel="name" bindValue="id"
+            name="searchTypes" [(ngModel)]="searchType">
+          </ng-select>
+        </div>
+        <div class="col-sm-2 pb-1">
+          <input class="form-control sizing-sm" [(ngModel)]="txnNo" type="text"
+            placeholder="{{searchType=='txn'?'Txn No':searchType=='acc'?'A/C No.':searchType=='send'?'Send By Mob. No.':searchType=='rcv'?'Recived Mob. No.':'Enter Txn'}}" />
+        </div>
+        <div class="col-md-2 col-sm-6 pb-1">
+          <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Status" bindLabel="name"
+            bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+          </ng-select>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+          <p-calendar class="p-calendar p-inputtext-sm" dateFormat="dd/mm/yy" [readonlyInput]="true" name="fromDt"
+            [(ngModel)]="fromDt" [maxDate]="minDate" placeholder="From Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <p-calendar class="p-calendar p-inputtext-sm" name="toDt" [readonlyInput]="true" [minDate]="fromDt"
+            [maxDate]="maxDate" dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+          <input pInputText class="form-control" type="text"
+            (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <button type="button" (click)="handleSearch(activeTab)"
+            class="btn btn-primary mt-1 mr-2 btn48">Search</button>
+          <button type="button" (click)="exportAsXLSX()" class="btn btn-default mt-1 btn48">Export</button>
+
+        </div>    
+      
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center ">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Transactions</h6>
+                <h5 class="text-success">{{statementList?.length}}</h5>
+
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Amount</h6>
+                <h5 class="text-success"> {{totalAmount | number : '1.2-2'}}</h5>
+
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Charge</h6>
+                <h5 class="text-success"> {{totalCharge | number : '1.2-2'}}</h5>
+
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Commission</h6>
+                <h5 class="text-success"> {{totalCommission | number : '1.2-2'}}</h5>
+
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Refund Pending</h6>
+                <h5 class="text-success">0</h5>
+
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Refunded</h6>
+                <h5 class="text-success">0</h5>
+
+              </blockquote>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
+    </ng-template>
+   
+    <ng-template pTemplate="header">
+      <tr>
+        <th>S#</th>
+        <th pSortableColumn="txn_no">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Transaction#
+            <p-sortIcon field="txn_no"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="trasaction_date">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Created Date
+          </div>
+        </th>
+        <th pSortableColumn="updatedOn">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Updated Date
+          </div>
+        </th>
+        <th pSortableColumn="beneficiary_number">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            <ng-container >
+              User
+            </ng-container>
+          </div>
+        </th>
+        <th pSortableColumn="beneficiary_number">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            <ng-container >
+              Number
+            </ng-container>
+          </div>
+        </th>
+        <th pSortableColumn="narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Oprator           
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Amount(CR)
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Amount(DR)
+          </div>
+        </th>
+        <th pSortableColumn="charge">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Charge
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Commission
+          </div>
+        </th>
+        <th pSortableColumn="service">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Product
+          </div>
+        </th>
+        <th pSortableColumn="service">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Mode
+          </div>
+        </th>        
+        <th pSortableColumn="utr" *ngIf="activeTab != 3">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            UTR
+          </div>
+        </th>
+        <th pSortableColumn="api_msg" *ngIf="activeTab != 3">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Ref No
+          </div>
+        </th>
+        <th pSortableColumn="api_msg" *ngIf="activeTab != 3">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Ret Txn No
+          </div>
+        </th>
+        <th pSortableColumn="status">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Status
+          </div>
+        </th>
+        <th>Response</th>
+        <th
+          *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3 || activeTab == 4  || activeTab == 12 || activeTab == 13 || activeTab == 17">
+        </th>
+        <th *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3 || activeTab == 12"></th>
+        <th *ngIf="activeTab == 1">Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cp let-i="rowIndex">
+      <tr class="p-selectable-row">
+        <td>
+          {{i+1}}
+        </td>
+        <td>
+          {{cp.txn_no}}
+        </td>
+        <td>
+          {{cp.trasaction_date| date: 'dd-MM-yyyy hh:mm:ss aa'}}
+        </td>
+        <td>
+          {{cp.updatedOn| date: 'dd-MM-yyyy hh:mm aa'}}
+        </td>
+        <td>
+          {{cp.UserName}}
+        </td>
+        <td>
+          <span class="p-column-title">
+            Number             
+          </span>
+          {{cp.beneficiary_acc }}
+        </td>
+        <td>
+          <span class="p-column-title">
+            Operator
+          </span>
+          <ng-container *ngIf="cp.DocType=='BBPS' || cp.DocType=='RECH'">
+            {{cp.Operator}}<br>              
+            {{cp.narration}}
+            </ng-container>     
+        </td>
+        <td class="credit-amount" [ngClass]="{'credit-amount': cp.amount>0}" class="net-earing">
+          {{cp.amount| number : '1.2-2'}}
+        </td>
+        <td class="debit-amount">
+          {{cp.amountDr| number : '1.2-2'}}
+        </td>
+        <td class="debit-amount">
+          {{cp.charge | number : '1.2-2'}}
+        </td>
+        <td class="debit-amount">
+          {{cp.rt_commission| number : '1.2-2'}}
+        </td>
+        <td>
+          {{cp.service}}
+        </td>
+        <td>{{cp.mode_of_payment }}</td>
+        <td >{{cp.utr}}</td>
+        <td>{{cp.ReferenceNo}}</td>
+        <td>{{cp.RtxnNo}}</td>
+        <td>{{cp.status}}</td>        
+        <td>{{cp.api_msg}}</td>
+        <td *ngIf="cp.DocType=='BBPS' || cp.DocType=='RECH'">
+          <button type="button" class="btn btn-primary" (click)="openForm(cp)">Edit</button> <br>
+          <button *ngIf="cp.status=='InProcess' || cp.status=='Pending'" type="button"(click)="checkPaysprintTxnStatus(cp)" class="btn btn-primary">Check Status</button>      
+        </td>
+        <td *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3 || activeTab == 12">
+          <button type="button" title="Refund"
+            *ngIf="cp.trasaction_type=='DR' && cp.status!='RefundCompleted' && userRight?.isTxnr"
+            class="btn btn-primary" (click)="onReverse(cp)"><i class="fas fa-undo"></i></button>
+        </td>
+        
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+        <td colspan="7" style="text-align: right;">
+          <strong>Total</strong>
+        </td>
+        <td>
+          {{totalAmount | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalAmountDr | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalCharge | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalCommission | number : '1.2-2'}}
+        </td>
+        <td *ngIf="activeTab != 0">
+        </td>
+        <td *ngIf="activeTab == 0">
+        </td>
+        <td *ngIf="activeTab != 3">
+        </td>
+        <td *ngIf="activeTab != 3">
+        </td>
+        <td></td>
+        <td *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3 || activeTab == 4"></td>
+        <td *ngIf="activeTab == 1"></td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="18">No records found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  </div>
+</div>
+
+<p-dialog header="EDIT STATUS" class="dailogbox" [baseZIndex]="10000" [style]="{'width': '30vw'}" [(visible)]="isModel">
+  <div class="update-form">
+    <form (ngSubmit)="serviceForm.form.valid && payNow()" #serviceForm="ngForm" name="serviceForm">
+      <div class="modal-body">
+        <div class="row border-button">
+          <div class="col-sm-12 form-group">
+            <label>Category</label>
+            <ng-select [items]="sharedMethodService.PaymentStatusEdit" placeholder="paymentStatus" bindLabel="name"
+              bindValue="id" name="paymentStatus" [(ngModel)]="serviceData.paymentStatus" #paymentStatus="ngModel"
+              required>
+            </ng-select>
+            <div *ngIf="serviceForm.submitted && paymentStatus.invalid" class="invalid-feedback">
+              <div *ngIf="paymentStatus.errors">Status is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="toggleModal()" type="button" class="btn btn-dark waves-effect">
+          Close
+        </button>
+        <button type="submit" class="btn btn-primary waves-effect">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

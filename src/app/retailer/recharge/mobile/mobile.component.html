@@ -1,0 +1,160 @@
+<app-retailer-layout></app-retailer-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Recharge</h2>
+      </div>
+      <div class="col-md-6 col-sm-12 text-right">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">Dashboard</li>
+          <li class="breadcrumb-item active">Recharge</li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+      <div class="container-fluid">
+        <p-tabView [scrollable]="false">
+          <p-tabPanel>
+              <ng-template pTemplate="header">
+                  <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+                  <span>Mobile Recharge</span>
+              </ng-template>
+              <div class="row m-1">
+                  <div class="col-lg-6">
+                    <div class="card">
+                      <div class="header bline"  (click)="goBack()">Mobile Recharge</div>
+                      <div class="body">               
+                     
+                          <div class="section-1" *ngIf="rechargeStage == 1">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <div class="switch-wrapper-div">
+                                  <div class="switch-button">
+                                    <input class="switch-button-checkbox" [(ngModel)]="rechargeType" name="rechargeType" type="checkbox">
+                                    <label class="switch-button-label" for=""><span class="switch-button-label-span">Prepaid</span></label>
+                                  </div>
+                                </div>                      
+                                <form (ngSubmit)="rechargeForm.form.valid && next()" autocomplete="off"  #rechargeForm="ngForm"
+                                 >
+                                  <div class="row">
+                                    <div class="col-sm-12">
+                                      <div class="form-group">
+                                        <label class="form-label">Mobile Number<span class="required ml-1">*</span></label>
+                                        <input type="text" class="form-control" name="mobile"
+                                          [(ngModel)]="rechargeModal.mobile" OnlyNumber maxlength="10"  minlength="10" placeholder="Mobile Number" #mobile="ngModel"
+                                          [ngClass]="{ 'is-invalid': rechargeForm.submitted && mobile.invalid }" required
+                                          >
+                                        <div *ngIf="rechargeForm.submitted && mobile.invalid" class="invalid-feedback">
+                                          <div *ngIf="mobile.errors">Mobile number is required.</div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                      <div class="form-group">
+                                        <label class="form-label">Operator<span class="required ml-1">*</span></label>
+                                        <ng-select appearance="outline" placeholder="Operator" [searchable]="true" [clearSearchOnAdd]="true" required
+                                          labelForId="operator" name="operator" [ngClass]="{ 'is-invalid': rechargeForm.submitted && operator.invalid }" [(ngModel)]="rechargeModal.operator"
+                                          #operator="ngModel" (change)="updateOperator($event)">
+                                          <ng-option *ngFor="let operator of operatorList; let i = index;"
+                                            [value]="operator.id">
+                                            <img [src]="operator.logo" width="30px" height="30px" />
+                                            <span class="operator-logo">{{operator.name}}</span>
+                                          </ng-option>
+                                        </ng-select>
+                                        <div *ngIf="rechargeForm.submitted && operator.invalid" class="invalid-feedback">
+                                          <div *ngIf="operator.errors">Operator is required.</div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                      <div class="form-group">
+                                        <label class="form-label">Circle<span class="required ml-1">*</span></label>
+                                        <ng-select [items]="circleList"  placeholder="circle" bindLabel="name" [ngClass]="{ 'is-invalid': rechargeForm.submitted && circle.invalid }" bindValue="id" name="circle"
+                                          [(ngModel)]="rechargeModal.circle" #circle="ngModel" required (change)="updateCircle($event)">
+                                        </ng-select>
+                                        <div *ngIf="rechargeForm.submitted && circle.invalid" class="invalid-feedback">
+                                          <div *ngIf="circle.errors">Circle is required.</div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-9">
+                                      <div class="form-group">
+                                        <label class="form-label">Amount<span class="required ml-1">*</span></label>
+                                 
+                                        <input type="text" class="form-control" name="amount"
+                                          [(ngModel)]="rechargeModal.amount" placeholder="Amount" #amount="ngModel"
+                                          [ngClass]="{ 'is-invalid': rechargeForm.submitted && amount.invalid }" required
+                                          (keyup)="updateAmount($event)">                                  
+                                        <div class="view-plan" *ngIf="displayPlan">View Plan</div>
+                                        <div *ngIf="rechargeForm.submitted && amount.invalid" class="invalid-feedback">
+                                          <div *ngIf="amount.errors">Amount is required.</div>
+                                        </div>
+                                      </div>
+                                      </div>
+                                      <div class="col-sm-3 pt-1">
+                                        <div class="form-group">                                
+                                          <button type="submit" class="btn btn-primary submit-button">GO</button>
+                                        </div>
+                                      </div>                 
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="section-2" *ngIf="rechargeStage == 2">
+                            <form (ngSubmit)="rechasubForm.form.valid && confirm()" autocomplete="off"  #rechasubForm="ngForm">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item">Mobile Number : {{rechargeModal?.mobile}}</li>
+                                  <li class="list-group-item">Operator :
+                                    <img [src]="rechargeModal?.operatorLogo" height="50" class="recharge-4" /> {{rechargeModal?.operatorName}}
+                                   </li>
+                                  <li class="list-group-item">Circle : {{rechargeModal?.circleName}}</li>
+                                  <li class="list-group-item">{{rechargeType ? 'Bill' : 'Recharge'}} Amount : &#8377; {{rechargeModal?.amount}}</li>
+                                  <li class="list-group-item">ENTER MPIN:    
+                                    <input type="password" class="form-control" name="mPin" [(ngModel)]="rechargeModal.mPin"
+                                    #mPin="ngModel" [ngClass]="{ 'is-invalid': rechasubForm.submitted && mPin.invalid }"
+                                    required></li>
+                              </ul>     
+                                           
+                              <div class="col-sm-12">
+                                <div class="row">
+                                  <div class="col-sm-12 final-confirm text-center">
+                                    <button class="btn btn-warning submit-button" (click)="back()">Back</button>
+                                    <button class="btn btn-primary submit-button" type="submit">Confirm</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                        </div>             
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-lg-6">
+                      <div class="card">
+                          <div class="header bline">
+                              <h2>Recent Bills Overview</h2>                                
+                          </div>
+                          <div class="body">
+                            
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </p-tabPanel>
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+                <i class="fa fa-lightbulb-o fa-6" aria-hidden="true"></i>
+                <span>DTH Recharge</span>
+            </ng-template>
+            <app-dth></app-dth>
+        </p-tabPanel>
+        </p-tabView>
+     
+      </div>
+    </div>

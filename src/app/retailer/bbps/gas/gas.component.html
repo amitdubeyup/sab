@@ -1,0 +1,244 @@
+<div class="row m-1">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="header bline">
+                <h2>Gas Bill Details</h2>   
+                <ul class="header-dropdown dropdown dropdown-animated scale-left">                                
+                    <li><img src="assets/images/Bharat_BillPay_logo.svg" height="40px" alt="BBPS"></li>
+                </ul>                             
+            </div>
+            <div class="body">
+                <div class="payment-section" *ngIf="paymentSection">
+                    <form (ngSubmit)="utilityForm.form.valid && fetchBiller()" autocomplete="off" #utilityForm="ngForm">
+                      <div class="row common">                          
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label class="form-label">Operator<span class="required ml-1">*</span> </label>
+                            <ng-select [items]="boardList" placeholder="Select Operator" bindLabel="name" bindValue="id" name="board"
+                              [(ngModel)]="utilityModal.board" #board="ngModel"
+                              [ngClass]="{ 'is-invalid': utilityForm.submitted && board.invalid }" required>
+                            </ng-select>
+                            <div *ngIf="utilityForm.submitted && board.invalid" class="invalid-feedback">
+                              <div *ngIf="board.errors">Operator is required.</div>
+                            </div>
+                          </div>
+                        </div>                       
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label class="form-label">Customer ID<span class="required ml-1">*</span></label>
+                            <input type="text"  appRtNumberOnly class="form-control" name="caNumber"
+                              [(ngModel)]="utilityModal.caNumber" placeholder="Customer ID" #caNumber="ngModel"
+                              [ngClass]="{ 'is-invalid': utilityForm.submitted && caNumber.invalid }" required>
+                            <div *ngIf="utilityForm.submitted && caNumber.invalid" class="invalid-feedback">
+                              <div *ngIf="caNumber.errors">Customer ID is required.</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label class="form-label">Mobile Number<span class="required ml-1">*</span></label>
+                            <input type="text" OnlyNumber maxlength="10" minlength="10" class="form-control" placeholder="Mobile Number" name="mobileNumber"
+                              [(ngModel)]="utilityModal.mobileNumber" #mobileNumber="ngModel"
+                              pattern="[1-9]{1}[0-9]{9}"
+                              [ngClass]="{ 'is-invalid': utilityForm.submitted && mobileNumber.invalid }" required>
+                            <div *ngIf="utilityForm.submitted && mobileNumber.invalid" class="invalid-feedback">
+                              <div *ngIf="mobileNumber.errors">Mobile number is required.</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-12" *ngIf="utilityModal.board=='4'?true:false">
+                          <div class="form-group">
+                            <label class="form-label">Bill Unit<span class="required ml-1">*</span></label>
+                            <input type="number" class="form-control" placeholder="Bill Unit" name="unit"
+                              [(ngModel)]="utilityModal.unit" #unit="ngModel"
+                              [ngClass]="{ 'is-invalid': utilityForm.submitted && unit.invalid }" required>
+                            <div *ngIf="utilityForm.submitted && unit.invalid" class="invalid-feedback">
+                              <div *ngIf="unit.errors">Bill Unit is required.</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-12 text-center">
+                          <button type="submit" class="btn btn-info btn-lg mt-2">
+                            Fetch Bill
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="payment-section" *ngIf="!paymentSection && billerDetails">
+                    <form (ngSubmit)="utilityPayForm.form.valid && payNow()" #utilityPayForm="ngForm">
+                      <div class="row common wrapper-recharge-amount" *ngIf="billerDetails?.isSuccess">                                      
+                        <div class="col-sm-12">
+                          <div class="row mb-2 border-bottom">
+                            <div class="col-sm-4">
+                              <label> Operator :</label>
+                            </div>
+                            <div class="col-sm-8">
+                              <h6>
+                                {{getBoard(utilityModal.board)}}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row mb-2 border-bottom">
+                            <div class="col-sm-4">
+                              <label>Customer Name:</label>
+                            </div>
+                            <div class="col-sm-8">
+                              <h6>
+                               {{billerDetails?.customerName}}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row mb-2 border-bottom">
+                            <div class="col-sm-4">
+                              <label> Customer ID:</label>
+                            </div>
+                            <div class="col-sm-8">
+                              <h6>
+                                {{utilityModal.caNumber}}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row mb-2 border-bottom">
+                            <div class="col-sm-4">
+                              <label>Mobile Number:</label>
+                            </div>
+                            <div class="col-sm-8">
+                              <h6>
+                                {{billerDetails?.tel}}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row mb-2 border-bottom">
+                            <div class="col-sm-4">
+                              <label>Bill Number:</label>
+                            </div>
+                            <div class="col-sm-8">
+                              <h6>
+                                {{billerDetails?.billNumber}}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row mb-2 border-bottom">
+                            <div class="col-sm-4">
+                              <label>Bill Date:</label>
+                            </div>
+                            <div class="col-sm-8">
+                              <h6>
+                                {{billerDetails?.billdate}}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row mb-2 border-bottom">
+                            <div class="col-sm-4">
+                              <label>Bill Due Date:</label>
+                            </div>
+                            <div class="col-sm-8">
+                              <h6>
+                                {{billerDetails?.duedate}}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row mb-2 border-bottom">  
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label">Bill Amount(&#8377;):<span class="required ml-1">*</span></label>
+                                    <input type="text" class="form-control" OnlyNumber name="paymentAmount"
+                                    [(ngModel)]="utilityModal.paymentAmount" [readonly]="!activeTab">
+                            </div>                                            
+                          </div>                                          
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label">MPIN<span class="required ml-1">*</span></label>
+                                    <input type="password" class="form-control" name="mPin" [(ngModel)]="utilityModal.mPin"
+                                    #mPin="ngModel" [ngClass]="{ 'is-invalid': utilityPayForm.submitted && mPin.invalid }"
+                                    required>
+                            </div>                                            
+                          </div>
+                          </div>                                       
+                          <div class="row">
+                            <div class="col-sm-12 text-center">
+                              <button type="button" class="btn btn-dark btn-lg"
+                                (click)="back()">Back</button>&nbsp;
+                              <button type="submit" [disabled]="commonService.isLoader" class="btn btn-primary btn-lg"> Process Payment</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="header bline">
+                <h2>Recent Bills Overview</h2>                                
+            </div>
+            <div class="body">
+                <p-table class="table-rt" #dt [value]="billList" [rowHover]="true"
+                [rows]="100" [showCurrentPageReport]="false" [rowsPerPageOptions]="[10,20,50]"
+                [paginator]="false"
+                currentPageReportTemplate="{first} - {last} of {totalRecords}"
+                [filterDelay]="0" [globalFilterFields]="['trasaction_date','beneficiary_acc','Operator']">
+              
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>S.R.</th>
+                    <th pSortableColumn="trasaction_date">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Transaction Date                                   
+                      </div>
+                    </th>
+                    <th pSortableColumn="beneficiary_acc">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        CA Number
+                        
+                      </div>
+                    </th>
+                    <th pSortableColumn="Operator">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Operator
+                        
+                      </div>
+                    </th>
+                    <th pSortableColumn="amount">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Amount
+                      </div>
+                    </th>
+                    <th pSortableColumn="status">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Status
+                      </div>
+                    </th>
+                    <th>#</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                  <tr class="p-selectable-row">
+                    <td>{{i+1}}.</td>
+                    <td>
+                      {{cp.trasaction_date| date: 'MM/dd/yyyy hh:mm aa'}}
+                    </td>
+                    <td>                              
+                      {{cp.beneficiary_acc}}
+                    </td>
+                    <td>{{cp.Operator}}</td>
+                    <td>
+                      {{cp.amount | currency: 'INR': true: '1.2-2'}}
+                    </td>
+                    <td>{{cp.status}}</td>
+                    <td><i  (click)="printReceipt(cp.txn_id)" class="fa fa-print" aria-hidden="true"></i></td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="7">No records found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+        </div>
+    </div>
+</div>

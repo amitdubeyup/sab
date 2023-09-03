@@ -1,0 +1,138 @@
+
+<nav class="navbar navbar-fixed-top">
+    <div class="container-fluid">        
+        <div class="navbar-left">
+            <div class="navbar-btn">
+                <a href="javascript:void(0)" (click)="openlink('/rt/dashboard')">
+                <img src="assets/images/logo.png" alt="Logo" class="img-fluid logo hidden-lg">    
+                <img src="assets/images/favicon01.png" alt="Logo" class="img-fluid logo mobile-show">      
+               </a>
+               
+            </div>
+            <a href="javascript:void(0);" (click)="onmenu();" class="btn btn-primary icon-menu btn-toggle-fullwidth pr-2 f-24"><i class="icon-list"></i></a>
+            <ul class="nav navbar-nav hidden-xs"> 
+                <li>
+                    <div class="top-container text-white">			
+                        <img src="assets/images/149071.png" class="img-fluid profile-image" width="70">
+                        <div class="ml-3">
+                            <h5 class="name">{{commonService.userPram?.companyName}}</h5>
+                            <p class="mail">{{commonService.userPram?.userType+''+commonService.userPram?.id}} | {{commonService.userPram?.rmn}}</p>
+                        </div>
+                    </div>
+                </li>                                   
+            </ul>
+            <ul class="nav navbar-nav hidden-lg mobile-show logo-pading"> 
+                <li> <a href="javascript:void(0);" (click)="onmenumobile();" class="btn btn-primary btn-toggle-offcanvas"><i class="icon-list"></i></a></li>         
+            </ul>
+               
+        </div>
+        <div class="navbar-right">                      
+            <div id="navbar-menu ">              
+                <ul class="nav navbar-nav">   
+                    <li (click)="commonService.fetchWalletDetails()">
+                        <div class="top-container text-white">			
+                            <img src="assets/images/wallet.png" class="img-fluid hidden-xs" width="70">
+                            <div class="ml-3">
+                                <h5 class="name">Main Bal :<span class="txt-bold"> {{pramwallet?.walleT_BALANCE ?pramwallet?.walleT_BALANCE.toFixed(2) : 0}}</span></h5>
+                                <p class="mail">Comm Bal: &#8377; {{pramwallet?.comm_bal ?pramwallet?.comm_bal.toFixed(2) : 0}}</p>
+                            </div>
+                        </div>
+                    </li>                  
+                </ul>
+                <ul class="nav navbar-nav hidden-lg">                    
+                    <li><a href="javascript:void(0)" class="icon-menu" (click)="commonService.logout()"><i class="icon-power"></i></a></li>
+                </ul>                
+            </div>
+        </div>
+
+    </div>
+</nav>
+<div id="left-sidebar" class="sidebar {{activeMainmobile==true?'sidebarleft':''}}">
+    <div class="navbar-brand">
+        <a href="index.html"><img src="assets/images/logo.png"  alt="Logo" class="img-fluid logo"></a>
+        <button type="button" (click)="onmenuclose();" class="btn-toggle-offcanvas btn btn-sm btn-default float-right {{activeMainmobile==true?'btn-toggle-mobile':''}}"><i class="lnr lnr-menu fa fa-chevron-circle-left"></i></button>
+    </div>
+    <div class="sidebar-scroll">     
+        <nav id="left-sidebar-nav" class="sidebar-nav">            
+            <ul id="main-menu" class="metismenu">
+                <li class="active"><a  href="javascript:void(0)" (click)="openlink('/ds/dashboard')"><i class="icon-home"></i><span>Dashboard</span></a></li>
+                <li><a href="javascript:void(0)" (click)="openlink('/ds/transaction-report/business-summary')"><i class="icon-calendar"></i><span>Bussiness Summary</span></a></li>
+                <li><a href="javascript:void(0)" (click)="openlink('/ds/user-details')"><i class="icon-calendar"></i><span>Retailer List</span></a></li>
+                <li>
+                    <a href="javascript:void(0)" (click)="openMenu1()" ><i class="icon-globe"></i><span>Manage Fund</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-double-right"></i></span></a>
+                    <ul *ngIf="activeMainMenu">
+                        <li><a href="javascript:void(0)" (click)="openlink('/ds/fund-manage')">Credit Money</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/ds/fund-manage/fundwithdrawal')">Withdraw Money</a></li> 
+                      
+                    </ul>
+                </li>
+                  <li>
+                    <a href="javascript:void(0)" (click)="openMenu2()" ><i class="icon-globe"></i><span>Money Request</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-double-right"></i></span></a>
+                    <ul *ngIf="activeMainMenu2">
+                        <li><a href="javascript:void(0)" (click)="openlink('/ds/money-request/newrequest')">New Request</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/ds/money-request')">Pending Request</a></li> 
+                        <li><a href="javascript:void(0)" (click)="openlink('/ds/money-request')">All Request</a></li> 
+                    </ul>
+                </li>
+                <li><a href="javascript:void(0)" (click)="openlink('/ds/account-statement')"><i class="icon-calendar"></i><span>Account Statement</span></a></li>
+                <li><a href="javascript:void(0)" (click)="openlink('/ds/account-statement/distcomm')"><i class="icon-calendar"></i><span>Commission Statement</span></a></li>
+                <li><a href="javascript:void(0)" (click)="openlink('/ds/transaction-report')"><i class="icon-calendar"></i><span>Transaction </span></a></li>
+                 <li>
+                    <a href="javascript:void(0)" (click)="openMenu1()" ><i class="icon-globe"></i><span>Retailer Report</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-double-right"></i></span></a>
+                    <ul *ngIf="activeMainMenu">
+                        <li><a href="javascript:void(0)" (click)="openlink('/ds/report/money-transaction')">Money Transaction</a></li>
+                        <li><a href="javascript:void(0)" (click)="openlink('/ds/report/recharge-utility')">Recharge/Utility</a></li> 
+                        <li><a href="javascript:void(0)" (click)="openlink('/ds/report/account-statement')">Account Statement</a></li> 
+                    </ul>
+                </li>            
+
+                <li>
+                    <a href="javascript:void(0)" (click)="openMenu2()" ><i class="icon-settings"></i><span>Setting</span><span class="arrow-right" style="float: right;text-align: right;"><i class="fa fa-angle-double-right"></i></span></a>
+                    <ul *ngIf="activeMainMenu2">
+                        <li><a href="javascript:void(0)">BC Certificate</a></li>
+                        <li><a href="javascript:void(0)">Eazy Deposit Slip</a></li> 
+                        <li><a href="javascript:void(0)">Profile</a></li> 
+                        <li><a href="javascript:void(0)" (click)="openlink('/ds/setting/passwordchange')">Reset Password</a></li> 
+                        <li><a href="javascript:void(0)" (click)="openlink('/ds/setting/mpinchange')">Reset MPIN</a></li>  
+                        <li><a href="javascript:void(0)" (click)="commonService.logout()">LogOut</a></li> 
+                        <li>
+                            <div class="card text-white bg-info text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Master Distributor</h5>
+                                    <p class="card-text"><strong> {{commonService.asmData?.dsMemberName}}</strong></p>
+                                    <p class="card-text">{{commonService.asmData?.dsMobileNo}}</p>                            
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+               
+                <li>
+                    <div class="card text-white bg-success text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Support</h5>
+                            <p class="card-text"><strong> {{commonService.asmData?.dsMemberName}}</strong></p>
+                            <p class="card-text">{{commonService.asmData?.dsMobileNo}}</p>                            
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>   
+    </div>
+</div> 
+<div class="page-loader-wrapper" *ngIf="commonService.isLoader">
+    <div class="loader">
+        <div class="m-t-30"><img src="assets/images/logo.png" width="100" height="40" alt="logo"></div>
+       <div id="loader">
+         <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        <div class="loading"></div> 
+      </div>       
+    </div>
+  </div>

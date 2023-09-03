@@ -1,0 +1,400 @@
+<app-md-layout></app-md-layout>
+<div  id="main-content">
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Personal Details</h4>
+        <h6>Dasboard / Personal Details</h6>
+      </div>
+      <!-- <div class="page-btn" (click)="exportAsXLSX()">
+        <a href="javascript:void(0)" class="btn btn-warning"><i class="fas fa-file-export"></i> Export
+        </a>
+      </div> -->
+    </div>
+
+    <p-tabView>
+      <p-tabPanel header="Personal Information">
+        <ng-container *ngTemplateOutlet="personalInformation"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="Utility Options">
+        <ng-container *ngTemplateOutlet="utilityOptions"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="Identity Details">
+        <ng-container *ngTemplateOutlet="identityDetails"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="Outlet Information">
+        <ng-container *ngTemplateOutlet="outletInformation"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="Retailer Information">
+        <ng-container *ngTemplateOutlet="retailerInformation"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="DMT Charges">
+        <ng-container *ngTemplateOutlet="dmtCharges"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="Recharge Charges">
+        <ng-container *ngTemplateOutlet="rechargeCharges"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="BBPS Charges">
+        <ng-container *ngTemplateOutlet="bbpsCharges"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="AEPS Charges">
+        <ng-container *ngTemplateOutlet="aepsCharges"></ng-container>
+      </p-tabPanel>
+    </p-tabView>
+
+    <ng-template #personalInformation>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <!-- <div class="card-header" style="padding-bottom: 0px; border-bottom: 1px solid #e8ebed;">
+              <h4 class="card-title">DMT Transaction</h4>
+            </div> -->
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <thead>
+                    <tr>
+                      <th class="card-title"><img class="profile-pic"
+                          [src]="getFilePath(profileData?.retailerInformation?.profilepic)" alt="Profile Pic" /></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Total Transaction</td>
+                      <td>{{profileData?.CompanyName}}</td>
+                    </tr>
+                    <tr>
+                      <td>Total Transaction Amount</td>
+                      <td>{{profileData?.UserCode}} | {{profileData?.Name}}</td>
+                    </tr>
+                    <tr>
+                      <td>Transactions</td>
+                      <td>{{profileData?.Transactions ? profileData?.Transactions : 0}}</td>
+                    </tr>
+                    <tr>
+                      <td>Amount</td>
+                      <td>{{profileData?.Amount ? profileData?.Amount : 0}}</td>
+                    </tr>
+                    <tr>
+                      <td>Balance</td>
+                      <td>{{profileData?.Balance ? profileData?.Balance : 0}}</td>
+                    </tr>
+                    <tr>
+                      <td>Total Refunded Transaction</td>
+                      <!-- <td>{{resBank?.dmt?.totalRefundTran}}</td> -->
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="profile">
+        <div class="row p-header">
+          <div class="col-sm-12">
+            <div class="p-image">
+              <img class="profile-pic" [src]="getFilePath(profileData?.retailerInformation?.profilepic)"
+                alt="Profile Pic" />
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="p-shop" style="text-transform: uppercase;">
+              {{profileData?.CompanyName}}
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="p-id-name" style="text-transform: uppercase;">
+              {{profileData?.UserCode}} | {{profileData?.Name}}
+            </div>
+          </div>
+        </div>
+        <div class="row p-footer">
+          <div class="col-sm-4 p-footer-box">
+            <div class="count">{{profileData?.Transactions ? profileData?.Transactions : 0}}</div>
+            <div class="tag">Transactions</div>
+          </div>
+          <div class="col-sm-4 p-footer-box">
+            <div class="count">{{profileData?.Amount ? profileData?.Amount : 0}}</div>
+            <div class="tag">Amount</div>
+          </div>
+          <div class="col-sm-4 p-footer-box">
+            <div class="count">{{profileData?.Balance ? profileData?.Balance : 0}}</div>
+            <div class="tag">Balance</div>
+          </div>
+        </div>
+      </div> -->
+    </ng-template>
+
+    <ng-template #utilityOptions>
+      <div class="information">
+        <div class="row section" *ngFor="let utility of utilityOptionList; let i = index;">
+          <div class="col-sm-8">
+            <div class="left-tag">{{utility?.key}}</div>
+          </div>
+          <div class="col-sm-4">
+            <div class="right-tag"><span class="highlight">{{utility?.value ? 'Yes' : 'No'}}</span></div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #identityDetails>
+      <div class="information">
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag"><strong>ID Name</strong></div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag"><strong>Download</strong></div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Pan Card</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag"><span class="download">[Download]</span></div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Aadhar Card</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag"><span class="download">[Download]</span></div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Pan Number</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag"><span class="download">[Download]</span></div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">GST Number</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag"><span class="download">[Download]</span></div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #outletInformation>
+      <div class="information">
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Status</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag"><span class="highlight">
+                {{profileData?.outletInformation?.Status=='A'?'Active':'In-Active'}}</span></div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Outlet Name</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag">{{profileData?.outletInformation?.OutletName}}</div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Outlet Type</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag">{{profileData?.outletInformation?.OutletType}}</div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Distributor</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag">{{profileData?.outletInformation?.DistributorName}}</div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Address</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag">{{profileData?.outletInformation?.DistributorAddress}}</div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #retailerInformation>
+      <div class="information">
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Mobile</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag">+91-{{profileData?.retailerInformation?.Mobile}}</div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Email</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag">{{profileData?.retailerInformation?.Email}}</div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">DOB</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag">{{profileData?.retailerInformation?.DOB}}</div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">Address</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag">{{profileData?.retailerInformation?.Address}}</div>
+          </div>
+        </div>
+        <div class="row section">
+          <div class="col-sm-4">
+            <div class="left-tag">State</div>
+          </div>
+          <div class="col-sm-8">
+            <div class="right-tag">
+              {{profileData?.retailerInformation?.CityState}}-{{profileData?.retailerInformation?.PinCode}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #dmtCharges>
+      <p-table class="table-rt table-home" #dmtChargesTable [value]="dmtChargesList" dataKey="id" [rowHover]="true"
+        [rows]="200" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,1200]" [paginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+        [globalFilterFields]="['wallet', 'amount','remark','date','status']">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>S.N.</th>
+            <th>Type</th>
+            <th>RT Commission</th>
+            <th>DS Commission</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cp let-i="rowIndex">
+          <tr class="p-selectable-row">
+            <td>{{i+1}}.</td>
+            <td>{{cp?.ApiName}}</td>
+            <td>{{cp?.RtComm}}</td>
+            <td>{{cp?.DistComm}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">No records found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
+
+    <ng-template #rechargeCharges>
+      <p-table class="table-rt table-home" #utilityChargesTable [value]="utilityChargesList" dataKey="id"
+        [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+        [paginator]="false" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0" [globalFilterFields]="['wallet', 'amount','remark','date','status']">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>S.N.</th>
+            <th>Type</th>
+            <th>RT Commission</th>
+            <th>DS Commission</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cp let-i="rowIndex">
+          <tr class="p-selectable-row">
+            <td>{{i+1}}.</td>
+            <td>{{cp?.ApiName}}</td>
+            <td>{{cp?.RtComm}}</td>
+            <td>{{cp?.DistComm}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">No records found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
+
+    <ng-template #bbpsCharges>
+      <p-table class="table-rt table-home" #bbpsListTbl [value]="bbpsList" dataKey="id" [rowHover]="true" [rows]="20"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]" [paginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+        [globalFilterFields]="['wallet', 'amount','remark','date','status']">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>S.N.</th>
+            <th>Type</th>
+            <th>RT Commission</th>
+            <th>DS Commission</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cp let-i="rowIndex">
+          <tr class="p-selectable-row">
+            <td>{{i+1}}.</td>
+            <td>{{cp?.ApiName}}</td>
+            <td>{{cp?.RtComm}}</td>
+            <td>{{cp?.DistComm}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">No records found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
+
+    <ng-template #aepsCharges>
+      <p-table class="table-rt table-home" #aepsListTbl [value]="aepsList" dataKey="id" [rowHover]="true" [rows]="20"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]" [paginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+        [globalFilterFields]="['wallet', 'amount','remark','date','status']">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>S.N.</th>
+            <th>Type</th>
+            <th>RT Commission</th>
+            <th>DS Commission</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cp let-i="rowIndex">
+          <tr class="p-selectable-row">
+            <td>{{i+1}}.</td>
+            <td>{{cp?.ApiName}}</td>
+            <td>{{cp?.RtComm}}</td>
+            <td>{{cp?.DistComm}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">No records found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
+
+  </div>
+</div>

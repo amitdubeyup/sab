@@ -1,0 +1,260 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>AePS TRANSACTION</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"></a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                  <div class="card card-body">
+                     <p-tabView (onChange)="handleChange($event)">
+                      <p-tabPanel header="Super AePS Transaction">
+                        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                      </p-tabPanel>
+                      <p-tabPanel header="Super AEPS Statement">
+                        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                      </p-tabPanel>
+                      <p-tabPanel header="Shine AePS2 Transaction">
+                        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                      </p-tabPanel>
+                      <p-tabPanel header="Shine AEPS2 Statement">
+                        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                      </p-tabPanel>        
+                    </p-tabView>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+
+  <ng-template #statementTemplate>
+    <p-table class="table-home table-wrapper-commision" #dt [value]="statementList" dataKey="remitterId" [rowHover]="true"
+      [rows]="50" [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,200,500]" [loading]="commonService.isLoader"
+      [paginator]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+      [globalFilterFields]="['TxnNo','utr','trasaction_date','narration','beneficiary_number','beneficiary_acc','bank']">
+      <ng-template pTemplate="caption">
+        <div class="row table-header">
+          <div class="col-md-3 col-sm-6 pb-1">
+            <ng-select [virtualScroll]="true" [items]="retList" placeholder="Select User" bindLabel="desc"
+            bindValue="code" name="desc" [(ngModel)]="retid" #ffff="ngModel">
+          </ng-select>
+          
+          </div>
+          <div class="col-md-2 col-sm-6 pb-1">
+            <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Status" bindLabel="name"
+              bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+            </ng-select>
+          </div>
+          <div class="col-md-2 text-right">
+            <p-calendar class="p-calendar" dateFormat="dd/mm/yy" [showIcon]="true" name="fromDt" [(ngModel)]="fromDt"
+              placeholder="From Date">
+            </p-calendar>
+          </div>
+          <div class="col-md-2 text-right">
+            <p-calendar class="p-calendar" name="toDt" [showIcon]="true" dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+            </p-calendar>
+          </div>
+          
+          <div class="col-md-2 text-right">
+            <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+            <input pInputText class="form-control" type="text"
+              (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <button type="button" (click)="handleSearch(activeTab)"
+              class="btn btn-outline-success mt-1 mr-2 btn48">Search</button>
+            <button type="button" (click)="handleSearch(activeTab)" class="btn btn-outline-dark mt-1 btn48">Export</button>
+    
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>S.R.</th>
+          <th pSortableColumn="txn_no">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Transaction#
+              <p-sortIcon field="txn_no"></p-sortIcon>
+              <p-columnFilter type="text" field="txn_no" display="menu" class="p-ml-auto">
+              </p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="trasaction_date">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Tran Date
+             </div>
+          </th>
+          <th pSortableColumn="updatedOn">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              UpdatedOn
+             </div>
+          </th>
+          <th pSortableColumn="beneficiary_number">
+            <div class="p-d-flex p-jc-between p-ai-center">
+                Name/Mobile  
+             </div>
+          </th>
+  
+          <th pSortableColumn="narration">
+            <div class="p-d-flex p-jc-between p-ai-center">
+                Customer No.
+            </div>
+          </th>
+          <th pSortableColumn="narration">
+            <div class="p-d-flex p-jc-between p-ai-center">
+                Aaddhar No.
+            </div>
+          </th>
+          <th pSortableColumn="narration">
+            <div class="p-d-flex p-jc-between p-ai-center">
+                Bank
+            </div>
+          </th>
+          <th pSortableColumn="narration">
+            <div class="p-d-flex p-jc-between p-ai-center">
+                Txn Mode
+            </div>
+          </th>
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Balance Amount
+             </div>
+          </th>    
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              CW Amount
+             </div>
+          </th> 
+          <th  pSortableColumn="utr" *ngIf="activeTab == 1">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Opening Balance
+             </div>
+          </th>     
+          <th pSortableColumn="utr" *ngIf="activeTab == 1">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Closing Balance
+             </div>
+          </th> 
+          <th pSortableColumn="utr" >
+            <div class="p-d-flex p-jc-between p-ai-center">
+              RRN
+             </div>
+          </th>   
+              
+          <th pSortableColumn="status">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Status
+             </div>
+          </th>
+         
+          <th pSortableColumn="api_msg" *ngIf="activeTab != 4">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Response
+             </div>
+          </th>   
+          <th></th>       
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cp let-i="rowIndex">
+        <tr class="p-selectable-row">
+          <td>
+            {{i+1}}.
+          </td>
+          <td>
+            {{cp.TxnNo}}
+          </td>
+          <td>
+            {{cp.TrasactionDate| date: 'dd-MM-yyyy hh:mm aa'}}
+          </td>
+          <td>
+            {{cp.UpdatedOn| date: 'dd-MM-yyyy hh:mm aa'}}
+          </td>
+          <td>
+            {{cp.Narration }}
+          </td>
+          <td>
+            {{cp.CustomerNumber}}
+           
+          </td>
+          <td>XXXXXXXX{{cp.AdharNumber}}</td>
+          <td> {{cp.Service}}</td>
+          <td> {{cp.TrasactionType}}</td>
+          <td>
+            {{cp.Trnamount | number : '1.2-2'}}
+          </td>
+          <td>
+            {{cp.CwAmount | number : '1.2-2'}}
+          </td>
+          <td *ngIf="activeTab==1">
+            {{cp.OpBalance | number : '1.2-2'}}
+          </td>
+          <td *ngIf="activeTab==1">
+            {{cp.ClBalance | number : '1.2-2'}}
+          </td>
+          <td>
+            {{cp.Utr}}
+          </td>
+        
+          <td class="text-center">{{cp.ApiStatus}} </td>
+          <td >{{cp.ApiMsg}}</td>
+          <td> <button  type="button" *ngIf="cp.ApiStatus=='Success'?false:true" class="btn btn-primary" (click)="openForm(cp)"><i  class="fas fa-edit" aria-hidden="true"></i></button> </td>
+          
+        </tr>
+      </ng-template>
+     
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="14">No records found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-template>
+  <p-dialog header="EDIT STATUS" class="dailogbox" [baseZIndex]="10000" [style]="{'width': '30vw'}"
+[(visible)]="isModel">
+<div class="update-form">
+  <form (ngSubmit)="serviceForm.form.valid && onsaveAdmin()" #serviceForm="ngForm" name="serviceForm">
+    <div class="modal-body">
+      <div class="row border-button">
+        <div class="col-sm-12 form-group">
+          <label>Category</label>
+          <ng-select [items]="sharedMethodService.PaymentStatusAeps" placeholder="paymentStatus" bindLabel="name" bindValue="id"
+          name="paymentStatus" [(ngModel)]="serviceData.serviceType" #paymentStatus="ngModel" required >
+         </ng-select>      
+          <div *ngIf="serviceForm.submitted && paymentStatus.invalid" class="invalid-feedback">
+            <div *ngIf="paymentStatus.errors">Status is required</div>
+          </div>
+        </div> 
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="form-label">Transaction Amount<sup>*</sup></label>
+            <input type="text"  OnlyNumber maxlength="20" placeholder="Transaction Amount" class="form-control" autocomplete="off" name="TransactionAmount"
+              [(ngModel)]="serviceData.TransactionAmount"  #TransactionAmount="ngModel"             
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && TransactionAmount.invalid }" required>
+            <div *ngIf="serviceForm.submitted && TransactionAmount.invalid" class="invalid-feedback">
+              <div *ngIf="TransactionAmount.errors">Transaction Amount is required.</div>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="toggleModal()" type="button" class="btn btn-dark waves-effect">
+        Close
+      </button>
+      <button type="submit" class="btn btn-primary waves-effect">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+</p-dialog>

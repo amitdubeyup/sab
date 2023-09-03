@@ -1,0 +1,283 @@
+<div id="global-loader" *ngIf="commonService.isLoader">
+  <div class="whirly-loader"> </div>
+</div>
+<app-distributor-layout></app-distributor-layout>
+<div  id="main-content">
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Advanced Payment Statement</h4>
+        <h6>Dasboard / Advanced Payment Statement</h6>
+      </div>
+      <div class="page-btn" (click)="exportAsXLSX()">
+        <a href="javascript:void(0)" class="btn btn-warning"><i class="fas fa-file-export"></i> Export</a>
+      </div>
+    </div>
+    <p-tabView (onChange)="handleChange($event)">
+      <p-tabPanel header="Wallet To Wallet">
+        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="Fund Request">
+        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="PG">
+        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+      </p-tabPanel>
+    </p-tabView>
+    <ng-template #statementTemplate>
+      <p-table styleClass="p-datatable-customers" class="table-rt table-wrapper-commision" #dt
+        [value]="statementList" dataKey="remitterId" [rowHover]="true" [rows]="50" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[50,100,200,500]" [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+        [globalFilterFields]="['txn_no','utr','mode_of_payment','trasaction_date','narration','beneficiary_number','beneficiary_acc','bank']">
+        <ng-template pTemplate="caption">
+          <div class="row table-header">
+            <div class="col-sm-6 col-md-1 pl-0 pr-0">
+              <ng-select [items]="sharedMethodService.SearchType" placeholder="Search Type" bindLabel="name"
+                bindValue="id" name="searchType" [(ngModel)]="searchType">
+              </ng-select>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <input class="form-control" [(ngModel)]="txnNo" type="text"
+                placeholder="{{searchType=='txn'?'Txn No':searchType=='acc'?'A/C No.':searchType=='send'?'Send By Mob. No.':searchType=='rcv'?'Recived Mob. No.':'Enter Txn'}}" />
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Status" bindLabel="name"
+                bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+              </ng-select>
+            </div>
+            <div class="col-md-2 col-sm-6 text-right">
+              <p-calendar class="p-calendar" dateFormat="dd/mm/yy" [showIcon]="true" name="fromDt" [(ngModel)]="fromDt"
+                placeholder="From Date">
+              </p-calendar>
+            </div>
+            <div class="col-md-2 col-sm-6 text-right">
+              <p-calendar class="p-calendar" name="toDt" [showIcon]="true" dateFormat="dd/mm/yy" [(ngModel)]="toDt"
+                placeholder="To Date">
+              </p-calendar>
+            </div>
+            <div class="col-md-1 col-sm-6">
+              <button type="button" (click)="handleSearch(activeTab)" class="btn btn-primary w-20 mt-1">Search</button>
+            </div>
+            <div class="col-md-2 col-sm-6 text-right">
+              <!-- <i class="pi pi-search" style="margin:7px 4px 0 0"></i> -->
+              <input pInputText class="form-control" type="text"
+                (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>S.R.</th>
+            <th pSortableColumn="txn_no">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Transaction#
+                <p-sortIcon field="txn_no"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="trasaction_date">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Tran Date
+              </div>
+            </th>
+            <th pSortableColumn="updatedOn">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                UpdatedOn
+              </div>
+            </th>
+            <th pSortableColumn="beneficiary_number">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                <ng-container *ngIf="activeTab == 0">
+                  Send By
+                </ng-container>
+                <ng-container *ngIf="activeTab != 0">
+                  Name/Mobile
+                </ng-container>
+              </div>
+            </th>
+
+            <th pSortableColumn="narration">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                <ng-container *ngIf="activeTab == 1 || activeTab == 2">
+                  Naration
+                </ng-container>
+                <ng-container *ngIf="activeTab == 0">
+                  Received By
+                </ng-container>
+              </div>
+            </th>
+            <th pSortableColumn="amount">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Tran Amount
+              </div>
+            </th>
+            <th pSortableColumn="charge">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Charge
+              </div>
+            </th>
+            <th pSortableColumn="service">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                {{activeTab==0?'Remarks':'Service'}}
+              </div>
+            </th>
+            <th pSortableColumn="status">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Status
+              </div>
+            </th>
+            <th pSortableColumn="utr" *ngIf="activeTab != 4">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                UTR
+              </div>
+            </th>
+            <th pSortableColumn="api_msg">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Response
+              </div>
+            </th>
+
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cp let-i="rowIndex">
+          <tr class="p-selectable-row">
+            <td>
+              <span class="srnumber"> {{i+1}}. </span>
+            </td>
+            <td>
+              <span class="p-column-title">Transaction:</span>
+              {{cp.txn_no}}
+            </td>
+            <td>
+              <span class="p-column-title"> Tran Date:</span>
+              {{cp.trasaction_date| date: 'dd-MM-yyyy hh:mm aa'}}
+            </td>
+            <td>
+              <span class="p-column-title"> UpdatedOn:</span>
+              {{cp.updatedOn| date: 'dd-MM-yyyy hh:mm aa'}}
+            </td>
+            <td>
+              <span class="p-column-title">
+                <ng-container *ngIf="activeTab == 0">
+                  Send By
+                </ng-container>
+                <ng-container *ngIf="activeTab != 0">
+                  Name/Mobile
+                </ng-container>
+              </span>
+
+              <ng-container *ngIf="activeTab == 0">
+                {{cp.toNarration}}
+              </ng-container>
+              <ng-container *ngIf="cp.service=='Fund-Request'">
+                {{cp.beneficiary_number +':'+cp.Intent }}
+              </ng-container>
+              <ng-container *ngIf="cp.service=='PG-Request'">
+                {{ cp.beneficiary_number}}
+              </ng-container>
+
+            </td>
+            <td>
+              <span class="p-column-title">
+
+                <ng-container *ngIf="activeTab == 1 || activeTab == 2">
+                  Naration
+                </ng-container>
+                <ng-container *ngIf="activeTab == 4">
+                  Received By
+                </ng-container>
+              </span>
+              <ng-container *ngIf="activeTab ==0">
+                {{cp.narration}}
+              </ng-container>
+              <ng-container *ngIf="cp.service=='Fund-Request'">
+                <span>Fund Request :</span> {{ cp.narration + ' Mobile# '+ cp.beneficiary_acc+', '+ cp.toNarration}}
+              </ng-container>
+              <ng-container *ngIf="cp.service=='PG-Request'">
+                <span>Payment Gateway:</span> {{ cp.narration + ' Mobile# '+ cp.beneficiary_acc+', '+ cp.toNarration }}
+              </ng-container>
+
+            </td>
+            <td>
+              <span class="p-column-title">Tran Amount</span>
+              {{cp.amount | number : '1.2-2'}}
+            </td>
+            <td>
+              <span class="p-column-title">Charge</span>
+              {{cp.charge | number : '1.2-2'}}
+            </td>
+            <td>
+              <span class="p-column-title"> {{activeTab==0?'Remarks':'Service'}} </span>
+              <ng-container *ngIf="activeTab == 0">
+                {{cp.Intent}}
+              </ng-container>
+              <ng-container *ngIf="activeTab == 1 || activeTab == 2">
+                {{cp.service}}
+                <span *ngIf="cp.mode_of_payment=='Part-Payment'">{{cp.mode_of_payment}}</span>
+              </ng-container>
+            </td>
+            <td class="text-center">
+              <span class="p-column-title">Status </span>
+              {{cp.status}}
+            </td>
+            <td>
+              <span class="p-column-title">UTR </span>
+              {{cp.mode_of_payment=='Part-Payment'?'SoulPay':cp.utr}}</td>
+            <td> <span class="p-column-title">Response </span> {{cp.api_msg}}</td>
+
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+            <td colspan="7" style="text-align: right;">
+              <strong>Total</strong>
+            </td>
+            <td>
+              {{totalAmount | number : '1.2-2'}}
+            </td>
+            <td>
+              {{totalCharge | number : '1.2-2'}}
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="14">No records found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
+  </div>
+</div>
+
+<!-- <div id="wrapper">
+  <app-distributor-header></app-distributor-header>
+  <div class="content-page">
+    <div class="content main-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card card-body">
+              <button class="btn btn-warning waves-effect waves-light add-fund" (click)="exportAsXLSX()"><i
+                  class="fas fa-file-export mr-1"></i> Export
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

@@ -1,0 +1,34 @@
+<app-md-layout></app-md-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>Payment</h2>
+            </div>            
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item active">Payment</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+      <div class="container-fluid">       
+        <div class="row">
+            <div class="col-md-6 mx-auto mt-5">
+               <div class="payment">
+                  <div class="payment_header">
+                     <div class="check"><i class="fa fa-check" aria-hidden="true"></i></div>
+                  </div>
+                  <div class="content-1">
+                     <h1>Payment {{pgStatus}} !</h1>
+                     <p>Thanks , Your payment was {{pgStatus}} ! , Transaction ID : {{orderId}} </p>
+                     <a href="javascript:void(0)" (click)="goBack()">Go to Home</a>
+                  </div>
+                  
+               </div>
+            </div>
+         </div>
+      </div>
+    </div>
+
+  

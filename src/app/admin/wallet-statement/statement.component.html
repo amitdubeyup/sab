@@ -1,0 +1,165 @@
+<div id="wrapper">
+ <app-admin-layout></app-admin-layout>
+  <div class="content-page"
+    >
+    <div class="content main-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <p-table class="table-home" #dt [value]="statementList" dataKey="remitterId" [rowHover]="true" [rows]="20"
+                [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]" [loading]="commonService.isLoader"
+                [paginator]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}"
+                [filterDelay]="0"
+                [globalFilterFields]="['txn_id','trasaction_date','beneficiary_name','beneficiary_number','beneficiary_acc','bank']">
+                <ng-template pTemplate="caption">
+                  <div class="row table-header">
+                    <div class="col-md-4 p-d-flex">
+                      Transaction Report
+                    </div>
+                    <div class="col-md-2 text-right">
+                      <p-calendar class="p-calendar" dateFormat="dd/mm/yy"  name="fromDt" [(ngModel)]="fromDt" placeholder="From Date">
+                      </p-calendar>
+                    </div>
+                    <div class="col-md-2 text-right">
+                      <p-calendar class="p-calendar" name="toDt" dateFormat="dd/mm/yy"  [(ngModel)]="toDt" placeholder="To Date"></p-calendar>
+                    </div>
+                    <div class="col-md-2">
+                      <button type="button" (click)="getTransactionDetails()"
+                        class="btn btn-primary w-20">Search</button>
+                    </div>
+                    <div class="col-md-2 text-right">
+                      <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                      <input pInputText class="form-control" type="text"
+                        (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')"
+                        placeholder="Global Search" />
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>S.R.</th>
+                    <th pSortableColumn="txn_id">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Txn No.
+                        <p-sortIcon field="txn_id"></p-sortIcon>
+                        <p-columnFilter type="text" field="txn_id" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </th>
+                    <th pSortableColumn="trasaction_date">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                       Txn Date
+                        <p-sortIcon field="trasaction_date"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th pSortableColumn="updatedOn">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        UpdatedOn
+                        <p-sortIcon field="updatedOn"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th pSortableColumn="beneficiary_name">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Beneficiary Name
+                        <p-sortIcon field="beneficiary_name"></p-sortIcon>
+                        <p-columnFilter type="text" field="beneficiary_name" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </th>
+                    <th pSortableColumn="beneficiary_number">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Beneficiary No.
+                        <p-sortIcon field="beneficiary_number"></p-sortIcon>
+                        <p-columnFilter type="text" field="beneficiary_number" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </th>
+                    <th pSortableColumn="beneficiary_acc">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Beneficiary Acc.
+                        <p-sortIcon field="beneficiary_acc"></p-sortIcon>
+                        <p-columnFilter type="text" field="beneficiary_acc" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </th>
+                    <th pSortableColumn="bank">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Bank Name
+                        <p-sortIcon field="bank"></p-sortIcon>
+                        <p-columnFilter type="text" field="bank" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </th>
+                    <th pSortableColumn="service">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Service Type
+                        <p-sortIcon field="service"></p-sortIcon>
+                        <p-columnFilter type="text" field="service" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </th>
+                    <th pSortableColumn="mode_of_payment">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Payment Mode
+                        <p-sortIcon field="mode_of_payment"></p-sortIcon>
+                        <p-columnFilter type="text" field="mode_of_payment" display="menu" class="p-ml-auto">
+                        </p-columnFilter>
+                      </div>
+                    </th>
+                    <th pSortableColumn="amount">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                         Amount
+                        <p-sortIcon field="amount"></p-sortIcon>
+                      </div>
+                    </th>
+
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                  <tr class="p-selectable-row">
+                    <td>{{i+1}}.</td>
+                    <td>
+                      {{cp.txn_id}}
+                    </td>
+                    <td>
+                      {{cp.trasaction_date| date: 'MM/dd/yyyy hh:mm aa'}}
+                    </td>
+                    <td>{{cp.updatedOn| date: 'MM/dd/yyyy hh:mm aa'}}</td>
+                    <td>
+                      {{cp.beneficiary_name}}
+                    </td>
+                    <td>
+                      {{cp.beneficiary_number}}
+                    </td>
+                    <td>
+                      {{cp.beneficiary_acc}}
+                    </td>
+                    <td>
+                      {{cp.bank}}
+                    </td>
+                    <td>
+                      {{cp.service}}
+                    </td>
+                    <td>
+                      {{cp.mode_of_payment}}
+                    </td>
+                    <td>
+                      {{cp.amount| number : '1.2-2'}}
+                    </td>
+
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="11">No records found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

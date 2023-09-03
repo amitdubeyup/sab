@@ -1,0 +1,245 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>REFUND PENDING</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"></a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                  <div class="card card-body">
+                   
+                    <p-tabView (onChange)="handleChange($event)">
+                      <p-tabPanel header="Money Transfer">
+                        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                      </p-tabPanel>
+                      <p-tabPanel header="Recharge">
+                        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                      </p-tabPanel>
+                      <p-tabPanel header="BBPS">
+                        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                      </p-tabPanel>      
+                      <p-tabPanel header="Part Payment">
+                        <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                      </p-tabPanel>             
+                    </p-tabView>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+  
+  <ng-template #statementTemplate>
+    <p-table class="table-home table-wrapper-commision" #dt [value]="statementList" dataKey="remitterId" [rowHover]="true"
+      [rows]="50" [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,200,500]" [loading]="commonService.isLoader"
+      [paginator]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+      [globalFilterFields]="['txn_no','utr','trasaction_date','narration','beneficiary_number','beneficiary_acc','bank']">
+      <ng-template pTemplate="caption">
+        <div class="row table-header">
+          <div class="col-md-3 col-sm-6 pb-1">
+            <ng-select [virtualScroll]="true" [items]="retList" placeholder="Select User" bindLabel="desc"
+            bindValue="code" name="desc" [(ngModel)]="retid" #ffff="ngModel">
+          </ng-select>
+          
+          </div>
+         
+          <div class="col-md-2 text-right">
+            <p-calendar class="p-calendar" dateFormat="dd/mm/yy" [showIcon]="true" name="fromDt" [(ngModel)]="fromDt"
+              placeholder="From Date">
+            </p-calendar>
+          </div>
+          <div class="col-md-2 text-right">
+            <p-calendar class="p-calendar" name="toDt" [showIcon]="true" dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+            </p-calendar>
+          </div>
+       
+          <div class="col-md-2 text-right">
+            <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+            <input pInputText class="form-control" type="text"
+              (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <button type="button" (click)="handleSearch(activeTab)"
+              class="btn btn-outline-success mt-1 mr-2 btn48">Search</button>
+            <button type="button" (click)="handleSearch(activeTab)" class="btn btn-outline-dark mt-1 btn48">Export</button>
+    
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>S.R.</th>
+          <th pSortableColumn="txn_no">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Transaction#
+              <p-sortIcon field="txn_no"></p-sortIcon>
+             </div>
+          </th>
+          <th pSortableColumn="trasaction_date">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Tran Date             
+            </div>
+          </th>
+          <th pSortableColumn="updatedOn">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              UpdatedOn
+             </div>
+          </th>
+          <th pSortableColumn="beneficiary_number">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              <ng-container *ngIf="activeTab == 3">
+                Mobile
+              </ng-container>
+              <ng-container *ngIf="activeTab != 3">
+                Name/Mobile
+              </ng-container> 
+             
+            </div>
+          </th>
+  
+          <th pSortableColumn="narration">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              <ng-container *ngIf="activeTab == 0">
+                Beneficiary
+              </ng-container>
+              <ng-container *ngIf="activeTab == 1 || activeTab == 2">
+                Operator
+              </ng-container>
+              <ng-container *ngIf="activeTab == 3">
+                Naration
+              </ng-container>
+             </div>
+          </th>
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Tran Amount
+             </div>
+          </th>
+          <th pSortableColumn="charge">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Charge
+             </div>
+          </th>
+  
+          <th pSortableColumn="service">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Service
+             </div>
+          </th>
+  
+          <th pSortableColumn="status">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Status
+             </div>
+          </th>
+          <th pSortableColumn="utr" *ngIf="activeTab != 3">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              UTR
+             </div>
+          </th>
+          <th pSortableColumn="api_msg" *ngIf="activeTab != 3">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Response            
+            </div>
+          </th>
+          
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cp let-i="rowIndex">
+        <tr class="p-selectable-row">
+          <td>
+            {{i+1}}.
+          </td>
+          <td>
+            {{cp.txn_no}}
+          </td>
+          <td>
+            {{cp.trasaction_date| date: 'dd-MM-yyyy hh:mm aa'}}
+          </td>
+          <td>
+            {{cp.updatedOn| date: 'dd-MM-yyyy hh:mm aa'}}
+          </td>
+          <td>
+            <ng-container *ngIf="activeTab == 0">
+              {{cp.remName+ ' '+cp.beneficiary_number }}
+            </ng-container>
+            <ng-container *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3">
+              {{cp.beneficiary_acc}}
+            </ng-container>
+          </td>
+          <td>
+            <ng-container *ngIf="activeTab == 0 && (cp.service=='QUICK_PAY' || cp.service=='TATKAL_PAY')">
+              {{cp.narration + ' ' +cp.beneficiary_acc +' '+ (cp.toNarration==null?'':cp.toNarration)}}
+            </ng-container>
+            <ng-container *ngIf="activeTab == 0 && cp.service=='Verification'">
+              {{cp.narration}}
+            </ng-container>
+            <ng-container *ngIf="activeTab == 1 || activeTab == 2">
+              {{cp.Operator}} {{cp.Service=='INSURANCE'?'-'+cp.narration:''}}
+            </ng-container>
+            <ng-container *ngIf="activeTab ==3">
+              {{cp.toNarration +' '+ cp.beneficiary_acc +' To '+cp.narration +' '+cp.remName }}
+            </ng-container>
+          </td>
+          <td>
+            {{cp.amount | number : '1.2-2'}}
+          </td>
+          <td>
+            {{cp.charge | number : '1.2-2'}}
+          </td>
+          <td>
+            <ng-container *ngIf="activeTab == 0">
+              {{cp.service}}-{{cp.mode_of_payment | replace:'-Money-Transfer':''}}
+            </ng-container>
+            <ng-container *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3">
+              {{cp.service}}
+            </ng-container>
+  
+          </td>
+          <td>{{cp.status}}</td>
+          <td *ngIf="activeTab != 3">{{cp.utr}}</td>
+          <td *ngIf="activeTab != 3">{{cp.api_msg}}</td>
+         
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+          <td colspan="6" style="text-align: right;">
+            <strong>Total</strong>
+          </td>
+          <td>
+            {{totalAmount | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalCharge | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalCommission | number : '1.2-2'}}
+          </td>
+          <td>
+          </td>
+         
+          <td *ngIf="activeTab != 3">
+          </td>
+          <td *ngIf="activeTab != 3">
+          </td>
+         
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="14">No records found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-template>
+  

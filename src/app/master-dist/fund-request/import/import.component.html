@@ -1,0 +1,115 @@
+<div class="modal bs-example-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form (ngSubmit)="f.form.valid && submitImport()" #f="ngForm" name="form" pFocusTrap autocomplete="off"
+            novalidate>
+            <div class="modal-header">
+                <h5 class="modal-title mt-0">Fund Request Import</h5>
+                <button type="button" class="close" data-dismiss="modal" (click)="onCancel()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-10"> <div class="custom-modal-text text-muted pt-1 pb-1">
+                        <input type="file" class="form-control" (change)="onFileChangeImp($event)"  multiple="false">
+                    </div>
+                </div>
+                    <div class="col-sm-2">
+                     <a href="assets/FundRequest.xlsx" class="btn btn-primary"><i class="mdi mdi-file-excel"></i>Download Template</a>
+                    </div>
+                </div>
+               
+              
+                <p-table  class="table-home" #dt [value]="importList" [scrollable]="true" scrollHeight="400px" [rowHover]="true" [rows]="1000" [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[1000]"  [paginator]="false"
+                currentPageReportTemplate="{first} - {last} of {totalRecords}"
+                [filterDelay]="0">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="Amount">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Amount
+                                <p-sortIcon field="Amount"></p-sortIcon>
+                            </div>
+                        </th>
+                        <th pSortableColumn="PaymentMode">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                PaymentMode
+                                <p-sortIcon field="PaymentMode"></p-sortIcon>
+                            </div>
+                        </th>
+                        <th pSortableColumn="BankName">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                BankName
+                                <p-sortIcon field="BankName"></p-sortIcon>
+                            </div>
+                        </th>
+                        <th pSortableColumn="BankAccountNumber">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                BankAccountNumber
+                                <p-sortIcon field="BankAccountNumber"></p-sortIcon>
+                            </div>
+                        </th>
+                        <th pSortableColumn="DepositDate">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                DepositDate
+                                <p-sortIcon field="DepositDate"></p-sortIcon>
+                            </div>
+                        </th>         
+                      
+                        <th pSortableColumn="Remarks">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Remarks
+                                <p-sortIcon field="Remarks"></p-sortIcon>                   
+                            </div>
+                        </th>                                  
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-org>
+                <tr>                           
+                <td>{{org.Amount}}</td>
+                <td>{{org.PaymentMode}}</td>
+                <td>{{org.BankName}}</td>
+                <td>{{org.BankAccountNumber}}</td>
+                <td>{{org.DepositDate | date: 'dd-MM-yyyy'}}</td>                
+                <td>{{org.Remarks}}</td>                
+                </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">No customer found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="button" (click)="onCancel()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="pageloader" *ngIf="commonService?.isLoader">
+    <div class="bs-spinner">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-success" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-warning" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-info" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,305 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>CASHING BANK</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"></a></li>
+                    <li class="active"><button href="javascript:void(0)" (click)="openModal()" class="btn btn-sm btn-dark">Add
+                      New</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12 col-xl-12">
+              <div class="card">
+                <div class="card-body"> 
+                            
+                  <div class="table-responsive">
+                    <p-table [style]="{'width':'100%'}" class="table-rt" #dt [value]="respData" 
+                      [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                      [loading]="commonService.isLoader" [paginator]="true"
+                      currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+                      [globalFilterFields]="['bankName','ifsc','isStatus']">
+                      
+                      <ng-template pTemplate="header">
+                        <tr>
+                            <th>S.R.</th>
+                          <th pSortableColumn="bankName">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                             Bank Name
+                              <p-sortIcon field="bankName"></p-sortIcon>
+                              <p-columnFilter type="text" field="bankName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+  
+                            </div>
+                          </th>
+                          <th pSortableColumn="accNo">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Account Number
+                              <p-sortIcon field="accNo"></p-sortIcon>
+                              <p-columnFilter type="text" field="accNo" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+  
+                            </div>
+                          </th>
+                          <th pSortableColumn="ifsc">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                IFSC
+                              <p-sortIcon field="ifsc"></p-sortIcon>
+                              <p-columnFilter type="text" field="ifsc" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+  
+                            </div>
+                          </th>
+                          <th pSortableColumn="ifsc">
+                            <div class="p-d-flex p-jc-between p-ai-center"> 
+                              Account Name                            
+                              <p-sortIcon field="ifsc"></p-sortIcon>                             
+                            </div>
+                          </th>
+                          
+                          <th pSortableColumn="ifsc">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Cash/Stuck Amount Charge (%)
+                              <p-sortIcon field="ifsc"></p-sortIcon>                             
+                            </div>
+                          </th>
+                          <th pSortableColumn="ifsc">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              CDM Charge (%)
+                              <p-sortIcon field="ifsc"></p-sortIcon>                             
+                            </div>
+                          </th>
+                          <th pSortableColumn="ifsc">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              IMPS/UPI Charge (%)
+                              <p-sortIcon field="ifsc"></p-sortIcon>                             
+                            </div>
+                          </th>
+                          <th pSortableColumn="ifsc">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              NEFT/RTGS Charge (%)
+                              <p-sortIcon field="ifsc"></p-sortIcon>                             
+                            </div>
+                          </th>
+                          <th pSortableColumn="ifsc">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Fund Transfer Charge (%)
+                              <p-sortIcon field="ifsc"></p-sortIcon>                             
+                            </div>
+                          </th>
+                          <th pSortableColumn="ifsc">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Cheque Charge (%)
+                              <p-sortIcon field="ifsc"></p-sortIcon>                             
+                            </div>
+                          </th>
+                          <th pSortableColumn="isStatus">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Status
+                              <p-sortIcon field="isStatus"></p-sortIcon>
+                             
+                            </div>
+                          </th>   
+                          <th></th>                       
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                        <tr class="p-selectable-row">
+                            <td>{{i+1}}</td>
+                          <td>
+                            {{cp.bankName}}
+                          </td>
+                          <td>
+                            {{cp.accNo}}
+                          </td>
+                          <td>
+                            {{cp.ifsc}}
+                          </td>
+                          <td>
+                            {{cp.nbin}}
+                          </td>   
+                          <td>
+                            {{cp.cashCharge}}
+                          </td>   
+                          <td>
+                            {{cp.cdmCharge}}
+                          </td>   
+                          <td>
+                            {{cp.impsCharge}}
+                          </td>   
+                          <td>
+                            {{cp.neftCharge}}
+                          </td>   
+                          <td>
+                            {{cp.fundTransferCharge}}
+                          </td>   
+                          <td>
+                            {{cp.chequeCharge}}
+                          </td>                            
+                          <td>
+                            {{cp.isStatus=='A'?'Active':'InActive'}}
+                          </td>
+                          <td>
+                            <button type="button" class="btn btn-outline-info btn-sm" (click)="updateService(cp)"><i class="fa fa-edit"></i></button>
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="11">No records found.</td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  <p-dialog header="CASHING BANK" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+  [(visible)]="isModel">
+  <div class="update-form">
+    <form (ngSubmit)="serviceForm.form.valid && formSubmit()" #serviceForm="ngForm" name="serviceForm">
+      <div class="modal-body">
+        <div class="row border-button">
+          <div class="col-sm-4 form-group">
+            <label>Bank Name</label>
+            <input type="text" class="form-control" name="bankName" [(ngModel)]="serviceData.bankName" #bankName="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && bankName.invalid }" required />
+            <div *ngIf="serviceForm.submitted && bankName.invalid" class="invalid-feedback">
+              <div *ngIf="bankName.errors">Bank Name is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label> Account Number</label>
+            <input type="text" class="form-control" name="AccNo" [(ngModel)]="serviceData.accNo"
+              #AccNo="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && AccNo.invalid }"
+              required />
+            <div *ngIf="serviceForm.submitted && AccNo.invalid" class="invalid-feedback">
+              <div *ngIf="AccNo.errors"> Account Number is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>IFSC</label>
+            <input type="text" class="form-control" name="Ifsc" [(ngModel)]="serviceData.ifsc"
+              #Ifsc="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && Ifsc.invalid }"
+              required />
+            <div *ngIf="serviceForm.submitted && Ifsc.invalid" class="invalid-feedback">
+              <div *ngIf="Ifsc.errors">IFSC is required</div>
+            </div>
+          </div>
+                
+          <div class="col-sm-12 form-group">
+            <label>Address </label>
+            <input type="text" class="form-control" name="Address" [(ngModel)]="serviceData.address"
+              #Address="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && Address.invalid }" required />
+            <div *ngIf="serviceForm.submitted && Address.invalid" class="invalid-feedback">
+              <div *ngIf="Address.errors">Address is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Branch </label>
+            <input type="text" class="form-control" name="Branch" [(ngModel)]="serviceData.branch"
+              #Branch="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && Branch.invalid }" required />
+            <div *ngIf="serviceForm.submitted && Branch.invalid" class="invalid-feedback">
+              <div *ngIf="Branch.errors">Branch is required</div>
+            </div>
+          </div> 
+          <div class="col-sm-4 form-group">
+            <label>Account Name </label>
+            <input type="text" class="form-control" name="Nbin" [(ngModel)]="serviceData.nbin"
+              #Nbin="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && Nbin.invalid }" required />
+            <div *ngIf="serviceForm.submitted && Nbin.invalid" class="invalid-feedback">
+              <div *ngIf="Nbin.errors">Account Name is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>PAN </label>
+            <input type="text" class="form-control" name="District" [(ngModel)]="serviceData.district"
+              #District="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && District.invalid }" required />
+            <div *ngIf="serviceForm.submitted && District.invalid" class="invalid-feedback">
+              <div *ngIf="District.errors">PAN is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>GSTIN </label>
+            <input type="text" class="form-control" name="State" [(ngModel)]="serviceData.state"
+              #State="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && State.invalid }" required />
+            <div *ngIf="serviceForm.submitted && State.invalid" class="invalid-feedback">
+              <div *ngIf="State.errors">GSTIN is required</div>
+            </div>
+          </div>      
+          <div class="col-sm-4 form-group">
+            <label>Cash/Stuck Amount Charge (%)</label>
+            <input type="number" class="form-control" name="CashCharge" [(ngModel)]="serviceData.cashCharge" #CashCharge="ngModel"/>           
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>CDM Charge (%)</label>
+            <input type="number" class="form-control" name="CdmCharge" [(ngModel)]="serviceData.cdmCharge" #CdmCharge="ngModel"/>           
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>IMPS/UPI Charge (%)</label>
+            <input type="number" class="form-control" name="ImpsCharge" [(ngModel)]="serviceData.impsCharge" #ImpsCharge="ngModel"/>           
+          </div>
+          <div class="col-sm-4 form-group">
+            <label> NEFT/RTGS Charge (%) </label>
+            <input type="number" class="form-control" name="NeftCharge" [(ngModel)]="serviceData.neftCharge" #NeftCharge="ngModel"/>           
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>  Fund Transfer Charge (%)  </label>
+            <input type="number" class="form-control" name="FundTransferCharge" [(ngModel)]="serviceData.fundTransferCharge" #FundTransferCharge="ngModel"/>           
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>   Cheque Charge (%)  </label>
+            <input type="number" class="form-control" name="ChequeCharge" [(ngModel)]="serviceData.chequeCharge" #ChequeCharge="ngModel"/>           
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Status</label>
+            <select type="text" class="form-control" name="IsStatus" [(ngModel)]="serviceData.isStatus"
+              #IsStatus="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && IsStatus.invalid }" required>
+              <option value="A">Active</option>
+              <option value="I">Inactive</option>
+            </select>
+            <div *ngIf="serviceForm.submitted && IsStatus.invalid" class="invalid-feedback">
+              <div *ngIf="IsStatus.errors">Status is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Type</label>
+            <select type="text" class="form-control" name="bankType" [(ngModel)]="serviceData.bankType"
+              #bankType="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && IsStatus.invalid }" required>
+              <option value="BANK">Bank</option>
+              <option value="PG">PG</option>
+            </select>
+            <div *ngIf="serviceForm.submitted && bankType.invalid" class="invalid-feedback">
+              <div *ngIf="bankType.errors">Type is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="toggleModal()" class="btn btn-dark waves-effect">
+          Close
+        </button>
+        <button type="submit" class="btn btn-primary waves-effect">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>
+  

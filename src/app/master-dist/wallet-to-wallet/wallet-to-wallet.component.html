@@ -1,0 +1,121 @@
+<app-md-layout></app-md-layout>
+<div id="main-content">
+  <div class="container-fluid">
+    <div class="row clearfix">
+      <div class="col-lg-12">
+        <div class="card chat-app">
+          <div class="chat">
+            <div class="chat-header clearfix">
+              <div class="row clearfix">
+                <div class="col-lg-6">
+                  <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                    <img src="../assets/images/xs/avatar2.jpg" alt="avatar">
+                  </a>
+                  <div class="chat-about">
+                    <h6 class="m-b-0">Wallet Pay</h6>
+                    <small>Distributor - {{commonService.userPram?.companyName}}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-history">
+              <div class="card" *ngIf="isShow">
+                <div class="card-header">
+                  <h4 class="card-title">Search Wallet Account</h4>
+                </div>
+                <div class="card-body">
+                  <form (ngSubmit)="f.form.valid && SearchMember()" #f="ngForm" name="form">
+                    <div class="row">
+                      <div class="col-sm-12  pb-2">
+                        <input type="text" class="form-control" name="mobileNo" [(ngModel)]="mobile" #mobileNo="ngModel"
+                          [ngClass]="{'is-invalid': f.submitted && mobileNo.invalid}" required
+                          placeholder="Mobile Number">
+                      </div>
+                      <div class="col-sm-12 pb-2 text-center">
+                        <button type="submit" [disabled]="mobile?.length < 10"
+                          class="btn btn-primary w-20 m-left">SEARCH</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="card" *ngIf="wallet && !isShow">
+                <div class="card-body border shadow-none">
+                  <form (ngSubmit)="frmwallet.form.valid && SubmitMember()" #frmwallet="ngForm" name="form">
+                    <div class="row m-1">
+                      <div class="col-sm-12">
+                        <div class="text-center">
+                          <img [src]="getFilePath(wallet?.ProfilePic)" class="rounded-circle mx-auto"
+                            style="height:100px;width: 100px;">
+                        </div>
+                        <div class="text-center" style="text-transform: capitalize;">
+                          <h4>{{wallet?.CompanyName}}</h4>
+                          <h6>{{wallet?.MemberName}} | {{wallet?.MobileNo}} | {{wallet?.MemberType}}</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="row mt-2">
+                          <div class="input-group col-sm-6  mb-4">
+                            <input type="number" class="form-control w-80" name="amount" [(ngModel)]="wallet.amount"
+                              #amount="ngModel" [ngClass]="{'is-invalid': frmwallet.submitted && amount.invalid}"
+                              required placeholder="Enter Amount">
+                          </div>
+                          <div class="input-group col-sm-6  mb-4">
+                            <input type="text" class="form-control w-80" name="remark" [(ngModel)]="wallet.remark"
+                              #remark="ngModel" [ngClass]="{'is-invalid': frmwallet.submitted && remark.invalid}"
+                              required placeholder="Write Your Remark">
+                          </div>
+                          <div class="input-group col-sm-6">
+                            <input type="password" class="form-control w-80" name="mPin" [(ngModel)]="wallet.mPin"
+                              #mPin="ngModel" [ngClass]="{'is-invalid': frmwallet.submitted && mPin.invalid}" required
+                              placeholder="MPIN">
+                          </div>
+                          <div class="form-check  col-sm-6 pt-1" style="padding-left: 36px">
+                            <input class="form-check-input" name="isFavorite" style="width: 20px;height: 20px;"
+                              [(ngModel)]="wallet.isFavorite" type="checkbox" value="Y" id="flexCheckDefault">
+                            <label class="form-check-label pl-2" style="padding-top: 2px; font-size: 17px;"
+                              for="flexCheckDefault">
+                              ADD TO FAVORITE
+                            </label>
+                          </div>
+                        </div>
+                        <div class="row mt-3 pint justify-content-center">
+                          <button type="submit" class="btn btn-primary mr-1"><i class="fas fa-check"></i> Pay
+                            Now</button>
+                          <button type="button" (click)="cancel()" class="btn btn-danger ml-1"><i
+                              class="fas fa-times"></i>
+                            Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div id="plist" class="people-list">
+            <ul class="right_chat list-unstyled mb-0" *ngIf="favouritelist">
+              <li class="online" *ngFor="let itm of favouritelist;">
+                <a href="javascript:void(0);" (click)="onClickfavouritelist(itm)">
+                  <div class="media">
+                    <img [src]="getFilePath(itm?.ProfilePic)" class="media-object ">
+                    <div class="media-body">
+                      <span class="name">{{itm?.CompanyName}}</span>
+                      <span class="message">{{itm?.MobileNo}} : {{itm?.MemberType}}</span>
+                    </div>
+                    <div (click)="DeleteMember(itm)"><i class="fa fa-close"></i></div>
+                  </div>
+                </a>
+              </li>             
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

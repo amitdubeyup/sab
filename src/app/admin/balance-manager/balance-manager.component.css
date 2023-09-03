@@ -1,0 +1,33 @@
+
+
+.form-section{
+  border: 1px solid #1512db;
+    border-radius: 0;
+    margin: 20px 0px;
+}
+
+.title {
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px 10px 8px 10px;
+  background: #1512db;;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  font-size: 20px;
+  color: #fff;
+}
+
+.form {
+  padding: 0px 10px 0px 10px;
+}
+.form-group {
+  margin-bottom: 10px;
+}
+.lavel-balace, .lavel-balace label{color: green; font-weight: bold; font-size: 16px;margin: 0; text-align: center;}
+.lavel-balace-member{color: #000; font-weight: 500; font-size: 14px;margin: 0; text-align: center;border-bottom: 1px solid #ff9a3e;
+  padding-bottom: 5px;}
+  .lalace
+  {
+  border: 5px solid #1a4f71;
+  }

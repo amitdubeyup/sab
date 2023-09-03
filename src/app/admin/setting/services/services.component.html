@@ -1,0 +1,58 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>Dashboard</h2>
+            </div>           
+        </div>
+    </div>
+      <div class="container-fluid">
+        <div class="card card col-sm-12 col-md-12 col-lg-12" style="border-radius: 25px;">
+       
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-sm-12">
+                    <form (ngSubmit)="privilegeN.form.valid && onMemberInfoSave()" #privilegeN="ngForm" autocomplete="off">
+                        <div class="row home">
+                         
+                          <div class="col-sm-12 col-xl-12">   
+                               
+                            <div class="row privilege-sub-header privilege-content">
+                              <div class="col-xl-6 form-field privilege-name">
+                                Select All
+                              </div>
+                              <div class="col-xl-6 form-field text-right" style="padding-right: 15px;">
+                                <input type="checkbox" value="write" (change)="updateFeatureAccess($event)" />
+                              </div>
+                            </div>
+                            <div class="row privilege-content" *ngFor="let feature of servicePrivileges; let i = index;">
+                              <div class="col-xl-6 form-field privilege-name padding-left">
+                                {{feature.key}}
+                              </div>
+                              <div class="col-xl-6 form-field text-right">
+                                <input type="checkbox" [checked]="feature.value"
+                                  (change)="updateFeatureCheckbox($event, i)" />
+                              </div>
+                            </div>
+                            <div class="row privilege-footer">
+                              <a href="javascript:void()"  class="btn btn-secondary waves-effect">
+                                Close
+                              </a>&nbsp;
+                              <button type="submit" class="btn btn-primary waves-effect">
+                                Save
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        </form>
+                  </div>
+                 
+              </div>
+          </div>
+      </div>
+      </div>
+    </div>
+
+  
+

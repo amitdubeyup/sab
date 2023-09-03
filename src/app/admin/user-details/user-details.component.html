@@ -1,0 +1,1571 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>Dashboard</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                    <li class="breadcrumb-item active">Dashboard 
+                </ul>              
+            </div>
+        </div>
+    </div>
+      <div class="container-fluid">
+        <p-tabView (onChange)="handleChange($event)">
+          <p-tabPanel header="User List">
+            <ng-container *ngTemplateOutlet="userlist"></ng-container>
+          </p-tabPanel>                 
+          <p-tabPanel header="User OTP">
+            <ng-container *ngTemplateOutlet="userotp"></ng-container>
+          </p-tabPanel>
+          <p-tabPanel header="Wallet/Charge">
+            <ng-container *ngTemplateOutlet="userwallet"></ng-container>
+          </p-tabPanel>
+        </p-tabView>
+        <ng-template #userlist>
+          <div class="table-responsive">
+            <p-table [style]="{'width':'100%'}" class="table-rt table-wrapper-commision" #dt [value]="respData" dataKey="memberId"
+              [rowHover]="true" [rows]="50" [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,500]"
+              [loading]="commonService.isLoader" [paginator]="true"
+              currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+              [globalFilterFields]="['roleTypeName','id','rmn','fullName','asmName','shopName','companyName','isStatus','reporttoName','userName','memberType']">
+              
+              <ng-template pTemplate="caption">
+                <div class="row table-header">
+                  <div class="col-sm-8 col-md-8 p-d-flex">
+                     User Details
+                  </div>
+                </div>
+                <div class="row table-header">
+                  <div class="col-md-4 pt-1">
+                    <ng-select [items]="respMemberTypes" 
+                    placeholder="Select User Type" bindLabel="membType" name="mtId"
+                    bindValue="mtId" [(ngModel)]="mtId">
+                   </ng-select>
+                  </div>   
+                   
+                  <div class="col-md-3 text-right pt-1">
+                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                    <input pInputText class="form-control" type="text"
+                      (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')"
+                      placeholder="Global Search" />
+                  </div>
+                  <div class="col-md-1 pt-2">
+                    <button type="button" (click)="handleSearch()" class="btn btn-primary w-20">Search</button> &nbsp;&nbsp;                        
+                  </div>
+
+                  <div class="col-md-1 text-left pt-2">
+                    <a href="javascript:void(0)" (click)="exportAsXLSX()" class="btn btn-warning"> <i class="fas fa-file-export"></i> Export</a> 
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>     
+                  <th pSortableColumn="memberType">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      User Type
+                    </div>
+                  </th>
+                  <th pSortableColumn="id">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      User Id
+                    </div>
+                  </th>
+                  
+                  <th pSortableColumn="userName">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Name
+                     
+                     
+                    </div>
+                  </th>
+                  <th pSortableColumn="shopName">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Company Name
+                     
+                      
+                    </div>
+                  </th>
+                  <th pSortableColumn="rmn">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Login Id
+                      
+                      
+                    </div>
+                  </th>
+                  <th pSortableColumn="mobileNo" style="width: 30%;">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Address
+                     
+                    
+                    </div>
+                  </th>
+                  <th pSortableColumn="mobileNo">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Parent Id
+                     
+                    
+                    </div>
+                  </th>
+                  <th pSortableColumn="AsmName">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Area Sales Manager
+                    
+                    </div>
+                  </th>
+                  
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Create Date
+
+                    </div>
+                  </th>
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Modification Date
+
+                    </div>
+                  </th>
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Modification By
+                    </div>
+                  </th>                 
+                  <th pSortableColumn="rechTemplateName">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Template
+                                             
+                    </div>
+                  </th>
+                  <th pSortableColumn="isActive">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Status
+                      
+                      
+                    </div>
+                  </th>
+                  <th style="width:10%;">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      #
+                    </div>
+                  </th>    
+                 
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                <tr class="p-selectable-row">
+                  <td>
+                    {{cp.memberType}}
+                  </td>
+                  <td>
+                    {{cp.roleTypeName}}
+                  </td>
+                  <td>
+                    {{cp.userName}}
+                  </td>
+                  <td>
+                    {{cp.companyName}}
+                  </td>
+                  <td>
+                    {{cp.rmn}}
+                  </td>
+                  <td  style="width: 30%;">
+                    {{cp.address}}
+                  </td>
+                  <td>
+                    {{cp.reporttoName}}
+                  </td>  
+                  <td>
+                    {{cp.asmName}}
+                  </td> 
+                                     
+                
+                 <td>
+                  {{cp.createdDate| date: 'MM/dd/yyyy hh:mm aa'}}
+                </td> 
+                  <td>
+                    {{cp.updatedDate| date: 'MM/dd/yyyy hh:mm aa'}}
+                  </td>
+                  <td>{{cp.updateByName}}</td>
+                  
+                  <td>
+                    {{getDesc(cp.dmtTemplate)}}
+                  </td>
+                  <td style="vertical-align: middle;">                            
+                    <span [class]="cp.isActive=='A'?'customer-badge status-qualified':'customer-badge status-unqualified'">{{cp.isActive=='A'?'Active':cp.isActive=='D'?'In-Active':'In-Active'}}</span>
+                 </td>
+
+                  <td class="text-center">  
+                    <div class="btn-group ml-1 mo-mb-2 float-right" *ngIf="isActiveUser(cp.roleType)">
+                      <button type="button" class="btn btn-sm btn-dark waves-light waves-effect dropdown-toggle"
+                        data-toggle="dropdown" aria-expanded="true">
+                        Edit
+                      </button>
+                      <div class="dropdown-menu">                      
+                        <a href="javascript:void(0)" (click)="setUserPrivilege(cp)"
+                          class="dropdown-item">User Right</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="javascript:void(0)" [routerLink]="['/administrator/kycapproved']"
+                          [queryParams]="{muid: cp.memberId, uid:cp.kycId, mtCode: cp.mtCode}"
+                          class="dropdown-item">User KYC</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="javascript:void(0)" (click)="setCommission(cp.memberId,cp.userId)"
+                          class="dropdown-item">User Edit</a>
+                          <div class="dropdown-divider"></div>
+                          <a href="javascript:void(0)" [routerLink]="['/administrator/user-list/aepsonboarding']"
+                          [queryParams]="{memberid: cp.memberId}"
+                          class="dropdown-item">User AEPS KYC</a>
+
+                        <div class="dropdown-divider"></div>
+                        <a href="javascript:void(0)" (click)="onResetPassword(cp)" class="dropdown-item">Reset
+                          Password</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="javascript:void(0)" (click)="onResetMpin(cp)" class="dropdown-item">Reset MPIN</a>
+                        <div class="dropdown-divider" *ngIf="cp?.isTermsAccepted==1"></div>
+                        <a href="javascript:void(0)" *ngIf="cp?.isTermsAccepted==1"  (click)="openAgreementModal(cp)" class="dropdown-item">Agreement</a>
+                      </div>
+                    </div>                    
+                </td> 
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3">No records found.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </ng-template>
+        <ng-template #userotp>
+          <div class="table-responsive">
+            <p-table [style]="{'width':'100%'}" class="table-rt table-wrapper-commision" #dt [value]="respData" dataKey="memberId"
+              [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+              [loading]="commonService.isLoader" [paginator]="true"
+              currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+              [globalFilterFields]="['id','rmn','fullName','shopName','companyName','mobileNumber','isStatus','createByName','userName','memberType']">
+              <ng-template pTemplate="caption">
+                <div class="row table-header">
+                  <div class="col-sm-10 col-md-10 p-d-flex">
+                     User Details
+                  </div>
+                  <div class="col-sm-10 col-md-2 text-right">
+                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                    <input pInputText class="form-control" type="text"
+                      (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')"
+                      placeholder="Global Search" />
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="id">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      User Id
+                      <p-sortIcon field="id"></p-sortIcon>
+
+                    </div>
+                  </th>
+                  <th pSortableColumn="memberType">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      User Type
+                      <p-sortIcon field="memberType"></p-sortIcon>
+                      <p-columnFilter type="text" field="memberType" display="menu" class="p-ml-auto">
+                      </p-columnFilter>
+
+                    </div>
+                  </th>
+                  <th pSortableColumn="userName">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Company Name
+                      <p-sortIcon field="userName"></p-sortIcon>
+                      <p-columnFilter type="text" field="userName" display="menu" class="p-ml-auto">
+                      </p-columnFilter>
+
+                    </div>
+                  </th>
+                  <th pSortableColumn="mobileNo">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                     Parent Id
+                      <p-sortIcon field="mobileNo"></p-sortIcon>
+                    
+                    </div>
+                  </th>
+                
+                
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Created On
+
+                    </div>
+                  </th>
+                  <th pSortableColumn="isActive">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Status
+                      <p-sortIcon field="isActive"></p-sortIcon>
+                      <p-columnFilter type="text" field="isActive" display="menu" class="p-ml-auto">
+                      </p-columnFilter>
+                    </div>
+                  </th>
+                  <th pSortableColumn="rechTemplateName">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                     Login OTP                                                 
+                    </div>
+                  </th>
+                  <th pSortableColumn="termsToken">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                     Agreement OTP                                                 
+                    </div>
+                  </th>
+                  
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-cp>
+                <tr class="p-selectable-row">
+
+                  <td>
+                    {{cp.mtCode}}{{cp.id}}
+                  </td>
+                  <td>
+                    {{cp.memberType}}
+                  </td>
+                  <td>
+                    {{cp.userName}}<br>
+                    ({{cp.companyName}})<br>
+                    {{cp.rmn}}
+                  </td>                         
+                 
+                  <td>
+                    {{cp.reporttoName}}
+                  </td>                     
+                 
+                  <td>
+                    {{cp.updatedDate| date: 'MM/dd/yyyy hh:mm aa'}}
+                  </td>
+                  <td style="vertical-align: middle;">                            
+                    <span [class]="cp.isActive=='A'?'customer-badge status-qualified':'customer-badge status-unqualified'">{{cp.isActive=='A'?'Active':cp.isActive=='D'?'In-Active':'In-Active'}}</span>
+                 </td>  
+                  <td>
+                   <button type="button" *ngIf="cp.tpaDeviceToken" (click)="showOtp(cp.tpaDeviceToken,'LOGIN')" class="btn btn-outline-info btn-sm"><i class="fa fa-eye"></i></button>
+                  </td>
+                  <td>
+                    <button type="button" *ngIf="cp.termsToken" (click)="showOtp(cp.termsToken,'AGREEMNT')" class="btn btn-outline-info btn-sm"><i class="fa fa-eye"></i></button>
+                   </td>
+                  
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="10">No records found.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </ng-template>
+        <ng-template #userwallet>
+          <div class="table-responsive">
+            <p-table [style]="{'width':'100%'}" class="table-rt table-wrapper-commision" #dt [value]="respData" dataKey="memberId"
+              [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+              [loading]="commonService.isLoader" [paginator]="true" 
+              currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+              [globalFilterFields]="['id','rmn','fullName','shopName','companyName','mobileNumber','isStatus','createByName','userName','memberType']">
+              <ng-template pTemplate="caption">
+                <div class="row table-header">
+                  <div class="col-sm-8 col-md-8 p-d-flex">
+                     User Details
+                  </div>
+                  <div class="col-md-2">  
+                    <a href="javascript:void(0)" (click)="exportAsXLSX()" class="btn btn-warning"> <i class="fas fa-file-export"></i> Export</a> 
+                  </div>
+                  <div class="col-sm-10 col-md-2 text-right">
+                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                    <input pInputText class="form-control" type="text"
+                      (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')"
+                      placeholder="Global Search" />
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="id">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      User Id
+                     
+
+                    </div>
+                  </th>
+                  <th pSortableColumn="memberType">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      User Type
+                      
+
+                    </div>
+                  </th>
+                  <th pSortableColumn="userName">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                    Company
+                      
+
+                    </div>
+                  </th>  
+                  
+                  <th pSortableColumn="panCard">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      State/GSTIN                              
+                    </div>
+                  </th>    
+                  <th pSortableColumn="panCard">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      PAN
+                    
+                    
+                    </div>
+                  </th>    
+                  <th pSortableColumn="aadharChard">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Aadhaar
+                                            
+                    </div>
+                  </th>                 
+                  <th pSortableColumn="address">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Address
+                      
+                    
+                    </div>
+                  </th>
+                  <th pSortableColumn="mobileNo">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Parent ID
+                     
+                    
+                    </div>
+                  </th>
+                  <th pSortableColumn="asmName">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      ASM
+                    
+                    
+                    </div>
+                  </th>
+                
+                  <th pSortableColumn="isActive">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Status
+                     
+                    </div>
+                  </th>
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Created On
+
+                    </div>
+                  </th>
+                  <th>
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Updated On
+
+                    </div>
+                  </th>
+                  <th style="width:10%;">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Balance
+                    </div>
+                  </th>
+                  <th style="width:10%;">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      AEPS
+                    </div>
+                  </th>
+                  <th pSortableColumn="rechTemplateName">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                     Sender Charge                                              
+                    </div>
+                  </th>
+                  <th pSortableColumn="rechTemplateName">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                         Receiver Charge                                                 
+                    </div>
+                  </th>
+                  <th style="width:10%;">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Template
+                    </div>
+                  </th>
+                 
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-cp>
+                <tr class="p-selectable-row">
+
+                  <td>
+                    {{cp.mtCode}}{{cp.id}}
+                  </td>
+                  <td>
+                    {{cp.memberType}}
+                  </td>
+                  <td>
+                    {{cp.companyName}}<br>
+                    {{cp.rmn}}
+                    {{cp.userName}}<br>
+                  </td> 
+                  <td>{{cp.gstState +'-'+getStateName(cp.gstState)  +'-'+ (cp.gstin==null?'':cp.gstin)}}</td>
+                  <td>{{cp.panCard}}</td>
+                  <td>{{cp.aadharChard}}</td>                        
+                   <td>{{cp.address}}</td>
+                  <td>
+                    {{cp.reporttoName}}
+                  </td>   
+                  <td>{{cp.asmName}}</td>                 
+                 
+                  <td style="vertical-align: middle;">                            
+                    <span [class]="cp.isActive=='A'?'customer-badge status-qualified':'customer-badge status-unqualified'">{{cp.isActive=='A'?'Active':cp.isActive=='D'?'In-Active':'In-Active'}}</span>
+                 </td>   
+                  <td>
+                    {{cp.createdDate| date: 'MM/dd/yyyy hh:mm aa'}}
+                  </td>
+                  <td>
+                    {{cp.updatedDate| date: 'MM/dd/yyyy hh:mm aa'}}
+                  </td>
+                  <td>
+                    {{cp.walletBlance | number : '1.2-2'}}
+                  </td> 
+                  <td>
+                    {{cp.aepsBlance | number : '1.2-2'}}
+                  </td> 
+                  <td>
+                    {{(cp.walletDrType=='R'?'Rs.':'%') +'  '+cp.wallateDrCharge}}
+                  </td> 
+                  <td>
+                    {{(cp.walletCrType=='R'?'Rs.':'%')+'  '+cp.wallateCrCharge}}
+                  </td>    
+                
+                    <td>
+                      {{getDesc(cp.dmtTemplate)}}
+                    </td>                                            
+               
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3">No records found.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+         
+      </div>
+        </ng-template>
+       
+      </div>
+    </div>
+
+<!-- Agreement dialog -->
+<p-dialog header="Agreement Details" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '75vw'}"
+  [(visible)]="isAgreementModel">
+  <div class="update-form" id="sectiontoprint">
+    <form (ngSubmit)="agreementForm.form.valid " #agreementForm="ngForm" name="agreementForm">
+      <div class="modal-body"  >
+        <div class="row border-button">
+          <table
+          style="
+            font-family: Arial, sans-serif;           
+            width: 100%;
+            padding: 20px;
+          "
+          border="0"
+          cellspacing="0"
+          cellpadding="0"
+          align="center"
+        >
+          <tbody>
+            <tr>
+              <td style="padding: 3px">
+                <table
+                  style="
+                    font-family: Arial, sans-serif;
+                    background: #ffffff;
+                    width: 100%;
+                    padding: 10px;
+                  "
+                  cellspacing="0"
+                  cellpadding="0"
+                  align="center"
+                >
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table
+                          style="
+                            font-family: Arial, sans-serif;
+                            padding: 5px;
+                            width: 100%;
+                          "
+                          cellspacing="0"
+                          cellpadding="0"
+                          align="center"
+                        >
+                          <tbody>
+                            <tr>
+                              <td style="text-align: center">
+                                <img
+                                  src="https://xx/assets/images/logo.png"
+                                  alt=" xg"
+                                  height="100"
+                                />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        style="
+                          text-align: center;
+                          padding-bottom: 20px;
+                          padding-top: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-family: Arial, sans-serif;
+                            font-size: 28px;
+                            font-weight: 700;
+                            text-align: center;
+                            margin: 0;
+                            padding-bottom: 5px;
+                          "
+                        >
+                        {{agreementDetails.agreementText}}  AGREEMENT
+                        </p>
+                      </td>
+                    </tr>                           
+
+                    <tr>
+                      <td style="text-align: left; padding: 10px 20px">
+                        <p
+                          style="
+                            font-family: Arial, sans-serif;
+                            font-size: 20px;
+                            font-weight: 500;
+                            text-align: left;
+                            margin: 0;
+                            padding-bottom: 5px;
+                            line-height: 24px;
+                          "
+                        >
+                        THIS {{agreementDetails.ageementText}} Agreement is made as of this  /  / Between
+                        </p>                            
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td style="text-align: left; padding: 10px 20px">
+                        <p
+                        style="
+                          font-family: Arial, sans-serif;
+                          font-size: 20px;
+                          font-weight: 500;
+                          text-align: left;
+                          margin: 0;
+                          padding: 0;
+                          line-height: 24px;"
+                      >
+                      <span style="font-weight: 600">FP PRIVATE LIMITED</span>, a company incorporated under the Companies Act, 1956, having its registered office 
+                      </p>
+                     
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td style="text-align: left; padding: 10px 20px">
+                        <p
+                        style="
+                          font-family: Arial, sans-serif;
+                          font-size: 20px;
+                          font-weight: 500;
+                          text-align: left;
+                          margin: 0;
+                          padding: 0;
+                          line-height: 24px;
+                        "
+                      >
+                      (Hereinafter referred to as  <span style="font-weight: 600">“ xg”</span> which expression shall unless repugnant to the context or meaning thereof, include their successors and permitted assigns) of the ONE PART 
+                        And
+                      </p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="text-align: left; padding: 10px 20px">
+                      <p
+                      style="
+                        font-family: Arial, sans-serif;
+                        font-size: 20px;
+                        font-weight: 500;
+                        text-align: left;
+                        margin: 0;
+                        padding: 0;
+                        line-height: 24px;"
+                    >
+                    <br>
+                    <span style="text-decoration: underline;">
+                      {{(agreementDetails.companyName+', '+agreementDetails.userType+''+agreementDetails.id+'-'+agreementDetails.userName+', '+agreementDetails.mobile)}}
+                    </span>
+                  </p>
+                    </td>
+                  </tr>
+
+                    <tr>
+                      <td style="text-align: left; padding: 10px 20px">
+                        <p
+                          style="
+                            font-family: Arial, sans-serif;
+                            font-size: 20px;
+                            font-weight: 500;
+                            text-align: left;
+                            margin: 0;
+                            padding: 0;
+                            line-height: 24px;
+                          "
+                        >
+        (Hereinafter referred to as <span style="font-weight: 600;" >"{{agreementDetails.agreementText}}"</span>, 
+          which expression shall unless repugnant to the context or meaning thereof, include their successors and permitted assigns) of the SECOND PART.
+        </p>
+                      </td>
+                    </tr>							
+      
+                    <tr>
+                      <td style="text-align: left; padding: 10px 20px">                               
+                        <p
+                          style="
+                            font-family: Arial, sans-serif;
+                            font-size: 20px;
+                            font-weight: 500;
+                            text-align: left;
+                            margin: 0;
+                            padding: 0;
+                            line-height: 24px;"
+                        >
+        The  xg and the Distributor are herein collectively referred to as the “Parties” and individually as a “Party.”
+        </p>
+         <p
+                          style="
+                            font-family: Arial, sans-serif;
+                            font-size: 20px;
+                            font-weight: 500;
+                            text-align: left;
+                            margin: 0;
+                            padding: 0;
+                            line-height: 24px;"
+                        >
+        <br/>
+        WHEREAS	
+        </p>
+                      </td>
+                    </tr>
+      
+                     <tr>
+                      <td style="text-align: center; padding: 10px 20px">
+         <p
+                          style="
+                            font-family: Arial, sans-serif;
+                            font-size: 20px;
+                            font-weight: 500;
+                            text-align: left;
+                            margin: 0;
+                            padding: 0;
+                            line-height: 24px;"
+                        >
+        A.	 xg is a company engaged, inter alia, in the business of Fintech industry and caters to a number of services like Money Transfer, Aadhaar Enabled Payment System, Bill payments, Recharge , Travel , and many more.
+        </p>
+                      </td>
+                    </tr>
+      
+                   <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+                    <p
+                          style="
+                            font-family: Arial, sans-serif;
+                            font-size: 20px;
+                            font-weight: 500;
+                            text-align: left;
+                            margin: 0;
+                            padding: 0;
+                            line-height: 24px;"
+                        >
+        B.	 xg proposes to appoint Distributor (s) in the various cities and regions of the India for the purpose of managing retailers to be appointed by  xg in such cities and regions and to perform various services offered by  xg, and such Distributor may be referred to as Master Distributor (MD) or Distributor (DI).
+        </p>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td style="text-align: center; padding: 10px 20px"> 
+                        <p
+                          style="
+                            font-family: Arial, sans-serif;
+                            font-size: 20px;
+                            font-weight: 500;
+                            text-align: left;
+                            margin: 0;
+                            padding: 0;
+                            line-height: 24px;"
+                        >
+                  C.	The Distributor wishes to be appointed as the Distributor in the  xg-designated regional territory (hereinafter referred to as "Territory") on the terms &conditions contained in this Distributor Agreement. The Parties agree and undertake that they shall abide by the terms and conditions contained in this Distributor Agreement and therefore agree to sign this Distributor Agreement confirming their commitment and intentions in respect thereof.
+                  </p>
+                      </td>
+                    </tr>
+      
+                    <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+                  <p
+                          style="
+                            font-family: Arial, sans-serif;
+                            font-size: 20px;
+                            font-weight: 500;
+                            text-align: left;
+                            margin: 0;
+                            padding: 0;
+                            line-height: 24px;"
+                        >
+        1.	<span style="text-decoration: underline;">APPOINTMENT OF THE DISTRIBUTOR</span>
+        </p>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+                      <p
+                          style="
+                            font-family: Arial, sans-serif;
+                            font-size: 20px;
+                            font-weight: 500;
+                            text-align: left;
+                            margin: 0;
+                            padding: 0;
+                            line-height: 24px;"
+                        >
+        1.1	Subject to the terms and conditions contained in this Distributor Agreement,  xg hereby appoints the Distributor as the Distributor of  xg on a non-exclusive basis for
+         the Territory to provide the services mentioned in Annexure-I (hereinafter referred to as 
+         <span style="font-weight: 600;">"Services"</span>), and the Distributor hereby agrees to provide the Services.
+              </p>
+                      </td>
+                    </tr>
+      
+                  <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+                     <p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                            padding: 0;line-height: 24px;">
+        1.1	Subject to the terms and conditions contained in this Distributor Agreement,  xg hereby appoints the Distributor as the Distributor of  xg 
+        on a non-exclusive basis for the Territory to provide the services mentioned in Annexure-I 
+        (hereinafter referred to as <span style="font-weight: 600;">"Services"</span>), and the Distributor hereby agrees 
+        to provide the Services.
+                     </p>
+                      </td>
+                    </tr>
+      
+                    <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+         <p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                            padding: 0;line-height: 24px;">
+      1.2	The Distributor may describe himself as the  xg’s authorised distributor, but must not hold itself out as being entitled to bind  xg in any way.
+      </p>
+                      </td>
+                    </tr>
+
+
+                    <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+         <p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                            padding: 0;line-height: 24px;">
+2.	COMMENCEMENT TERM AND RENEWAL
+</p>
+                      </td>
+                    </tr>
+        
+        <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+         <p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                            padding: 0;line-height: 24px;">					
+2.1	The Distributor shall commence business in accordance with the terms and conditions of this Distributor Agreement within 15 days from the date of signing this Distributor Agreement.
+</p>
+                      </td>
+                    </tr>
+      
+      <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+         <p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                            padding: 0;line-height: 24px;">						
+2.2	This Distributor Agreement shall be valid for a period of 3 (three) years unless terminated by  xgor Distributor, in accordance with clause 13 of this Distributor Agreement. The period of validity of this Distributor Agreement shall be referred to as the "Term".
+</p>
+                      </td>
+                    </tr>
+      
+      <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+         <p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                            padding: 0;line-height: 24px;">	
+2.3	Upon the expiry of the Term and subject to satisfactory performance of the services by the Distributor, the Distributor Agreement may be renewed at  xg’s option, on mutually agreed terms and conditions.
+      </p>
+                      </td>
+                    </tr>
+
+    <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+         <p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                            padding: 0;line-height: 24px;">		
+2.4	 xg may exercise its right to renew this Distributor Agreement by informing one month prior to the completion of Term of this Distributor Agreement.
+</p>
+                      </td>
+                    </tr>
+
+<tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+         <p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                            padding: 0;line-height: 24px;">	
+2.5	The Distributor shall ensure that the Distributor Agreement is renewed from time to time.
+
+</p>
+                      </td>
+                    </tr>
+        <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+         <p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                            padding: 0;line-height: 24px;">	
+2.6	The Distributor agrees and acknowledges that it shall not do any business without a valid Distributor Agreement with  xg. Distributor agrees and acknowledges that the  xg shall not be responsible or liable in any manner whatsoever, if the Distributor Agreement is not renewed and the Distributor continues to do business during such period whereof there is no valid Distributor Agreement between the parties.
+</p>
+                      </td>
+                    </tr>
+        <tr>
+                      <td style="text-align: center; padding: 10px 20px">                               
+         <p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                            padding: 0;line-height: 24px;">	
+3.	PROVISION OF SERVICES
+</p>
+                      </td>
+                    </tr>
+      
+
+                    
+        <tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+3.1	During the Term, the Distributor shall render to  xg (by through such of its offices, employees, agents, representatives and affiliates that Distributor shall designate from time to time) services as defined in Annexure-I.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+3.2	Notwithstanding anything to the contrary contained in this Distributor Agreement,  xg shall have the right to modify, alter and amend the list of the Services at any time, including the manner in which the Distributor will be required to perform the Services. The Distributor shall be bound by all such modifications and amendments made by  xg.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+4.	BUSINESS PLAN AND RETAILERS
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+4.1	The Parties shall mutually agree upon a Business Plan in relation to sourcing of retailers to be appointed by the  xg, which shall include, inter alia, the minimum number of persons that the Distributor shall introduce to  xg for the appointment as retailers. The Distributors shall agree to introduce retailers as per the Business Plan agreed to between Parties. In the event, that the Distributors unable to introduce the specified number of persons to  xg to be appointed as retailers,  xg reserves the right to appoint an additional Distributor in the Territory or to terminate this Distributor Agreement.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+4.2	The Distributor acknowledges and agrees that it is solely responsible for issuing credit money to the retailers and to withdrawing credit money from the retailers in its Territory, and  xg is not responsible for any error or dispute arising out of such transactions in any manner whatsoever.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.	PAYMENT AND COMMISSION
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.1	The Distributor shall deposit a sum of INR [……….../=] [……..in words……...] with the  xg on or before the effective date. The deposit shall be non-interest bearing and shall be refunded at the time of termination of the Distributor Agreement in accordance with the provision defined in clause 14 (Consequences of Termination) of this Distributor Agreement.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.2	The Distributor acknowledges that the  xg may reject the deposit at its sole discretion on or before the effective date. 
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.3	In addition to the deposit, the Distributor shall maintain and deposit with the  xg, working capital to the extent of INR [……….../=] [……..in words……...], which shall also be non-interest-bearing. The working capital shall be utilized to provide credit to the retailers appointed by the  xg in the Territory, and who (retailers) are managed by the Distributor.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.4	Distributor agrees and acknowledges that the  xg shall not be responsible or liable in any manner whatsoever for the sources of such deposits and/or working capital, and it is the sole responsibility of the Distributor to ensure that the sources of such deposits and/or working capital are legitimate and are in accordance with the law of India.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.5	All the amount due to  xg under this Distributor Agreement, including the deposit and working capital and/or platform fee, shall be deposited in accordance with the instructions provided in Annexure-II. Distributor agrees and acknowledges that the  xgmay, by prior written notice of two business days, modify any of the details mentioned in Annexure-II and the Distributor shall be bound by all such modifications.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.6	Distributor acknowledges and agrees that  xg prohibits any third-party payment deposits in any bank accounts via any mode whatsoever. In the event that Distributor or its Retailer indulges in any such transaction(s) knowingly or unknowingly, the Distributor authorizes  xgto freeze its account immediately.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.7	Distributor shall be entitled to the commission, discount or service fee, or such other remuneration referred in the Services, as may be specified by the  xg, from time to time and published on  xg’s portal. All the amounts paid by way of the commission shall be exclusive to all applicable taxes, including goods and service tax, surcharge, cess etc., by whatsoever name called, and such taxes will be subject to the deduction of tax at source, if applicable; xgshall debit the account of the Distributor to the extent of such taxes.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.8	The commission shall accrue to the Distributor only on receipt and realization of full payment by the  xgof all dues from the retailers who are managed by the Distributor.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.9	The commission so accrued shall be paid to the Distributor on a monthly basis by way of bank transfer or additional credit in the working capital.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.10	Payments made to the Distributor shall be subject to such withholding as prescribed under the applicable law, subject to the aforesaid,  xg assumes no responsibility for the tax compliance of the Distributor. 
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.11	The Distributor agrees that payments made to the Distributor shall be subject to the deduction of chargeback against the AEPS transactions, Payment Gateway transactions and / or QR code transactions.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.12	The Distributor agrees and authorizes  xg to impose cash deposit bank charges which shall be subject to deduction from the payments made to the Distributor.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.13	All costs and expenses for travelling, promotional activities and other similar out-of-pocket expenses incurred in the performance of the Services shall be borne by the Distributor.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.14	Distributor agrees and acknowledges that in case of any deviation with respect to the use of key salt, it shall be solely liable and responsible; and in such event,  xg is authorized to immediately deactivate the account of Distributor without any prior notice.  xg shall not be held responsible for any consequences that arise out of any unauthorized use of its platform in any manner.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+5.15	The Distributor agrees and authorizes  xgto freeze its account or account of its Retailer in the event  xgreceives any complaint from any relevant statutory or non-statutory authority. The Distributor further agrees and authorizes  xgto withdraw the disputed amount along with the anticipated penalty from the such frozen account.
+
+6.	OPERATIONS OF THE DISTRIBUTOR
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+6.1	The Distributor shall operate and provide the Services from its independent offices equipped with the necessary infrastructure and workforce required to provide the Services. The Distributor shall provide a prior written intimation of any changes in the location of such office to  xg.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+6.2	 xg may, at its discretion, provide advice to the Distributor in relation to exteriors and interiors of the Distributor’s office, investment information technology systems, basic accounting and business procedure etc. The Distributor shall be bound by such advice of  xg.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+7.	MARKET INTELLIGENCE 
+</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+
+The Distributor shall develop adequate and relevant market intelligence in relation to the Territory and shall inform  xg from time to time about the activities of other persons/companies engaged in a similar business.
+</p>
+          </td>
+        </tr>
+
+
+
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+8.	EMPLOYEES OF DISTRIBUTOR
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+8.1	The Distributor shall engage the minimum number of personnel as specified by the  xg and such other additional personnel as may be required to effectively provide the Services. The Distributor shall ensure that all personnel employed in the provision of the Services shall be adequately trained and shall comply with the Term of this Distributor Agreement.The Distributor agrees and acknowledges that it shall do proper due diligence and background check of all such personnel.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+8.2	The Distributor shall be liable and responsible for any data theft or misuse of any data related to clients of  xg from its office.
+</p>
+          </td>
+        </tr>
+
+<tr>								
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+8.3	The Distributor agrees and acknowledges that  xg will not have any obligations, liability or responsibility whatsoever to supervise or manage the Distributor'semployees, agents or independent contractors.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+9.	INTELLECTUAL PROPERTY
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+9.1	 xg hereby grants the Distributor a limited, non-exclusive, non-transferable, non-assignable and royalty-free license to use the Software for the purpose of providing the Services as contemplated under this Distributor Agreement, which may be revoked by  xg at its sole discretion.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+9.2	The Distributor is expressly prohibited from distributing, sub-licensing,assigning, transferring or otherwise the Software,or other technical documentation pertaining thereto, or any portions thereof in any form to any person.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+9.3	The Distributor may utilize any third-party software other than the Software provided by  xg, only with prior permission from  xg. Further, the Distributor shall ensure that the third-party software is validly licenced and installed.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+9.4	The  xg shall retain all the rights over all the intellectual property, including the Software, its name and logo and all the rights in relation to the promotion and marketing materials.The Distributor herby acknowledges that (a) the execution of this Distributor Agreement does not amount to any transfer to it of any intellectual property rights held by the  xg prior to the execution of this Distributor Agreement, nor does this Distributor Agreement in any way limit the  xg’s rights over its intellectual property, including the right to licence to others and, (b) any and all goodwill arising from the Distributor’s use of the intellectual property shall be exclusive of xg without any compensation to anyone.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+9.5	The Distributor shall not use the Software of the  xg in any manner whatsoever without the permission of the  xg.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+10.	CONFIDENTIALITY
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+
+10.1	Parties undertake to retain in confidence the terms of this Distributor Agreement and all other non-public information, technology, materials, and know-how of the other party disclosed to or acquired by the receiving party pursuant to or in connection with this Distributor Agreement that is either designated as proprietary or confidential or by the nature of the circumstances surrounding disclosure, ought in good faith to be treated as proprietary or confidential information, provided that each party may disclose the terms and conditions of this Distributor Agreement to its immediate legal and financial consultants in the ordinary course of its business.
+
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+10.2	That Distributor agrees and acknowledges that the  xg has a responsibility to its customers to keep customer information strictly confidential. The Distributor agrees and acknowledges to keepall information related to customers strictly confidential that the Distributor is in the possession, or gains access to or become aware of during the course of rendering the services under this Distributor Agreement.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+
+10.3	The provision of clause 10 shall survive the expiry of termination of this Distributor Agreement.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+11.	COMPETITION AND SOLICIT 
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+11.1	The Distributor agrees and undertakes that during the Term of Distributor Agreement and for a period of one year thereafter, it shall not, directly, through its employees, affiliates or relatives or in a firm where the Distributor or any relative or nominee of the Distributor is a partner or in any company where the Distributor or any relative or nominee of the Distributor is a director or shareholder, 1.) be appointed as a Distributor for any other person or legal entity which is carrying on a business  similar or in competition with any business carried by  xg at the relevant time, whether in India or abroad, or 2.) engage in any business that is similar to or in competition with any business carried on by the  xg at the relevant time.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+11.2	During the Term of Distributor Agreement, the Distributor shall not either directly or indirectly solicit any employee of  xg for employment, induce or attempt to induce any such employee to terminate or breach his or her employment agreement with  xg, or hire any such employee or associate with any such employee, either during the course of their employment with  xg or after the termination of their employment with the  xg.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+11.3	During the Term of this Distributor Agreement, the Distributor shall not either directly or indirectly, solicit, cause in any part or knowingly encourage any existing or potential clients or customers of  xg to cease doing business or not to do business, in whole or in part of with  xg, or solicit, cause in any part or knowingly encourage any existing or potential clients or customers of  xg to do business with any person other then  xg, or associate with any prospective clients or customers while they continue to be clients or customers of  xg.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+12.	EXCLUSIVITY
+The Distributor shall only market and promote Services of  xg, as authorized by the  xg.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+13.	TERMINATION OF AGREEMENT
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+13.1	 xg may terminate this Distributor Agreement of the Distributor with immediate effect, if<br>
+a.	in the opinion of  xg, Distributor is not the fit person to perform Services under the provision of Distributor Agreement.<br>
+b.	Distributor fails to deposit the proceeds of sale made by the Distributor or its retailers to  xg on a daily basis and perpetual basis.<br>
+c.	Distributor becomes the subject of a voluntary petitioner in bankruptcy or any voluntary proceedings relating to insolvency, liquidation or composition for the benefit of the creditors.<br>
+d.	Distributor fails to comply with directions issued by the  xg under the provision of this Distributor Agreement.<br>
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+13.2	Notwithstanding anything to the contrary herein,  xg may terminate this Distributor Agreement without notice.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+13.3	Distributor may terminate this Distributor Agreement with written notice of 60 (sixty) days to  xg.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+14.	CONSEQUENCE OF TERMINATION
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+14.1	Upon termination of this Distributor Agreement for any reason as stated in clause 13 above, the Distributor shall<br>
+a.	immediately discontinue and cease to use the trade mark, logo, other intellectual property, Software provided by the  xg and shall immediately hand over all copies or documents of such intellectual property to  xg.<br>
+b.	immediately return to  xg all confidential information, originals and copies of any and all materials provided to the Distributor under this Distributor Agreement or in the course of provision of the services.<br>
+c.	immediately provide remote access to  xg to disable any Software that  xg has installed with the Distributor.<br>
+d.	immediately remove all sign board, banners, and glowboards of  xg from its offices and also all such materials which will indicate any association with  xg.<br>
+e.	immediately ceases to promote, market or advertise  xg or its products/services.<br>
+f.	immediately clear all dues within the period of 7 days from the date of termination.<br>
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+15.	INDEMINITY  
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+15.1	The Distributor shall indemnify itself and hold the  xg and all its financial partner,affiliates, officers, directors, employees, successors and assignees harmless against all customer claims, actions, demands, litigations, suits, proceedings and against all losses,expenses, costs, damages,charges, penalties etc., due to any wilful negligence, fraud, breach of applicable laws or breach of any terms of this Distributor Agreement directly, attributable to the Distributor.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+15.2	Notwithstanding anything contained in this Distributor Agreement,  xg shall not be liable to the Distributor for any incidental, indirect, consequential or damages of any kind or of loss of revenue or business opportunities.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+15.3	This clause shall survive the termination of this Distributor Agreement and shall remain valid for the claims or disputes which arose as a result of or pertaining to the duration hereof.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+16.	RELATIONSHIP BETWEEN THE PARTIES
+The Services rendered by the Distributor under this Distributor Agreement shall be provided as an independent contractor to  xg, and nothing in this Distributor Agreement creates or shall be deemed to create the relationship of partners, joint venture, employees or principle-agent between the Parties.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+17.	RECORDS AND AUDIT
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+17.1	The Distributor shall maintain all statutory books as may be required from time to time to be maintained under the applicable laws.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+17.2	The Distributor shall permit the  xg, to enter into and inspect all books of accounts, record and materials in relation to the business 
+operations related to this Distributor Agreement during normal business hours.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+17.3	During the Term and at any time within sixty days after the termination of this Distributor Agreement,  xg, through its employees, representatives or agents, may, at its expense, carry out an audit to determine whether the audit has properly completed its obligations under this Distributor Agreement.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+18.	AMENDMENT
+No changes, alterations, modifications or additions to this Distributor Agreement shall be valid unless made in writing and properly executed by Parties hereto.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+
+19.	ASSIGNMENT
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+19.1	The Distributor shall not assign, sub-let, or subcontract any of its obligations under this Distributor Agreement to any third party unless it obtains prior written permission/consent from the  xg. In any event, any assignment or transfer shall not operate to relieve the assigning party of any of its obligations hereunder, nor will any such assignment impose any obligation on the assignee except in the case of express written assumption by the assignee.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+
+19.2	No such assignment under this clause shall relieve the Distributor of any obligations or liabilities incurred prior to the assignment unless mutually agreed to in writing.
+</p>
+          </td>
+        </tr>
+
+<tr>
+          <td style="text-align: center; padding: 10px 20px">                               
+<p style="font-family: Arial, sans-serif;font-size: 20px;font-weight: 500;text-align: left;margin: 0;
+                padding: 0;line-height: 24px;">	
+19.3	This Agreement shall be construed in accordance with the applicable laws in India. 
+</p>
+          </td>
+        </tr>
+         </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>     
+    </form>   
+  </div>
+  <div class="modal-footer">
+    <div class="row text-right">     
+      <div class="col-sm-12 text-right"> <button type="submit"            
+         [disabled]="commonService.isLoader" 
+        class="btn btn-primary waves-effect" (click)="closeAgreementDialog()"> Print Agreement </button></div>
+    </div>
+  </div>
+</p-dialog>
+<!-- Agreement dailog -->

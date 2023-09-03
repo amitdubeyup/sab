@@ -1,0 +1,343 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>Dashboard</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item active"> 
+                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" (click)="getRecentTransaction('all')"> <i
+                                class="fa fa-refresh"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div *ngIf="isDash">
+                    <div class="row">
+                        <div class="col-sm-6 col-xl-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>Transaction Summary</h2>
+                                    <ul class="header-dropdown dropdown dropdown-animated scale-left">
+                                        <li> <a href="javascript:void(0);" data-toggle="cardloading"
+                                                data-loading-effect="pulse"><i class="icon-refresh"></i></a></li>
+                                        <li><a href="javascript:void(0);" class="full-screen"><i
+                                                    class="icon-size-fullscreen"></i></a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-5">
+                                            <div class="sparkline-pie">
+                                                <canvas baseChart [height]="100" [width]="100" [type]="'pie'"
+                                                    [datasets]="transactionSummary" [options]="pieChartOptions"
+                                                    [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                                                </canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <span>Total Transaction <span
+                                                    class="float-right">{{admtList?.TotalTransaction}}</span></span><br>
+                                            <span>Total Amount <span
+                                                    class="float-right">{{(admtList?.TransactionAmount)
+                                                    | number : '1.2-2'}}</span></span><br>
+                                            <span>Cash Approved <span
+                                                    class="float-right">{{admtList?.FundRequestApproved | number :
+                                                    '1.2-2'}}</span></span><br>
+                                            <span>Cash Pending <span class="float-right">{{admtList?.FundRequestPending
+                                                    | number : '1.2-2'}}</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>Outlet Balance Summary</h2>
+                                    <ul class="header-dropdown dropdown dropdown-animated scale-left">
+                                        <li> <a href="javascript:void(0);" data-toggle="cardloading"
+                                                data-loading-effect="pulse"><i class="icon-refresh"></i></a></li>
+                                        <li><a href="javascript:void(0);" class="full-screen"><i
+                                                    class="icon-size-fullscreen"></i></a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-5">
+                                            <div class="sparkline-pie">
+                                                <canvas baseChart [height]="100" [width]="100" [type]="'pie'"
+                                                    [datasets]="OutletBalance" [options]="pieChartOptions"
+                                                    [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                                                </canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <span>Total Balance<span
+                                                    class="float-right">{{(admtList?.RetailerBalance--admtList?.DistributorBalance--admtList?.MDBalance--admtList?.ASMBalance--admtList?.AepsBalance)
+                                                    | number : '1.2-2'}}</span></span><br>
+                                            <span>Area Manager Balance<span class="float-right">{{admtList?.ASMBalance |
+                                                    number : '1.2-2'}}</span></span><br>
+                                            <span>Master Dist Balance<span class="float-right">{{admtList?.MDBalance |
+                                                    number : '1.2-2'}}</span></span><br>
+                                            <span>Distributor Balance <span
+                                                    class="float-right">{{admtList?.DistributorBalance | number :
+                                                    '1.2-2'}}</span></span><br>
+                                            <span>Retailer Balance <span class="float-right">{{admtList?.RetailerBalance
+                                                    | number : '1.2-2'}}</span></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>User Summary</h2>
+                                    <ul class="header-dropdown dropdown dropdown-animated scale-left">
+                                        <li> <a href="javascript:void(0);" data-toggle="cardloading"
+                                                data-loading-effect="pulse"><i class="icon-refresh"></i></a></li>
+                                        <li><a href="javascript:void(0);" class="full-screen"><i
+                                                    class="icon-size-fullscreen"></i></a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-5">
+                                            <div class="sparkline-pie">
+                                                <canvas baseChart [height]="100" [width]="100" [type]="'pie'"
+                                                    [datasets]="transactionSummary" [options]="pieChartOptions"
+                                                    [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                                                </canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <span>Area Manager<span
+                                                    class="float-right">{{admtList?.TotalASM}}</span></span><br>
+                                            <span>Master Distributor <span
+                                                    class="float-right">{{admtList?.TotalMD}}</span></span><br>
+                                            <span>Distributor <span
+                                                    class="float-right">{{admtList?.TotalDistributor}}</span></span><br>
+                                            <span>Retailer <span
+                                                    class="float-right">{{admtList?.TotalRetailer}}</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>Money Transaction Summary</h2>
+                                    <ul class="header-dropdown dropdown dropdown-animated scale-left">
+                                        <li> <a href="javascript:void(0);" data-toggle="cardloading"
+                                                data-loading-effect="pulse"><i class="icon-refresh"></i></a></li>
+                                        <li><a href="javascript:void(0);" class="full-screen"><i
+                                                    class="icon-size-fullscreen"></i></a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-5">
+                                            <div class="sparkline-pie">
+                                                <canvas baseChart [height]="100" [width]="100" [type]="'pie'"
+                                                    [datasets]="transactionSummary" [options]="pieChartOptions"
+                                                    [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                                                </canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <span>DMT Transaction Amount <span
+                                                    class="float-right">{{admtList?.TotalDMT}}</span></span><br>
+                                            <span>A/C Verification<span
+                                                    class="float-right">{{admtList?.TotalACVerify}}</span></span><br>
+                                            <span>Verification Amount <span
+                                                    class="float-right">{{admtList?.TotalVerifyAmount | number :
+                                                    '1.2-2'}}</span></span><br>
+                                            <span>Charge <span class="float-right">{{admtList?.TotalDMTCharge
+                                                    | number : '1.2-2'}}</span></span><br>
+                                            <span>TDS <span class="float-right">{{admtList?.TotalDMTTds
+                                                    | number : '1.2-2'}}</span></span><br>
+                                            <span>Commission <span class="float-right">{{admtList?.TotalDMTComm
+                                                    | number : '1.2-2'}}</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>Utility Summary</h2>
+                                    <ul class="header-dropdown dropdown dropdown-animated scale-left">
+                                        <li> <a href="javascript:void(0);" data-toggle="cardloading"
+                                                data-loading-effect="pulse"><i class="icon-refresh"></i></a></li>
+                                        <li><a href="javascript:void(0);" class="full-screen"><i
+                                                    class="icon-size-fullscreen"></i></a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-5">
+                                            <div class="sparkline-pie">
+                                                <canvas baseChart [height]="100" [width]="100" [type]="'pie'"
+                                                    [datasets]="transactionSummary" [options]="pieChartOptions"
+                                                    [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                                                </canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <span>Total Transaction <span
+                                                    class="float-right">{{admtList?.TotalTransaction}}</span></span><br>
+                                            <span>Total Amount <span
+                                                    class="float-right">{{(admtList?.TransactionAmount--admtList?.RetailerTransfer--admtList?.TotalAEPS--admtList?.TotalQR)
+                                                    | number : '1.2-2'}}</span></span><br>
+                                            <span>Cash Approved <span
+                                                    class="float-right">{{admtList?.FundRequestApproved | number :
+                                                    '1.2-2'}}</span></span><br>
+                                            <span>Cash Pending <span class="float-right">{{admtList?.FundRequestPending
+                                                    | number : '1.2-2'}}</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>QR & PG Summary</h2>
+                                    <ul class="header-dropdown dropdown dropdown-animated scale-left">
+                                        <li> <a href="javascript:void(0);" data-toggle="cardloading"
+                                                data-loading-effect="pulse"><i class="icon-refresh"></i></a></li>
+                                        <li><a href="javascript:void(0);" class="full-screen"><i
+                                                    class="icon-size-fullscreen"></i></a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-5">
+                                            <div class="sparkline-pie">
+                                                <canvas baseChart [height]="100" [width]="100" [type]="'pie'"
+                                                    [datasets]="transactionSummary" [options]="pieChartOptions"
+                                                    [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                                                </canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <span>Total Transaction <span
+                                                    class="float-right">{{admtList?.TotalTransaction}}</span></span><br>
+                                            <span>Total Amount <span
+                                                    class="float-right">{{(admtList?.TransactionAmount--admtList?.RetailerTransfer--admtList?.TotalAEPS--admtList?.TotalQR)
+                                                    | number : '1.2-2'}}</span></span><br>
+                                            <span>Cash Approved <span
+                                                    class="float-right">{{admtList?.FundRequestApproved | number :
+                                                    '1.2-2'}}</span></span><br>
+                                            <span>Cash Pending <span class="float-right">{{admtList?.FundRequestPending
+                                                    | number : '1.2-2'}}</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>Vendor & AEPS Summary</h2>
+                                    <ul class="header-dropdown dropdown dropdown-animated scale-left">
+                                        <li> <a href="javascript:void(0);" data-toggle="cardloading"
+                                                data-loading-effect="pulse"><i class="icon-refresh"></i></a></li>
+                                        <li><a href="javascript:void(0);" class="full-screen"><i
+                                                    class="icon-size-fullscreen"></i></a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-5">
+                                            <div class="sparkline-pie">
+                                                <canvas baseChart [height]="100" [width]="100" [type]="'pie'"
+                                                    [datasets]="transactionSummary" [options]="pieChartOptions"
+                                                    [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                                                </canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <span>Total Transaction <span
+                                                    class="float-right">{{admtList?.TotalTransaction}}</span></span><br>
+                                            <span>Total Amount <span
+                                                    class="float-right">{{(admtList?.TransactionAmount--admtList?.RetailerTransfer--admtList?.TotalAEPS--admtList?.TotalQR)
+                                                    | number : '1.2-2'}}</span></span><br>
+                                            <span>Cash Approved <span
+                                                    class="float-right">{{admtList?.FundRequestApproved | number :
+                                                    '1.2-2'}}</span></span><br>
+                                            <span>Cash Pending <span class="float-right">{{admtList?.FundRequestPending
+                                                    | number : '1.2-2'}}</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h2>Refund Pending Summary</h2>
+                                    <ul class="header-dropdown dropdown dropdown-animated scale-left">
+                                        <li> <a href="javascript:void(0);" data-toggle="cardloading"
+                                                data-loading-effect="pulse"><i class="icon-refresh"></i></a></li>
+                                        <li><a href="javascript:void(0);" class="full-screen"><i
+                                                    class="icon-size-fullscreen"></i></a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-5">
+                                            <div class="sparkline-pie">
+                                                <canvas baseChart [height]="100" [width]="100" [type]="'pie'"
+                                                    [datasets]="OutletBalance" [options]="pieChartOptions"
+                                                    [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+                                                </canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <span>Total Transaction <span
+                                                    class="float-right">{{admtList?.TotalTransaction}}</span></span><br>
+                                            <span>Total Amount <span
+                                                    class="float-right">{{(admtList?.TransactionAmount--admtList?.RetailerTransfer--admtList?.TotalAEPS--admtList?.TotalQR)
+                                                    | number : '1.2-2'}}</span></span><br>
+                                            <span>Cash Approved <span
+                                                    class="float-right">{{admtList?.FundRequestApproved | number :
+                                                    '1.2-2'}}</span></span><br>
+                                            <span>Cash Pending <span class="float-right">{{admtList?.FundRequestPending
+                                                    | number : '1.2-2'}}</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="content main-content" *ngIf="isApibal">
+                <div class="container-fluid">
+
+                    <app-api-balance></app-api-balance>
+                </div>
+            </div>
+            <!-- <footer class="footer mobile-hide">
+                © 2023 - Power Pay <span class="d-sm-inline-block"> - Designed &amp; Developed by <a href="#"
+                        target="_blank">Power Pay Team</a></span>.
+            </footer> -->
+        </div>
+    </div>
+</div>

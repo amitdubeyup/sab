@@ -1,0 +1,242 @@
+<app-distributor-layout></app-distributor-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>Money Request</h2>
+            </div>
+
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="col-lg-12">
+            <div class="">
+                <div class=" pt-2 pb-1">
+                    <form (ngSubmit)="fundRequestForm.form.valid && btnNext();" #fundRequestForm="ngForm"
+                        name="fundRequestForm">
+                        <div class="modal-body" *ngIf="!isNext">
+                            <div class="card form-group">
+                                <div class="card-body">
+                                    <div class="row border-button">
+                                        <div class="col-sm-6 form-group">
+                                            <label>Amount</label>
+                                            <div class="input-group">
+                                            <input type="text" appTwoDigitDecimaNumber class="form-control" placeholder="Enter Amount"
+                                                name="Amount" [(ngModel)]="fundRequest.Amount" #Amount="ngModel" style="min-width: 100px;"
+                                                [ngClass]="{ 'is-invalid': fundRequestForm.submitted && Amount.invalid }"
+                                                required />
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text text-danger">{{excelService.convertNumberToWords(fundRequest.Amount)}}</span>
+                                                  </div>
+                                            <div *ngIf="fundRequestForm.submitted && Amount.invalid"
+                                                class="invalid-feedback">
+                                                <div *ngIf="Amount.errors">Amount is required</div>
+                                            </div>
+                                         </div>
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <label> Mode</label>                                            
+                                            <ng-select [items]="paymentList" bindLabel="name" name="TxnMode"
+                                             bindValue="id" [(ngModel)]="fundRequest.TxnMode"
+                                            #TxnMode="ngModel" placeholder="Select Mode"
+                                            [ngClass]="{ 'is-invalid': fundRequestForm.submitted && TxnMode.invalid }" required>
+                                          </ng-select>
+                                            <div *ngIf="fundRequestForm.submitted && TxnMode.invalid"
+                                                class="invalid-feedback">
+                                                <div *ngIf="TxnMode.errors"> Mode is required</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <label>Bank Account</label>
+                                            <ng-select [items]="bankList" bindLabel="desc"  name="BankId"
+                                             bindValue="code" [(ngModel)]="fundRequest.BankId"
+                                            #BankId="ngModel" placeholder="Select Bank"
+                                            [ngClass]="{ 'is-invalid': fundRequestForm.submitted && BankId.invalid }" required>
+                                          </ng-select>
+                                            <div *ngIf="fundRequestForm.submitted && BankId.invalid"
+                                                class="invalid-feedback">
+                                                <div *ngIf="BankId.errors">Bank name is required</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <label>Upload Deposit Slip Photo</label>
+                                            <input type="file" accept="image/*" class="form-control file"
+                                                (change)="onFileSelect($event)" />
+                                            <input type="hidden" class="form-control" name="TxnSlip"
+                                                [(ngModel)]="fundRequest.TxnSlip" #TxnSlip="ngModel" />
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <label>Deposit Date</label>
+                                            <p-calendar class="p-calendar calender-top" name="DepositDate" placeholder="Select Date"
+                                                [ngClass]="{ 'is-invalid': fundRequestForm.submitted && DepositDate.invalid }"
+                                                [showIcon]="false" inputId="icon" [maxDate]="activeDt" [required]="true"
+                                                [(ngModel)]="fundRequest.DepositDate" #DepositDate="ngModel">
+                                            </p-calendar>
+                                            <div *ngIf="fundRequestForm.submitted && DepositDate.invalid"
+                                                class="invalid-feedback">
+                                                <div *ngIf="DepositDate.errors">Deposit date is required</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <label>Remarks</label>
+                                            <input type="text" class="form-control" name="SenderNote" placeholder="Enter Remarks"
+                                                [(ngModel)]="fundRequest.SenderNote" #SenderNote="ngModel"
+                                                [ngClass]="{ 'is-invalid': fundRequestForm.submitted && SenderNote.invalid }"
+                                                required />
+                                            <div *ngIf="fundRequestForm.submitted && SenderNote.invalid"
+                                                class="invalid-feedback">
+                                                <div *ngIf="SenderNote.errors">Remark is required</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 form-group" *ngIf="fundRequest.Id">
+                                            <label>Admin Remark</label>
+                                            <input type="text" class="form-control" name="RecieverNote"
+                                                [(ngModel)]="fundRequest.RecieverNote" #RecieverNote="ngModel"
+                                                [ngClass]="{ 'is-invalid': fundRequestForm.submitted && RecieverNote.invalid }"
+                                                readonly="true" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <input type="submit" name="BtnNext" value="Proccess" class="btn btn-primary"> &nbsp; &nbsp;
+                                <input type="button" name="BtnClose" value="Back" (click)="btnclose();"
+                                class="btn btn-info">&nbsp;
+                                
+                               
+                            </div>
+                        </div>
+                        <div class="panel-body" *ngIf="isNext">
+                            <div class="form-group">
+                                <div style="border: solid 1px #000; padding: 10px;">
+                                    <h2 style="text-align:center;">INDEMNITY BOND</h2><br>
+                                    <b>Date:-</b> {{activeDt | date: 'dd-MM-yyyy hh:mm:ss aa'}}
+                                    <br>
+                                    <br>
+                                    <b>From:-</b>
+                                    <br>
+                                    <table width="100%" cellspacing="0" cellpadding="4" border="1">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <b>Merchant/Agent name</b>
+                                                </td>
+                                                <td>{{commonService.userPram?.companyName}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>BC Agent Id</b>
+                                                </td>
+                                                <td>{{commonService.userPram?.userType+''+commonService.userPram?.id}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Registered Mobile number</b>
+                                                </td>
+                                                <td>{{commonService.userPram?.rmn}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>PAN number</b>
+                                                </td>
+                                                <td>{{boundDet?.pan}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Request No.</b>
+                                                </td>
+                                                <td>{{boundDet?.txnNo}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Amount</b>
+                                                </td>
+                                                <td>Rs. {{fundRequest.Amount}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Amount (In Words)</b>
+                                                </td>
+                                                <td>{{excelService.convertNumberToWords(fundRequest.Amount)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Bank Account </b>
+                                                </td>
+                                                <td>{{getBoard(fundRequest.BankId)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Deposit Date</b>
+                                                </td>
+                                                <td>{{fundRequest.DepositDate| date: 'dd-MM-yyyy'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Payment Type</b>
+                                                </td>
+                                                <td>{{getPaymentMode(fundRequest.TxnMode)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Remark</b>
+                                                </td>
+                                                <td>{{fundRequest.SenderNote}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <b>To,</b>
+                                    <br>
+                                    <b>The Board of Directors,</b>
+                                    <br>
+                                    <b>FleetPay India Private Limited</b>
+                                    <br>
+                                    <b>First floor, F-02, A-88, Sector-4</b>
+                                    <br>
+                                    <b> Gautam Buddha Nagar </b>
+                                    <br>
+                                    <b>Noida-201301, UP</b><br>
+                                    <br>
+                                    <p>Dear Sir/Madam,</p>
+
+                                    <p>I, <b>{{commonService.userPram?.companyName}}</b>, hereby undertake and explicitly agree to indemnify FLEETPAY INDIA TECHNOLOGY PRIVATE LIMITED (FleetPay) towards the following points:</p>
+                                    <p>FLEETPAY INDIA TECHNOLOGY PRIVATE LIMITED is providing us a platform to Wallet Top-Up/ Transfer/Receive by using various payment mode i.e., IMPS/NEFT/RTGS/UPI and many more from person to person (P2P) and person to merchant (P2M) against a separate consideration.</p>
+                                    <p>I am wholly owned responsibility to arrange KYC/meeting accordance to statutory requirements and other required/mandatory documents/information from the sender/ receiver/both along with the reasons of the transactions.</p>
+                                    <p>I am responsible and abide to provide the KYC &amp;/or other mandatory documents/information along with the reasons of each transaction from the end customers to the Fleetpay India Technology Private Limited (Fleetpay) discretion.</p>
+                                    <p>I am wholly and solely responsible for those transactions which would be wrongly debited or credited by me from/to another party also for any incorrect entry/entries while using Fleetpay Platform/Portal; and</p>
+                                    <p>After obtaining a proper understanding of the transaction patterns, I am giving my consent to use this platform with all the Terms and Conditions of Fleetpay; also assuring that after due consent of every Sender/Receiver/Both is/are using Fleetpay Portal for Top-up/Transfer/Receive by using various payment mode i.e., IMPS/NEFT/RTGS/UPI and many more.</p>
+                                    <br>
+                                    <p>Thanking you,</p>
+                                  
+                                    <b>{{commonService.userPram?.companyName}}
+                                        <br>
+                                        (Merchant’s/Agent’s Name)
+                                        <br>
+                                        Seal and Signature
+                                        <br>                                      
+                                        Timestamp : {{activeDt | date: 'dd-MM-yyyy hh:mm:ss aa'}}
+                                    </b>
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+
+                                <input type="button" (click)="onFormSubmit()" [disabled]="commonService.isLoader"
+                                    name="cBtnSubmit" value="Accept &amp; Submit" class="btn btn-primary"> &nbsp;
+                                <input type="button" name="BtnCancel" value="Back" (click)="btnback()"
+                                    class="btn btn-danger"> &nbsp;
+                                <input type="button" name="BtnClose" value="Cancel" (click)="btnclose();"
+                                    class="btn btn-info">
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+    <div class="form-section">
+      <form class="form" (ngSubmit)="creditMoneyForm.form.valid && onCreditMoneySave()" #creditMoneyForm="ngForm"
+        name="creditMoneyForm" autocomplete="off">
+        <div class="row" *ngIf="walletDetails">    
+          <div class="col-lg-6 col-md-6">
+            <div class="card top_counter">
+                <div class="body">
+                    <div class="icon text-warning"><img  src="assets/images/icons8-wallet-64.png" height="30px"></div>
+                    <div class="container-fluid">
+                        <div class="text">Main Wallet Balance</div>
+                        <h5 class="number">{{walletDetails.walleT_BALANCE}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <div class="card top_counter">
+                <div class="body">
+                    <div class="icon text-warning"><img  src="assets/images/icons8-wallet-64.png" height="30px"></div>
+                    <div class="container-fluid">
+                        <div class="text">Commission Balance</div>
+                        <h5 class="number">{{walletDetails.aepsBalance}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        </div>
+       
+        <div class="form-group">
+          <label>Amount</label>
+          <input type="number" class="form-control" name="amount" [(ngModel)]="creditMoneyModal.amount"
+            #amount="ngModel" [ngClass]="{ 'is-invalid': creditMoneyForm.submitted && amount.invalid }" required
+            autocomplete="off" />
+          <div *ngIf="creditMoneyForm.submitted && amount.invalid" class="invalid-feedback">
+            <div *ngIf="amount.errors">Amount is required.</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Remark</label>
+          <input type="text" class="form-control" name="remark" [(ngModel)]="creditMoneyModal.remark"
+            #remark="ngModel" [ngClass]="{ 'is-invalid': creditMoneyForm.submitted && remark.invalid }" required
+            autocomplete="off" />
+          <div *ngIf="creditMoneyForm.submitted && remark.invalid" class="invalid-feedback">
+            <div *ngIf="remark.errors">Remark is required.</div>
+          </div>
+        </div>
+        <div class="form-group text-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-3"></div>
+</div>

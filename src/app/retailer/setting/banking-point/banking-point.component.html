@@ -1,0 +1,193 @@
+<app-retailer-layout></app-retailer-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Profile Details</h2>
+      </div>
+    </div>
+  </div>
+        <div class="container-fluid">
+            <div class="row top-confirmation mt-5 mb-1">
+                <div class="col-sm-9 ml-auto mr-auto p-0">
+        <div class="row">
+        <div class="col-sm-7 text-right">
+          <div class="transaction"><div class="print" (click)="printPage()" ><i class="fas fa-print"></i>Print</div></div>
+        </div>
+        <div class="col-sm-5 text-right ml-auto pl-0">
+          
+        </div>
+        </div>
+       </div>
+        </div>
+         <div class="row">
+             <div class="col-12" id="section-to-print">
+              <table style="font-family: Arial, sans-serif; background: #0056a1; width: 100%;padding: 20px;" border="0" cellspacing="0" cellpadding="0" align="center">
+                <tbody>
+                <tr>
+                    <td style=" border: 5px solid #000; padding: 3px;" >
+                        <table style="font-family: Arial, sans-serif; background: #ffffff; width: 100%; padding: 10px;"  cellspacing="0" cellpadding="0" align="center">
+                            <tbody>
+                              
+                                        
+                                                <tr>
+                                                    <td>
+                                                        <table style="font-family: Arial, sans-serif;padding: 5px;  width: 100%; "  cellspacing="0" cellpadding="0" align="center">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="text-align: center;">  
+                                                                        <img src="https://secures.SoulPay.in/assets/images/logo.png" alt="SoulPay" height="100">
+                                                                    </td>
+                                                                   
+                                                                </tr>
+                                                               
+                                                               
+                                                            
+                                                            
+                                                            </tbody>
+                                                         </table>
+                                                      
+                                                        
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td style="text-align: center;padding-bottom: 20px;
+                                                    padding-top: 10px;">
+                                                        <p style="font-family: Arial, sans-serif; font-size:28px; font-weight: 700; text-align: center;margin:0;padding-bottom:5px;">CERTIFICATE</p>
+                                                        <p style="font-family: Arial, sans-serif; font-size:25px;font-weight: 500; text-align: center;margin:0;padding: 0;">OF APPOINTMENT</p>
+                                                    
+                                                    
+                                                    
+                                                    </td>
+                                                </tr>
+                                                   <tr>
+                                                    <td style="text-align: center; padding: 10px 20px;">
+                                                        <p style="font-family: Arial, sans-serif; font-size:20px; font-weight: 500; text-align: center;margin:0;padding-bottom:5px; line-height: 24px;">M/S <span style="border-bottom:2px solid; padding-left: 100px;  padding-right: 100px;">{{profileData?.Name}}</span></p>
+                                                        <p style="font-family: Arial, sans-serif; font-size:20px; font-weight: 500; text-align: center;margin:0;padding: 0;line-height: 24px;">is an authorized Business Correspondent Agent of the Business Correspondent <br> of SOUL COMMUNICATIONS PVT LTD.</p>
+                                                    </td>
+                                                </tr>
+                                            
+                                            <tr>
+                                             <td style="text-align: center; padding: 10px 20px;">
+                                                 <p style="font-family: Arial, sans-serif; font-size:20px; font-weight: 500; text-align: center;margin:0;padding: 0; line-height: 24px;">Mobile No.<span style="border-bottom:2px solid; padding-left: 5px;  padding-right: 50px;">+91-{{profileData?.retailerInformation?.Mobile}}</span></p>
+                                                 
+                                             </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; padding: 10px 20px;">
+                                                    <p style="font-family: Arial, sans-serif; font-size:20px; font-weight: 500; text-align: center;margin:0;padding: 0; line-height: 24px;">The Services rendered by the Business Correspondents (BCs)fall under the <span style="font-weight: 600;">ESSENTIAL SERVICES</span>. <br> They will remain open during this containment period to provide services to the public.</p>
+                                                    
+                                                </td>
+                                               </tr>
+                                               
+        
+        
+                                               <tr>
+                                                   <td style="margin: 0px; padding: 0;">
+                                                    <table style="width: 92%; margin: 0 auto;padding: 10px 10px;" cellspacing="0" cellpadding="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="3" style="padding-right: 60px; padding-bottom: 4px;">
+                                                                    <p style="font-family: Arial, sans-serif; font-size:16px; font-weight: 600; text-align: right;margin:0;padding: 0; line-height: 22px;">On Duty Essential Services</p>
+                                                                </td>
+                                                              
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="33%" style=" text-align: right;">
+                                                                  
+                                                                    <table style="font-family: Arial, sans-serif; background: #ffffff; width: 100%; padding: 15px 5px;border: 2px solid #0056a1; "  cellspacing="0" cellpadding="0" align="center">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+        
+                                                                                </td>
+                                                                                
+                                                                                <td>
+                                                                                   <p style="font-family: Arial, sans-serif; font-size:16px; font-weight: 600; text-align: right;margin:0;padding: 0; line-height: 22px;">Please Verify<br> Details of<br> Agent</p>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                                <td width="33%" style=" text-align: center; padding: 0 30px;">
+                                                                    <p style="border-bottom: 2px solid black;margin: 0;
+                                                                    padding: 0;">
+                                                                        <img src="https://secures.SoulPay.in/assets/images/ceo.png" height="57px" alt="SoulPay">
+                                                                    </p>
+                                                                    <p style="font-family: Arial, sans-serif; font-size:16px; font-weight: 600; text-align: center;margin:0;padding-top: 5px; line-height: 22px;">Mahendra Dubey <br> Chief Executive Officer</p>
+                                                                </td>
+                                                                <td width="33%" style=" text-align: left;">
+                                                                  
+                                                                    <table style="font-family: Arial, sans-serif; background: #ffffff; width: 100%; padding: 5px;border: 2px solid #0056a1; "  cellspacing="0" cellpadding="0" align="center">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <img src="https://secures.SoulPay.in/assets/images/barcode.jpg" alt="barcode">
+                                                                                </td>
+                                                                                <td>
+                                                                                   <p style="font-family: Arial, sans-serif; font-size:16px; font-weight: 400; text-align: left;margin:0;padding: 0; line-height: 22px;">Basic Order from</p>
+                                                                                   <p style="font-family: Arial, sans-serif; font-size:16px; font-weight: 600; text-align: left;margin:0;padding: 0; line-height: 22px;">Ministry of Home Affairs, Govt. Of India</p>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                   
+                                                                </td>
+                                                            </tr>
+                                                         
+                                                        </tbody>
+                        
+                                                    </table>
+                                                   </td>
+                                               </tr>
+        
+                                               <tr>
+                                                <td style="text-align: center; padding: 10px 20px 5px 20px; ">
+                                                    <p style="font-family: Arial, sans-serif; font-size:16px; font-weight: 600; text-align: center;margin:0;padding-bottom: 5px; line-height: 20px;border-bottom: 2px solid #ccc;">Business Correspondents should strictly be performing daily activities related to banking services only and not for any other services / goods being sold from thier establishment which is not covered in the emergency / essential service category</p>
+                                                </td>
+                                               </tr>
+                                               <tr>
+                                                <td style="text-align: center; padding: 0px 20px 5px 20px; ">
+                                                    <p style="font-family: Arial, sans-serif; font-size:12px; font-weight: 400; text-align: center;margin:0;padding: 0; line-height: 20px;">
+                                                        <span style="font-weight: 600;">Regd: Office: SOUL COMMUNICATIONS PVT LTD.</span> 15/2, 1st Floor, Shivaji Marg, Nazafgarh Road,
+                                                        Moti Nagar,
+                                                        New Delhi-110015
+                                                    </p>
+                                                    <p style="font-family: Arial, sans-serif; font-size:12px; font-weight: 400; text-align: center;margin:0;padding: 0; line-height: 20px;">Tel: +91 9999239239 | Website: https://SoulPay.in | Email Id: support@SoulPay.in | VALID TILL: 31 MARCH 2024</p>
+        
+                                                    <p style="font-family: Arial, sans-serif; font-size:12px; font-weight: 400; text-align: center;margin:0;padding: 0; line-height: 20px;"><span style="font-weight: 600;">Terms & Conditions:</span>  *Valid date is subject to subsistence of the agreement with SOUL COMMUNICATIONS PVT LTD. as applicable to Business Correspondent Agent and compliance with all the terms and conditions thereof.*</p>
+        
+        
+        
+        
+                                                </td>
+                                               </tr>
+                                               
+                                               
+                                            
+                                            
+                                            </tbody>
+                                         </table>
+                                        
+                                    </td>
+                                </tr>
+                               
+                               
+                            
+                            
+                            </tbody>
+                </table>
+             </div>
+         </div>
+        </div>
+      </div>
+   
+
+ 
+
+
+
+
+
+

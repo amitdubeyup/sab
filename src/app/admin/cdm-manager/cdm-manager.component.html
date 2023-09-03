@@ -1,0 +1,162 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>CDM List</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                
+            </div>
+        </div>
+    </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="dashborad-widget-header">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="utility-heading" (click)="goBack()">CDM</div>
+                      <div class="utility-heading utility-sub-heading"> > CDM Manager</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="payment-section">
+                      <form (ngSubmit)="cdmForm.form.valid && submit()" autocomplete="off" #cdmForm="ngForm">
+                        <div class="row common">
+                          <div class="col-sm-12">
+                            <div class="form-group">
+                              <label class="form-label">Axs Card Number<sup>*</sup></label>
+                              <div class="input-group">
+                                <input type="text" maxlength="16" OnlyNumber class="form-control"
+                                  placeholder="Axis Card Number" name="card_number" [(ngModel)]="cdmModal.card_number"
+                                  #card_number="ngModel"
+                                  [ngClass]="{ 'is-invalid': cdmForm.submitted && card_number.invalid }" required>
+                                <span class="input-group-btn input-group-append"><button
+                                    class="btn btn-primary bootstrap-touchspin-up" type="button"
+                                    (click)="fetchCdmDetails()">Fetch</button></span>
+                              </div>
+                              <div *ngIf="cdmForm.submitted && card_number.invalid" class="invalid-feedback">
+                                <div *ngIf="card_number.errors">Credit card number is required.</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12">
+                            <div class="form-group">
+                              <label class="form-label">Mobile Number<sup>*</sup></label>
+                              <input type="text" maxlength="120" class="form-control" placeholder="Mobile Number"
+                                name="mobile_number" [(ngModel)]="cdmModal.mobile_number" #mobile_number="ngModel"
+                                [ngClass]="{ 'is-invalid': cdmForm.submitted && mobile_number.invalid }" required>
+                              <div *ngIf="cdmForm.submitted && mobile_number.invalid" class="invalid-feedback">
+                                <div *ngIf="mobile_number.errors">Mobile Number is required.</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12">
+                            <div class="form-group">
+                              <label class="form-label">Agent's ID<sup>*</sup></label>
+                              <input type="text" maxlength="120" class="form-control" placeholder="Agent's ID"
+                                name="agent_id" [(ngModel)]="cdmModal.agent_id" #agent_id="ngModel"
+                                [ngClass]="{ 'is-invalid': cdmForm.submitted && agent_id.invalid }" required>
+                              <div *ngIf="cdmForm.submitted && agent_id.invalid" class="invalid-feedback">
+                                <div *ngIf="agent_id.errors">Agent's ID is required.</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6 pt-3 text-center">
+                            <div class="form-group">
+                              <button type="submit" class="btn btn-warning btn-lg mt-2">
+                                Add
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="col-sm-8 padding-left-zero">
+                    <div class="recent-paid pl-1">
+                      <p-table class="table-home table-wrapper-commision" #dt [value]="cdmList" [rowHover]="true"
+                        [rows]="100" [showCurrentPageReport]="false" [rowsPerPageOptions]="[10,20,50]"
+                        [loading]="commonService.isLoader" [paginator]="false"
+                        currentPageReportTemplate="{first} - {last} of {totalRecords}"
+                        [filterDelay]="0" [globalFilterFields]="['CardNumber','MemberName','MobileNumber']">
+                        <ng-template pTemplate="caption">
+                          <div class="row table-header">
+                            <!-- <div class="col-md-9 p-d-flex">
+                              <h6>CDM Details</h6>
+                            </div> -->
+                            <!-- <div class="col-md-3 text-right">
+                              <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+                              <input pInputText class="form-control" type="text"
+                                (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')"
+                                placeholder="Global Search" />
+                            </div> -->
+                          </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th> S.R. </th>
+                            <th pSortableColumn="CardNumber">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Card Number
+                              </div>
+                            </th>
+                            <th pSortableColumn="MemberName">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Member Name
+                              </div>
+                            </th>
+                            <th pSortableColumn="CompanyName">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Company Name
+                              </div>
+                            </th>
+                            <th pSortableColumn="MobileNumber">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Mobile Number
+                              </div>
+                            </th>
+                            <th pSortableColumn="AgentId">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Agent ID
+                              </div>
+                            </th>
+
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                          <tr class="p-selectable-row">
+                            <td>{{i+1}}.</td>
+                            <td>
+                              {{cp.cardNumber}}
+                            </td>
+                            <td>
+                              {{cp.memberName}}
+                            </td>
+                            <td>{{cp.companyName}}</td>
+                            <td>
+                              {{cp.mobileNumber }}
+                            </td>
+                            <td>{{cp.agentId}}</td>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td colspan="7">No records found.</td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,240 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>COMPLAINT DETAILS</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"></a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card">
+                <div class="card-body height-calender">
+                  <div class="row profile modal-body">
+                   
+                   <!-- complaint section starts here  -->
+                    <div class="col-sm-12 col-xl-12">
+                        <p-table class="table-home table-wrapper-commision" #requestTable [value]="complaintStatus" dataKey="remitterId"
+                          [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                          [loading]="commonService.isLoader" [paginator]="true"
+                          currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+                          [globalFilterFields]="['customerName','mobileNo','txnNo','complaintID']">
+                          <ng-template pTemplate="caption">
+                            <div class="row table-header">
+                               <div class="col-md-4">
+                                <ng-select [items]="StatusList" bindLabel="name" name="isStatus" bindValue="id" [(ngModel)]="status"
+                                #apiId="ngModel" placeholder="Select">
+                                </ng-select>
+                              </div>
+                              <div class="col-md-2">
+                                <p-calendar class="p-calendar" dateFormat="dd-mm-yy" [showIcon]="true" name="fromDt"
+                                  [(ngModel)]="fromDt" dateFormat="dd-mm-yy" placeholder="From Date">
+                                </p-calendar>
+                              </div>
+                           
+                              <div class="col-md-2">
+                                <p-calendar class="p-calendar" [showIcon]="true" name="toDt" [(ngModel)]="toDt"
+                                  dateFormat="dd-mm-yy" placeholder="To Date"></p-calendar>
+                              </div>  
+                              <div class="col-md-1 pt-2">
+                                <button type="button" (click)="getComplaints()" class="btn btn-primary w-20">Search</button>                            
+                              </div>                     
+                                <div class="col-md-2 text-right pt-1">
+                                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                                <input pInputText class="form-control" type="text"
+                                  (input)="requestTable.filterGlobal(changeText($event.currentTarget), 'contains')"
+                                  placeholder="Global Search" />
+                              </div>
+                              
+                            </div>
+                          </ng-template>
+                          <ng-template pTemplate="header">
+                            <tr>
+                              <th>S.N.</th>
+                              <th pSortableColumn="customerName">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                 Customer Name
+                                 </div>
+                              </th>
+                              <th pSortableColumn="mobileNo">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Customer Mobile No
+                                 </div>
+                              </th>             
+                              <th pSortableColumn="txnNo">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Transaction Id
+                                </div>
+                              </th>
+                              <th pSortableColumn="complaintID">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Complaint ID
+                                 </div>
+                              </th>
+                              <th pSortableColumn="userName">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Complaint By
+                                </div>
+                              </th>
+                              <th pSortableColumn="participationType">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Participation Type
+                                </div>
+                              </th>
+                              <th pSortableColumn="serviceReason">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Service Reason
+                                </div>
+                              </th>
+                              <th pSortableColumn="description">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                 Description
+                                </div>
+                              </th>                            
+                               <th pSortableColumn="UpdatedOn">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Updated On
+                                 </div>
+                              </th>
+                              <th pSortableColumn="status">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Complaint Status
+                                </div>
+                              </th>
+                                <th pSortableColumn="action">
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                        Action                         
+                                  </div>
+                                </th>                  
+                          
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                            <tr class="p-selectable-row">
+                                <td>{{i+1}}.</td>
+                                <td>{{cp.customerName}}</td>
+                                <td>{{cp.mobileNo}}</td> 
+                                <td>{{cp.txnNo}}</td> 
+                                <td>{{cp.complaintID}}</td> 
+                                <td> {{cp.userName}} - {{cp.userMobile}} - {{cp.userId}}</td> 
+                                <td>{{getParticipationType(cp.participationType)}}</td> 
+                                <td>{{getServiceReason(cp.serviceReason)}}</td>
+                                <td>{{cp.description}}</td>                              
+                                <td>{{cp.updatedOn| date: 'dd-MM-yyyy hh:mm aa'}}</td>
+                                <td>
+                                    <span [class]="getStatus(cp?.status)" style="width:150px; max-width: 200px;">{{cp?.status}}</span>
+                                </td>
+                                <td> 
+                                <button class="btn btn-primary" pTooltip="View"
+                                    (click)="openModal(cp)">
+                                    <span class="fas fa-eye"></span>
+                                </button></td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td colspan="15">No records found.</td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>  
+                    <!-- complaint section ends here  -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+  
+  <p-dialog header="Complaint Details" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+    [(visible)]="isModel">
+    <div class="update-form">
+      <form autocomplete="off" #complaintRequestForm="ngForm" 
+      (ngSubmit)="complaintRequestForm.form.valid && postComment()">
+        <div class="modal-body" style="margin-bottom:-20px!important">
+          <div class="row border-button">
+            <div class="col-sm-4 form-group">
+              <label>Customer Name</label>
+              <input type="text" class="form-control" name="customerName" [(ngModel)]="complaintData.customerName" disabled />
+            </div>
+            <div class="col-sm-4 form-group">
+              <label> Customer Mobile No.</label>
+              <input type="text" class="form-control" name="mobileNo" [(ngModel)]="complaintData.mobileNo" disabled />
+            </div>
+            <div class="col-sm-4 form-group">
+              <label>Txn Number</label>
+              <input type="text" class="form-control" name="txnNo" [(ngModel)]="complaintData.txnNo" disabled />
+            </div>
+             <div class="col-sm-4 form-group">
+              <label>Participation Type</label>
+              <input type="text" class="form-control" name="participationType" [(ngModel)]="complaintData.participation_type" disabled />
+            </div>
+            <div class="col-sm-4 form-group">
+                <label>Service Reason</label>
+                <input type="text" class="form-control" name="serviceReason" [(ngModel)]="complaintData.service_Reason" disabled />
+              </div>
+            <div class="col-sm-4 form-group">
+                <label>Complaint ID</label>
+                <input type="text" class="form-control" name="complaintID" [(ngModel)]="complaintData.complaintID" disabled />
+              </div>
+               <!-- comment thread starts here  -->
+              <div  class="col-sm-12 form-group" style="overflow-x: scroll; overflow-y: scroll; height: 250px;max-height: 250px; margin-top: 10px;">
+               <div class="row border-button" *ngFor="let comment of comments">          
+                 <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="comment-border"  [ngStyle]="{'background-color': comment.adminNote == '' ? '#ebebeb' : '#fff' }">
+                      <div class="comment-info">
+                      <span class="comment-author mr-3">{{comment.adminNote == '' ? comment.user : 'You'}}</span> 
+                          <span style="margin-top: -15px;">Posted on  &bull; {{comment.createdOn| date: 'dd-MM-yyyy hh:mm aa'}}</span>
+                          </div> 
+                            <div class="comment-body">
+                    <p style="font-weight: 400;">{{comment.adminNote == '' ? comment.retailerNote : comment.adminNote}}</p>
+                     </div>  
+                    </div>
+              </div>
+             </div>  
+          </div>
+        
+          <!-- comment thread ends here  -->
+             <div class="col-sm-12 form-group">
+              <label>Remark</label>
+              <textarea type="text" class="form-control" name="description" [(ngModel)]="complaintData.remark"
+                #description="ngModel" [ngClass]="{ 'is-invalid': validateDescription && complaintRequestForm.submitted && description.invalid }"
+                rows="3" (keyup)="validateInput($event,'commentText')" required>
+              </textarea>
+              <div *ngIf="validateDescription" class="invalid-feedback">
+                <div>Remark is required</div>
+              </div>
+            </div>
+            <div class="col-sm-12 form-group text-right">
+              <a href="javascript:void(0)" (click)="closeModal()" class="btn btn-secondary waves-effect mr-3">
+                Close
+              </a>
+                <button type="submit" *ngIf="complaintData.canPostRemark" [disabled]="!complaintRequestForm.valid" class="btn btn-primary waves-effect">Send</button>          
+              </div>
+          </div>
+      
+        </div>
+        <div class="modal-footer" style="display: block;margin-bottom:-25px!important;">
+          <div class="row">
+            <div class="col-sm-4 text-left" >
+              <button type="submit" *ngIf="complaintData.canPostRemark" [disabled]="commonService.isLoader" (click)="changeStatus('query')" class="btn btn-warning waves-effect">Query</button>
+            </div>          
+            <div class="col-sm-4 text-center"> 
+             <button type="submit" *ngIf="complaintData.canPostRemark" [disabled]="commonService.isLoader" (click)="changeStatus('closed')" class="btn btn-success">Close Complaint</button></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </p-dialog>
+ 
+  

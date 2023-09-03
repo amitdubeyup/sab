@@ -1,0 +1,481 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Dashboard</h2>
+      </div>
+      <div class="col-md-6 col-sm-12 text-right">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+          <li class="breadcrumb-item active">Dashboard
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+          <p-tabView (onChange)="handleChange($event)">
+            <p-tabPanel header="User Menu">
+              <ng-container *ngTemplateOutlet="menuTemplate"></ng-container>
+            </p-tabPanel>
+            <p-tabPanel header="User Features">
+              <ng-container *ngTemplateOutlet="FeaturesTemplate"></ng-container>
+            </p-tabPanel>
+            <p-tabPanel header="Fund Cashing Bank Charge">
+              <ng-container *ngTemplateOutlet="bankTemplate"></ng-container>
+            </p-tabPanel>
+            <p-tabPanel header="User Wallet Charge">
+              <ng-container *ngTemplateOutlet="AccountTemplate"></ng-container>
+            </p-tabPanel>
+            <p-tabPanel header="Payment Gateway Charge">
+              <ng-container *ngTemplateOutlet="pgTemplate"></ng-container>
+            </p-tabPanel>
+          </p-tabView>
+        </div>
+    </div>
+    <ng-template #menuTemplate>
+      <form (ngSubmit)="privilegeForm.form.valid && onSubmit()" #privilegeForm="ngForm" autocomplete="off">
+        <div class="row home">
+          <div class="col-sm-12 col-xl-12">
+            <div class="row privilege-sub-header privilege-content">
+              <div class="col-xl-6 form-field privilege-name" style="color:crimson;">
+                Name: {{accData?.MemberName}}
+              </div>
+              <div class="col-xl-6 form-field privilege-name text-align" style="color:crimson;">
+
+              </div>
+            </div>
+            <div class="row privilege-sub-header privilege-content">
+              <div class="col-xl-6 form-field privilege-name">
+                Select All
+              </div>
+              <div class="col-xl-6 form-field text-right" style="padding-right: 15px;">
+                <input type="checkbox" value="write" (change)="updateAccess($event)" />
+              </div>
+            </div>
+            <div class="row privilege-content" *ngFor="let privilege of menuPrivileges; let i = index;">
+              <div class="col-xl-6 form-field privilege-name padding-left">
+              <i class="fa fa-navicon pl-1"></i>   {{privilege.name}}
+              </div>
+              <div class="col-xl-6 form-field  text-right">
+                <input type="checkbox" [checked]="(privilege.iswrite == 1) ? true : false"
+                  (change)="updateCheckbox($event, i, -1)" />
+              </div>
+              <div class="col-xl-12 form-field privilege-child-content" *ngIf="privilege.subMenu.length">
+                <div class="row" *ngFor="let privilegeSub of privilege.subMenu; let j = index;">
+                  <div class="col-xl-6 form-field">
+                    <div class="privilege-sub name padding-left"> <i class="fa fa-list-ul"></i>   {{privilegeSub.name}}</div>
+                  </div>
+                  <div class="col-xl-6 form-field  text-right">
+                    <div class="privilege-sub"><input type="checkbox"
+                        [checked]="(privilegeSub.iswrite == 1) ? true : false"
+                        (change)="updateCheckbox($event, i, j)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row privilege-footer text-center">
+              <a href="javascript:void()" (click)="close()" class="btn btn-secondary waves-effect">
+                Close
+              </a>&nbsp;
+              <button type="submit" class="btn btn-primary waves-effect">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+    <ng-template #FeaturesTemplate>
+      <form (ngSubmit)="privilegeN.form.valid && onSubmit()" #privilegeN="ngForm" autocomplete="off">
+        <div class="row home">
+
+          <div class="col-sm-12 col-xl-12">
+            <div class="row privilege-sub-header privilege-content">
+              <div class="col-xl-6 form-field privilege-name" style="color:crimson;">
+                Name: {{accData?.MemberName}}
+              </div>
+              <div class="col-xl-6 form-field privilege-name text-align" style="color:crimson;">
+
+              </div>
+            </div>
+            <div class="row privilege-sub-header privilege-content">
+              <div class="col-xl-6 form-field privilege-name">
+                Select All
+              </div>
+              <div class="col-xl-6 form-field text-right" style="padding-right: 15px;">
+                <input type="checkbox" value="write" (change)="updateFeatureAccess($event)" />
+              </div>
+            </div>
+            <div class="row privilege-content" *ngFor="let feature of featurePrivileges; let i = index;">
+              <div class="col-xl-6 form-field privilege-name padding-left">
+                <i class="fa fa-navicon pl-1"></i> {{feature.key}}
+              </div>
+              <div class="col-xl-6 form-field text-right">
+                <input type="checkbox" [checked]="feature.value" (change)="updateFeatureCheckbox($event, i)" />
+              </div>
+            </div>
+            <div class="row col-xl-12 text-center">
+              <a href="javascript:void()" (click)="close()" class="btn btn-secondary waves-effect">
+                Close
+              </a>&nbsp;
+              <button type="submit" class="btn btn-primary waves-effect">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+    <ng-template #bankTemplate>
+      <div class="row privilege-sub-header privilege-content">
+        <div class="col-xl-6 form-field privilege-name" style="color:crimson;">
+          Name: {{accData?.MemberName}}
+        </div>
+        <div class="col-xl-6 form-field privilege-name text-align" style="color:crimson;">
+
+        </div>
+      </div>
+      <p-table [style]="{'width':'100%'}" class="table-home" #dt [value]="respData" [rowHover]="true" [rows]="9"
+        [loading]="commonService.isLoader" [paginator]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>S.R.</th>
+            <th pSortableColumn="bankName">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Bank Name
+                <p-sortIcon field="bankName"></p-sortIcon>
+                <p-columnFilter type="text" field="bankName" display="menu" class="p-ml-auto">
+                </p-columnFilter>
+
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Cash/Stuck Amount Charge (%)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                CDM Charge (%)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                IMPS/UPI Charge (%)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                NEFT/RTGS Charge (%)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Fund Transfer Charge (%)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Cheque Charge (%)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="isStatus">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Status
+                <p-sortIcon field="isStatus"></p-sortIcon>
+
+              </div>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cp let-i="rowIndex">
+          <tr class="p-selectable-row">
+            <td>{{i+1}}</td>
+            <td>
+              {{cp.bankName}}
+            </td>
+            <td>
+              {{cp.cashCharge}}
+            </td>
+            <td>
+              {{cp.cdmCharge}}
+            </td>
+            <td>
+              {{cp.impsCharge}}
+            </td>
+            <td>
+              {{cp.neftCharge}}
+            </td>
+            <td>
+              {{cp.fundTransferCharge}}
+            </td>
+            <td>
+              {{cp.chequeCharge}}
+            </td>
+            <td>
+              {{cp.isStatus=='A'?'Active':'InActive'}}
+            </td>
+            <td>
+              <button type="button" class="btn btn-outline-info btn-sm" (click)="updateService(cp)"><i
+                  class="fa fa-edit"></i></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="11">No records found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
+    <ng-template #AccountTemplate>
+      <div class="row privilege-sub-header privilege-content">
+        <div class="col-xl-6 form-field privilege-name" style="color:crimson;">
+          Name: {{accData?.MemberName}}
+        </div>
+        <div class="col-xl-6 form-field privilege-name text-align" style="color:crimson;">
+
+        </div>
+      </div>
+      <form (ngSubmit)="accForm.form.valid && formSubmitCharge()" #accForm="ngForm" name="accForm" pFocusTrap
+        autocomplete="off">
+        <div class="modal-body">
+          <div class="row border-button">
+            <div class="col-xl-6">
+              <div class="form-group">
+                <label>
+                 Receiver Type </label>
+                <ng-select [items]="CommissionType" placeholder="Receiver Type" bindLabel="desc"
+                  name="walletCrType" bindValue="code" required [(ngModel)]="accData.walletCrType"
+                  #walletCrType="ngModel">
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="form-group">
+                <label>
+                 Receiver Charge </label>
+                <input type="number" class="form-control" name="wallateCrCharge" [(ngModel)]="accData.wallateCrCharge"
+                  #wallateCrCharge="ngModel" [ngClass]="{ 'is-invalid': accForm.submitted && wallateCrCharge.invalid }"
+                  required placeholder="Verification Amount">
+                <div *ngIf="accForm.submitted && wallateCrCharge.invalid" class="invalid-feedback">
+                  <div *ngIf="wallateCrCharge.errors">Receiver Charge is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="form-group">
+                <label>
+                 Sender Commission Type</label>
+                <ng-select [items]="CommissionType" placeholder=" Sender Commission Type" bindLabel="desc"
+                  name="walletDrType" bindValue="code" required [(ngModel)]="accData.walletDrType"
+                  #walletDrType="ngModel">
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="form-group">
+                <label>
+                  Sender Commission </label>
+                <input type="number" class="form-control" name="wallateDrCharge" [(ngModel)]="accData.wallateDrCharge"
+                  #wallateDrCharge="ngModel" [ngClass]="{ 'is-invalid': accForm.submitted && wallateDrCharge.invalid }"
+                  required placeholder="Wallet Amount">
+                <div *ngIf="accForm.submitted && wallateDrCharge.invalid" class="invalid-feedback">
+                  <div *ngIf="wallateDrCharge.errors">  Sender Commission is required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-xl-12 text-center">
+            <button type="button" routerLink="/admin/user-details" class="btn btn-secondary waves-effect"
+              data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary waves-effect waves-light">Save
+              changes</button>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+    <ng-template #pgTemplate>
+      <div class="row privilege-sub-header privilege-content">
+        <div class="col-xl-6 form-field privilege-name" style="color:crimson;">
+          Name: {{accData?.MemberName}}
+        </div>
+        <div class="col-xl-6 form-field privilege-name text-align" style="color:crimson;">
+
+        </div>
+      </div>
+      <p-table [style]="{'width':'100%'}" class="table-home" #dt [value]="respPg" [rowHover]="true" [rows]="20"
+        [loading]="commonService.isLoader" [paginator]="false">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>S.R.</th>
+            <th pSortableColumn="bankName">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                PG Name
+                <p-sortIcon field="bankName"></p-sortIcon>
+                <p-columnFilter type="text" field="bankName" display="menu" class="p-ml-auto">
+                </p-columnFilter>
+
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Credit Charge (%)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Debit Charge (%)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                IMPS/UPI Charge (Rs.)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                NEFT/RTGS Charge (Rs.)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="ifsc">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Wallet Charge (%)
+                <p-sortIcon field="ifsc"></p-sortIcon>
+              </div>
+            </th>
+
+            <th pSortableColumn="isStatus">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Status
+                <p-sortIcon field="isStatus"></p-sortIcon>
+
+              </div>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cp let-i="rowIndex">
+          <tr class="p-selectable-row">
+            <td>{{i+1}}</td>
+            <td>
+              {{cp.bankName}}
+            </td>
+            <td>
+              {{cp.cashCharge}}
+            </td>
+            <td>
+              {{cp.cdmCharge}}
+            </td>
+            <td>
+              {{cp.impsCharge}}
+            </td>
+            <td>
+              {{cp.neftCharge}}
+            </td>
+            <td>
+              {{cp.fundTransferCharge}}
+            </td>
+            <td>
+              {{cp.isStatus=='A'?'Active':'InActive'}}
+            </td>
+            <td>
+              <button type="button" class="btn btn-outline-info btn-sm" (click)="updateService(cp)"><i
+                  class="fa fa-edit"></i></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="11">No records found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
+
+    <p-dialog header="BANK CHARGE" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+      [(visible)]="isModel">
+      <div class="update-form">
+        <form (ngSubmit)="serviceForm.form.valid && formSubmit()" #serviceForm="ngForm" name="serviceForm">
+          <div class="modal-body">
+            <div class="row border-button">
+              <div class="col-sm-4 form-group">
+                <label>Bank Name</label>
+                <input type="text" class="form-control" disabled name="bankName" [(ngModel)]="serviceData.bankName"
+                  #bankName="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && bankName.invalid }"
+                  required />
+                <div *ngIf="serviceForm.submitted && bankName.invalid" class="invalid-feedback">
+                  <div *ngIf="bankName.errors">Bank Name is required</div>
+                </div>
+              </div>
+              <div class="col-sm-4 form-group">
+                <label> {{activeTab==4?'Credit Card' :'Cash/Stuck Amount'}} Charge (%)</label>
+                <input type="number" class="form-control" name="CashCharge" [(ngModel)]="serviceData.cashCharge"
+                  #CashCharge="ngModel" />
+              </div>
+              <div class="col-sm-4 form-group">
+                <label> {{activeTab==4?'Debit Card' :'CDM'}} Charge (%)</label>
+                <input type="number" class="form-control" name="CdmCharge" [(ngModel)]="serviceData.cdmCharge"
+                  #CdmCharge="ngModel" />
+              </div>
+              <div class="col-sm-4 form-group">
+                <label>{{activeTab==4?'IMPS/UPI Charge (Rs.)' :'IMPS/UPI Charge (%)'}} </label>
+                <input type="number" class="form-control" name="ImpsCharge" [(ngModel)]="serviceData.impsCharge"
+                  #ImpsCharge="ngModel" />
+              </div>
+              <div class="col-sm-4 form-group">
+                <label>{{activeTab==4?'INEFT/RTGS Charge (Rs.)' :'NEFT/RTGS Charge (%)'}} </label>
+                <input type="number" class="form-control" name="NeftCharge" [(ngModel)]="serviceData.neftCharge"
+                  #NeftCharge="ngModel" />
+              </div>
+              <div class="col-sm-4 form-group">
+                <label>{{activeTab==4?'Wallet' :' Fund Transfer'}} Charge (%) </label>
+                <input type="number" class="form-control" name="FundTransferCharge"
+                  [(ngModel)]="serviceData.fundTransferCharge" #FundTransferCharge="ngModel" />
+              </div>
+              <div class="col-sm-4 form-group" *ngIf="activeTab==4?false:true">
+                <label>Cheque Charge (%) </label>
+                <input type="number" class="form-control" name="ChequeCharge" [(ngModel)]="serviceData.chequeCharge"
+                  #ChequeCharge="ngModel" />
+              </div>
+              <div class="col-sm-4 form-group">
+                <label>Status</label>
+                <select type="text" class="form-control" name="IsStatus" [(ngModel)]="serviceData.isStatus"
+                  #IsStatus="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && IsStatus.invalid }" required>
+                  <option value="A">Active</option>
+                  <option value="I">Inactive</option>
+                </select>
+                <div *ngIf="serviceForm.submitted && IsStatus.invalid" class="invalid-feedback">
+                  <div *ngIf="IsStatus.errors">Status is required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="toggleModal()" class="btn btn-dark waves-effect">
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary waves-effect">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </p-dialog>
+  </div>
+</div>

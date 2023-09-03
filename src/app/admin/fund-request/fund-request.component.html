@@ -1,0 +1,331 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Cash Request</h2>
+      </div>
+      <div class="col-md-6 col-sm-12 text-right">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html"></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body height-calender">             
+                    <p-table class="table-rt table-wrapper-commision" #requestTable [value]="fundRequestList" dataKey="remitterId"
+                      [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                      [loading]="commonService.isLoader" [paginator]="true"
+                      currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+                      [globalFilterFields]="['Amount','TxnId','TxnMode','BankName','DepositDate','CreateOn', 'SenderNote', 'IsStatus']">
+                      <ng-template pTemplate="caption">
+                        <div class="row table-header">
+                          <div class="col-md-4">
+                            <p-multiSelect class="" [options]="bankList" [(ngModel)]="selectedDepositBankList"
+                              optionLabel="desc" optionValue="code" placeholder="Select Bank"></p-multiSelect>
+                          </div>
+                          <div class="col-md-4">
+                            <ng-select [items]="StatusList" bindLabel="name" name="isStatus" bindValue="id" [(ngModel)]="isStatus"
+                            #apiId="ngModel" placeholder="Select">
+                            </ng-select>
+                          </div>
+                          <div class="col-md-2">
+                            <p-calendar class="p-calendar" dateFormat="dd-mm-yy" [showIcon]="false" name="fromDt"
+                              [(ngModel)]="fromDt" dateFormat="dd-mm-yy" placeholder="From Date">
+                            </p-calendar>
+                          </div>
+                       
+                          <div class="col-md-2">
+                            <p-calendar class="p-calendar" [showIcon]="false" name="toDt" [(ngModel)]="toDt"
+                              dateFormat="dd-mm-yy" placeholder="To Date"></p-calendar>
+                          </div>
+                          <div class="col-md-4 pt-1">
+                            <p-dropdown [options]="memberList" [style]="{'width':'334px'}" [(ngModel)]="selectedMemberList" optionLabel="desc" [filter]="true" filterBy="desc" [showClear]="true" placeholder="Select a Member">
+                              <ng-template pTemplate="selectedItem">
+                                  <div class="member-item member-item-value">                    
+                                      <div>{{selectedMemberList?.desc}}</div>
+                                  </div>
+                              </ng-template>
+                              <ng-template let-member pTemplate="item">
+                                  <div class="member-item">                  
+                                      <div>{{member.desc}}</div>
+                                  </div>
+                              </ng-template>
+                          </p-dropdown>    
+                          
+                          </div>
+                           
+                           <div class="col-md-4 pt-1">
+                            <p-dropdown [options]="respAsm" [style]="{'width':'334px'}" [(ngModel)]="selectedAsmList" optionLabel="desc" [filter]="true" filterBy="desc" [showClear]="true" placeholder="Select an Asm ">
+                              <ng-template pTemplate="selectedItem">
+                                  <div class="member-item member-item-value">   
+                                   <div>{{selectedAsmList?.desc}}</div>
+                                   </div>
+                              </ng-template>
+                           </p-dropdown>    
+                          </div>
+                          
+                          <div class="col-md-1 pt-2">
+                            <button type="button" (click)="fetchFundRequestList()"
+                              class="btn btn-primary w-20">Search</button>                            
+                          </div>
+                          <div class="col-md-1 text-left pt-2">  <a href="javascript:void(0)" (click)="exportAsXLSX()" class="btn btn-warning">Export</a> </div>
+                          <div class="col-md-2 text-right pt-1">
+                            <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                            <input pInputText class="form-control" type="text"
+                              (input)="requestTable.filterGlobal(changeText($event.currentTarget), 'contains')"
+                              placeholder="Global Search" />
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th>S.N.</th>
+                          <th pSortableColumn="TxnId">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              ReqId
+                              <p-sortIcon field="TxnId"></p-sortIcon>
+                              <p-columnFilter type="text" field="TxnId" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </th>
+                          <th pSortableColumn="trasaction_date">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Req Date
+                            </div>
+                          </th>
+                          <th pSortableColumn="updatedOn">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              UpdatedOn
+                             </div>
+                          </th>
+                          <th *ngIf="!isFundRequestOnline">Slip</th>                       
+                          <th pSortableColumn="CompanyName">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Company/Shop
+                             </div>
+                          </th>                        
+                          <th pSortableColumn="Asm">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              ASM
+                             </div>
+                          </th>
+                          <th pSortableColumn="TxnMode">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                               Mode
+                             </div>
+                          </th>
+                          <th pSortableColumn="BankName">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Bank
+                             </div>
+                          </th>
+                          <th pSortableColumn="DepositDate">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Deposit Date
+                             </div>
+                          </th>
+                          <th pSortableColumn="Amount">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Amount
+                            </div>
+                          </th>
+                          <th pSortableColumn="SenderNote">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Remarks
+                             </div>
+                          </th>
+                          <th pSortableColumn="IsStatus">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Status
+                             </div>
+                          </th>
+                         
+                          <th *ngIf="!isFundRequestOnline">Action</th>
+                        
+                          <th pSortableColumn="RecieverNote">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Admin Remarks
+                             </div>
+                          </th>
+                          <th pSortableColumn="CreateOn">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Request Date
+                             </div>
+                          </th>
+                          <th pSortableColumn="ApprovedDt">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Approved Date
+                             </div>
+                          </th>                      
+                          <th *ngIf="isFundRequestOnline">EazeBuzz Status</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                        <tr class="p-selectable-row">
+                           <td>{{i+1}}.</td>
+                           <td>{{cp?.TxnId}}</td>
+                           <td>
+                            {{cp.CreateOn| date: 'dd-MM-yyyy hh:mm:ss aa'}}
+                          </td>
+                          <td>
+                            {{cp.UpdatedOn| date: 'dd-MM-yyyy hh:mm aa'}}
+                          </td>
+
+                           <td *ngIf="!isFundRequestOnline"> <button type="button" *ngIf="cp?.TxnSlip" class="btn btn-primary" (click)="openModel(cp?.TxnSlip)" > <span class="fas fa-eye"></span></button></td>
+                           <td>{{cp?.CompanyName}}</td>         
+                           <td>{{cp?.Asm}}</td>
+                          <td>{{getPaymentMode(cp?.TxnMode)}}</td>
+                          <td>{{cp?.BankName}}</td>
+                          <td>{{cp?.DepositDate | date: 'dd/MM/yyyy'}}</td> 
+                          <td>{{cp?.Amount}}</td>                        
+                          <td>{{cp?.SenderNote}}</td>
+                          <td style="vertical-align: middle;">                            
+                            <span [class]="getStatus(cp?.IsStatus)">{{cp?.IsStatus}}</span>
+                         </td>  
+                          <td *ngIf="!isFundRequestOnline" class="buttons">
+                            <button class="btn btn-primary" *ngIf="cp?.IsStatus=='initiated' || cp?.IsStatus=='pending'" pTooltip="View"
+                              (click)="openModal(cp)">
+                              <span class="fas fa-eye"></span>
+                            </button>
+                          </td>                                              
+                          <td>{{cp?.RecieverNote}}</td>
+                          <td>{{cp?.CreateOn | date: 'dd/MM/yyyy hh:mm aa'}}</td>
+                          <td>{{cp?.ApprovedDt | date: 'dd/MM/yyyy hh:mm aa'}}</td>
+                          <td *ngIf="isFundRequestOnline" class="buttons">
+                            <button class="btn btn-primary" pTooltip="Check Status"
+                            *ngIf="cp?.IsStatus=='refund' || cp?.IsStatus=='pending'" (click)="approvePGFundRequest(cp)">
+                              Check Status
+                            </button>
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="footer">
+                        <tr class="p-selectable-row">
+                          <td>
+                            </td>
+                          <td>                         
+                          </td>
+                          <td>                          
+                          </td>
+                          <td>                          
+                          </td>
+                          <td>
+                          </td>
+                          <td>                           
+                          </td>
+                          <td>
+                            <strong>Total</strong>
+                          </td>                        
+                          <td>
+                         
+                          </td>
+                          <td>                           
+                          </td>
+                          <td>  {{totalAmountCr | number : '1.2-2'}}                         
+                          </td>
+                          <td>                           
+                          </td>
+                          <td>                           
+                          </td>
+                          <td>                           
+                          </td>
+                          <td>                           
+                          </td>
+                          <td>                           
+                          </td>
+                          <td>                           
+                          </td>
+                          <td>                           
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="15">No records found.</td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<p-dialog header="Cash Request Details" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+  [(visible)]="isModel">
+  <div class="update-form">
+    <form (ngSubmit)="fundRequestForm.form.valid && onFormSubmit()" #fundRequestForm="ngForm" name="fundRequestForm">
+      <div class="modal-body">
+        <div class="row border-button">
+          <div class="col-sm-4 form-group">
+            <label>Amount</label>
+            <input type="text" class="form-control" name="Amount" [(ngModel)]="fundRequest.Amount" disabled />
+          </div>
+          <div class="col-sm-4 form-group">
+            <label> Mode</label>
+            <select class="form-control" class="form-control" name="TxnMode" [(ngModel)]="fundRequest.TxnMode" disabled>
+              <option *ngFor="let payment of paymentList;" [value]="payment.id">{{payment.name}}</option>
+            </select>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Bank</label>
+            <select class="form-control" class="form-control" name="BankId" [(ngModel)]="fundRequest.BankId" disabled>
+              <option *ngFor="let bank of bankList;" [value]="bank.code">{{bank.desc}}</option>
+            </select>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Upload Deposit Slip Photo</label>
+            <input type="text" class="form-control" name="TxnSlip" [(ngModel)]="fundRequest.TxnSlip" disabled />
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Deposit Date</label>
+            <input type="text" class="form-control" name="DepositDate" [(ngModel)]="fundRequest.DepositDate" disabled />
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Sender Note</label>
+            <input type="text" class="form-control" name="SenderNote" [(ngModel)]="fundRequest.SenderNote" disabled />
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Status</label>
+            <select class="form-control" name="IsStatus" [(ngModel)]="fundRequest.IsStatus" #IsStatus="ngModel"
+              [ngClass]="{ 'is-invalid': fundRequestForm.submitted && IsStatus.invalid }" required>
+              <option value="initiated">Initiated</option>
+              <option value="approved">Approved</option>
+              <option value="pending">Pending</option>             
+              <option value="Declined">Declined</option>
+            </select>
+            <div *ngIf="fundRequestForm.submitted && IsStatus.invalid" class="invalid-feedback">
+              <div *ngIf="IsStatus.errors">Status is required</div>
+            </div>
+          </div>
+          <div class="col-sm-8 form-group">
+            <label>Remark</label>
+            <input type="text" class="form-control" name="RecieverNote" [(ngModel)]="fundRequest.RecieverNote"
+              #RecieverNote="ngModel" [ngClass]="{ 'is-invalid': fundRequestForm.submitted && RecieverNote.invalid }"
+              required />
+            <div *ngIf="fundRequestForm.submitted && RecieverNote.invalid" class="invalid-feedback">
+              <div *ngIf="RecieverNote.errors">Remark is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="row text-center">        
+          <div class="col-sm-12"> <button type="submit"  [disabled]="commonService.isLoader" class="btn btn-primary waves-effect">Submit</button></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</p-dialog>
+<p-dialog header="Slip" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+  [(visible)]="isModelSlip">
+  <img width="600px" src="{{filePath}}">
+</p-dialog>

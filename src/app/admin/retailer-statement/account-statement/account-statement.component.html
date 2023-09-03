@@ -1,0 +1,422 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>OUTLET ACCOUNT STATEMENT</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card card-body">
+               
+              <p-tabView (onChange)="handleChange($event)">
+                <p-tabPanel header="Money Transfer">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="Recharge/Utility">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="AEPS Transactions">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="Credit Card">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="Other Transactions">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                </p-tabView>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<ng-template #statementTemplate>
+  <p-table class="table-home table-wrapper-commision" #dt [value]="statementList" dataKey="remitterId" [rowHover]="true"
+    [rows]="100" [showCurrentPageReport]="true" [rowsPerPageOptions]="[100,250,500,750]" [loading]="commonService.isLoader"
+    [paginator]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+    [globalFilterFields]="['TxnNo','ReferenceNo','CreatedOn','Narration','AccountNumber','MobileNumber','ToNarration','Intent','ModeOfPayment']">
+    <ng-template pTemplate="caption">
+     <div class="row table-header">
+        <div class="col-md-3 col-sm-6 pb-1">
+          <ng-select [virtualScroll]="true" [items]="retList" placeholder="User Type" bindLabel="desc"
+          bindValue="code" name="desc" [(ngModel)]="retid" #ffff="ngModel">
+        </ng-select>
+        
+        </div>
+        <div class="col-md-3 col-sm-6 pb-1">
+          <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Select User" bindLabel="name"
+            bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+          </ng-select>
+        </div>
+        <div class="col-sm-2 pb-1">
+          <ng-select [items]="sharedMethodService.SearchType" placeholder="Type" bindLabel="name" bindValue="id"
+            name="searchTypes" [(ngModel)]="searchType">
+          </ng-select>
+        </div>
+        <div class="col-sm-2 pb-1">
+          <input class="form-control sizing-sm" [(ngModel)]="txnNo" type="text"
+            placeholder="{{searchType=='txn'?'Txn No':searchType=='acc'?'A/C No.':searchType=='send'?'Send By Mob. No.':searchType=='rcv'?'Recived Mob. No.':'Enter Txn'}}" />
+        </div>
+        <div class="col-md-2 col-sm-6 pb-1">
+          <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Status" bindLabel="name"
+            bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+          </ng-select>
+        </div>
+  
+        <div class="col-md-3 col-sm-6">
+          <p-calendar class="p-calendar p-inputtext-sm" dateFormat="dd/mm/yy" [readonlyInput]="true" name="fromDt"
+            [(ngModel)]="fromDt" [maxDate]="minDate" placeholder="From Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <p-calendar class="p-calendar p-inputtext-sm" name="toDt" [readonlyInput]="true" [minDate]="fromDt"
+            [maxDate]="maxDate" dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+          <input pInputText class="form-control" type="text"
+            (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <button type="button" (click)="handleSearch(activeTab)"
+            class="btn btn-outline-success mt-1 mr-2 btn48">Search</button>
+          <button type="button" (click)="handleSearch(activeTab)" class="btn btn-outline-dark mt-1 btn48">Export</button>
+  
+        </div>
+  
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Total Transactions</h6>
+                <h5 class="text-success">{{statementList?.length}}</h5>
+  
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Total Amount</h6>
+                <h5 class="text-success"> {{totalAmount | number : '1.2-2'}}</h5>
+  
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Total Charge</h6>
+                <h5 class="text-success"> {{totalCharge | number : '1.2-2'}}</h5>
+  
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Total Commission</h6>
+                <h5 class="text-success"> {{totalCommission | number : '1.2-2'}}</h5>
+  
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Refund Pending</h6>
+                <h5 class="text-success">111</h5>
+  
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Refunded</h6>
+                <h5 class="text-success">111</h5>
+  
+              </blockquote>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+      
+    </ng-template>
+   
+    <ng-template pTemplate="header">
+      <tr>
+        <th>S.R.</th>  
+        <th pSortableColumn="TxnNo">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            TxnId
+            <p-sortIcon field="TxnNo"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="trasaction_date">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Txn Date
+         </div>
+        </th>
+        <th pSortableColumn="updatedOn">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            UpdatedOn
+           </div>
+        </th>
+        <th pSortableColumn="Narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Naration
+           </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Amount(CR) 
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Amount(DR) 
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Charge
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Commission
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            TDS
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Net Earning
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Balance
+           </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cp let-i="rowIndex" class="transfer-grid">
+      <tr class="p-selectable-row">
+        <td>{{i+1}}.</td>
+        <td>
+          {{cp.TxnNo}}
+        </td>
+        <td>
+          {{cp.CreatedOn| date: 'dd-MM-yyyy hh:mm:ss aa'}}
+        </td>
+        <td>
+          {{cp.updatedOn| date: 'dd-MM-yyyy hh:mm aa'}}
+        </td>
+        <td style="width:30%;">
+          <ng-container *ngIf="cp.Service=='OBAL'">
+            <span>{{cp.Narration}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.Service=='QUICK_PAY'">
+            <span>{{cp.ModeOfPayment}} :</span> {{' A/c#' + cp.AccountNumber + ', Mob#'+cp.MobileNumber +', Ben#' + cp.Narration +' '+ (cp.Status=='Refunded'?'Refunded':'')}}
+          </ng-container>
+          <ng-container *ngIf="cp.Service=='TATKAL_PAY'">
+            <span>{{cp.ModeOfPayment}} :</span> {{' A/c#' + cp.AccountNumber + ', Mob#'+cp.MobileNumber +', Ben#' +
+            cp.Narration +' '+ (cp.Status=='Refunded'?'Refunded':'')}}
+          </ng-container>
+          <ng-container *ngIf="cp.Service=='AEPS-BANK'">
+            <span>{{cp.ModeOfPayment}} :</span> {{' A/c#' + cp.AccountNumber + ', Mob#'+cp.MobileNumber +', Ben#' +
+            cp.ToNarration +' '+ (cp.Status=='Refunded'?'Refunded':'')}}
+          </ng-container>
+          <ng-container *ngIf="cp.Service=='Verification'">
+            <span>Account Verification :</span> {{' A/c#' + cp.AccountNumber + ', Mob#'+cp.MobileNumber +', Ben#' +
+            cp.ToNarration}}
+          </ng-container>
+          <ng-container *ngIf="cp.Service=='Fund-Request'">
+            <span>Fund Ref#</span> {{cp.ReferenceNo + ','+cp.Intent + ' Mobile# '+ cp.AccountNumber +' ,'+ cp.Narration +', '+ cp.ToNarration }}
+          </ng-container>
+          <ng-container *ngIf="cp.Service=='PG-Request'">
+            <span>PG Ref#</span> {{cp.ReferenceNo +' ,'+ cp.Narration + ' Mobile# '+ cp.AccountNumber+', '+ cp.ToNarration }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='RECH'">
+            {{(cp.Service=='DTH'?'DTH Recharge : ': 'Mobile Recharge : ')+ cp.AccountNumber + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }}
+          </ng-container>         
+          <ng-container *ngIf="cp.ModeOfPayment=='BBPS' &&  cp.Service=='ELECTRICITY'">
+            <span>Electricity Bill :</span> {{' CA#'+ cp.AccountNumber + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='BBPS' &&  cp.Service=='LIC'">
+            <span>LIC Bill :</span> {{' Policy Number#'+ cp.AccountNumber + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='Part-Payment' &&  cp.Service=='ELECTRICITY'">
+            <span>Electricity Part Payment :</span> {{' CA#'+ cp.AccountNumber + ', Name : ' +
+            cp.ToNarration }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='Part-Payment' &&  cp.Service=='IGL-Commercial-Bill'">
+            <span>IGL-Commercial-Bill:</span> {{' CA#'+ cp.AccountNumber + ', Name : ' +
+            cp.ToNarration }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='BBPS' &&  cp.Service=='GAS'">
+            <span>Gas Bill :</span> {{' CA#'+ cp.AccountNumber + ', Ref#' + (cp.ReferenceNo==null?'':cp.ReferenceNo) }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='BBPS' &&  cp.Service=='WATER'">
+            <span>Water Bill :</span> {{' CA#'+ cp.AccountNumber + ', Ref#' + (cp.ReferenceNo==null?'':cp.ReferenceNo)}}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='BBPS' &&  cp.Service=='INSURANCE'">
+            <span>Insurance Bill :</span> {{' CA#'+ cp.AccountNumber + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='WALLET' &&  cp.Service=='Balance-Manager' && cp.TrasactionType=='CR'">
+            <span>Account Credited To</span> {{ cp.Narration +' From ' + cp.ToNarration+','+cp.Intent }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='WALLET' &&  cp.Service=='Balance-Manager' && cp.TrasactionType=='DR'">
+            <span>Account Debited From-</span>Ref# {{cp.ReferenceNo +','+ cp.Narration+' To ' + cp.ToNarration+','+cp.Intent }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='WALLET' &&  cp.Service=='wallet-to-wallet' && cp.TrasactionType=='CR'">
+            <span>Account Credited To</span> {{ cp.Narration  +' From ' + cp.ToNarration + ','+cp.Intent}}            
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='WALLET' &&  cp.Service=='wallet-to-wallet' && cp.TrasactionType=='DR'">
+            <span>Account Debited From-</span> {{cp.ToNarration  + ' To ' + cp.Narration + ','+cp.Intent }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='AEPS-CW' &&  cp.Service=='AEPS' && cp.TrasactionType=='CR'">
+            <span>AEPS Commission  : </span> {{ cp.Narration}}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='AEPS-BT' &&  cp.Service=='AEPS' && cp.TrasactionType=='CR'">
+            <span>AEPS Balance Transfer To Wallet : </span> {{ cp.ToNarration+','+cp.Intent }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='CMS' &&  cp.Service=='CC'">
+            <span>Credit Card Bill :</span> {{'CC Number#'+ cp.AccountNumber + ', Name#'+cp.ToNarration+ ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='CMS' &&  cp.Service=='PAYTM'">
+            <span>Paytm Wallet topup :</span> {{'Number#'+ cp.AccountNumber + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='BBPS' &&  cp.Service=='Landline'">
+            <span>Landline  Bill :</span> {{' CA#'+ cp.AccountNumber + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='BBPS' &&  cp.Service=='Broadband'">
+            <span>Broadband  Bill :</span> {{' CA#'+ cp.AccountNumber + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='CMS' &&  cp.Service=='EMI'">
+            <span>EMI Payment :</span> {{'AC#'+ cp.AccountNumber + ' , '+cp.ToNarration+ ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='BBPS' &&  cp.Service=='GASCL'">
+            <span>LPG  Gas :</span> {{' CA#'+ cp.AccountNumber + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo)+','+cp.ToNarration }}
+          </ng-container>
+          <ng-container *ngIf="cp.ModeOfPayment=='CMS' &&  cp.Service=='FASTAG'">
+            <span>Fastag :</span> {{' CN#'+ cp.AccountNumber + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo)+','+cp.ToNarration }}
+          </ng-container>
+          <ng-container *ngIf="cp.DocType=='NEP'">
+            <span>{{cp.ModeOfPayment}} :</span> {{' A/c#' + cp.AccountNumber + ', Mob#'+cp.MobileNumber +', Ben#' + cp.Narration +' '+ (cp.Status=='Refunded'?'Refunded':'')}}
+          </ng-container>
+          <ng-container *ngIf="cp.DocType=='QR'">
+            <span>{{cp.ModeOfPayment}} :</span> {{' A/c#' + cp.AccountNumber +'-'+cp.ToNarration + ', Mob#'+cp.MobileNumber +', Ben#' + cp.Narration +' '+ (cp.Status=='Refunded'?'Refunded':'')}}
+          </ng-container>
+          <ng-container *ngIf="cp.DocType=='UPI'">
+            <span>Mobile Pay :</span> {{cp.Narration +' UPI#'+cp.AccountNumber  +' '+ (cp.Status=='Refunded'?'Refunded':'')}}
+          </ng-container>
+          <ng-container *ngIf="cp.DocType=='TRVL'">
+            <span>{{cp.Service}} :</span> {{cp.ToNarration  +' '+ (cp.Status=='Refunded'?'Refunded':'')}}
+          </ng-container>
+        </td>
+        <td class="credit-amount" [ngClass]="{'credit-amount': cp.Amount>0}" class="net-earing">
+          {{cp.Amount| number : '1.2-2'}}
+        </td>
+        <td class="debit-amount">
+          {{cp.AmountDr| number : '1.2-2'}}
+        </td>
+        <td class="debit-amount" [ngClass]="{'credit-amount': cp.Status=='Refunded'}">
+          {{cp.Charge| number : '1.2-2'}}
+        </td>
+        <td class="debit-amount" [ngClass]="{'credit-amount': cp.RtCommission>0 && cp.Status!='Refunded'}">
+          {{cp.RtCommission| number : '1.2-2'}}
+        </td>
+        <td class="debit-amount" [ngClass]="{'credit-amount': cp.Status!='Refunded'}">
+          {{cp.TdsRt| number : '1.2-2'}}
+        </td>
+        <td [ngClass]="{'credit-amount': cp.NetEarning>0 && cp.Status!='Refunded'}" class="net-earing">
+          {{cp.NetEarning| number : '1.2-2'}}
+        </td>
+        <td>
+          {{cp.ClosingBalanceAmount| number : '1.2-2'}}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+        <td>         
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td> <strong>Total</strong>
+        </td>
+        <td>
+          {{totalAmountCr | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalAmountDr | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalCharge | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalCommission | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalTax | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalEarning | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalClosingBalance | number : '1.2-2'}}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="11">No records found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>

@@ -1,0 +1,113 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>BENEFICIARY BANK</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"></a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xl-12">
+              <div class="card">
+                <div class="card-body">
+                
+                 
+                  <div class="table-responsive">
+                    <p-table [style]="{'width':'100%'}" class="table-home" #dt [value]="respData" dataKey="memberId"
+                      [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                      [loading]="commonService.isLoader" [paginator]="true"
+                      currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+                      [globalFilterFields]="['bankName','bankCode']">
+                      <ng-template pTemplate="caption">
+                        <div class="row table-header">         
+                          <div class="col-md-10">
+                          
+                            BANK DETAILS
+                          </div>
+                         
+                          <div class="col-md-2 text-right">
+                            <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                            <input pInputText class="form-control" type="text"
+                              (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template pTemplate="header">
+                        <tr>
+                            <th>S.R.</th>
+                          <th pSortableColumn="bankName">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                             Bank Name
+                              <p-sortIcon field="bankName"></p-sortIcon>
+                              <p-columnFilter type="text" field="bankName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+  
+                            </div>
+                          </th>
+                         
+                          <th pSortableColumn="bankCode">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                IFSC
+                              <p-sortIcon field="bankCode"></p-sortIcon>
+                              <p-columnFilter type="text" field="bankCode" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+  
+                            </div>
+                          </th>
+                         
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Status
+                              
+                             
+                            </div>
+                          </th>                          
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                        <tr class="p-selectable-row">
+                            <td>{{i+1}}</td>
+                          <td>
+                            {{cp.bankName}}
+                          </td>
+                          
+                          <td>
+                            {{cp.bankCode}} 
+                          </td>   
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <ng-select [items]="bnkStatus" (change)="onSubmit(cp)" placeholder="Status" bindLabel="desc"
+                                  name="isActive" bindValue="code" [(ngModel)]="cp.isActive">
+                                </ng-select>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{cp.isActive=='A'?'UP':'DOWN'}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>                    
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="11">No records found.</td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   
+  

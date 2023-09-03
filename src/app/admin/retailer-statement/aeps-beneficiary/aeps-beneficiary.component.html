@@ -1,0 +1,226 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>AePS BENEFICIARY</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"></a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+      <div class="container-fluid">
+      
+          <p-table class="table-home table-wrapper-commision" #dt [value]="beneDet" [rowHover]="true"
+            [rows]="50" [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,200,500]" [loading]="commonService.isLoader"
+            [paginator]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+            [globalFilterFields]="['isStatus','memberName','beneficiaryName','beneficiaryNumber','beneficiary_number','beneficiaryAcc','bank']">
+            <ng-template pTemplate="caption">
+              <div class="row table-header">
+                <div class="col-md-3 col-sm-6 pb-1">
+                  <ng-select [virtualScroll]="true" [items]="retList" placeholder="User Type" bindLabel="desc"
+                  bindValue="code" name="desc" [(ngModel)]="selectedMemberList" #ffff="ngModel">
+                </ng-select>
+                
+                </div>
+               
+                <div class="col-md-3">
+                  <ng-select [items]="StatusList" bindLabel="name" name="isStatus" bindValue="id" [(ngModel)]="isStatus"
+                  #apiId="ngModel" placeholder="Select">
+                  </ng-select>
+                </div>
+                <div class="col-md-2 text-right">
+                  <p-calendar class="p-calendar" dateFormat="dd/mm/yy" [showIcon]="false" name="fromDt" [(ngModel)]="fromDt"
+                    placeholder="From Date">
+                  </p-calendar>
+                </div>
+                <div class="col-md-2 text-right">
+                  <p-calendar class="p-calendar" name="toDt" [showIcon]="false" dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+                  </p-calendar>
+                </div>
+               
+                <div class="col-md-2 text-right">
+                  <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+                  <input pInputText class="form-control" type="text"
+                    (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+                </div>
+                <div class="col-md-3 col-sm-6 text-center">
+                  <button type="button"  (click)="handleSearch(activeTab)"
+                    class="btn btn-outline-success mt-1 mr-2 btn48">Search</button>
+                  <button type="button" (click)="handleSearch(activeTab)" class="btn btn-outline-dark mt-1 btn48">Export</button>
+          
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>S.R.</th>
+                <th pSortableColumn="txn_no">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    User Name
+                    <p-sortIcon field="txn_no"></p-sortIcon>
+                    <p-columnFilter type="text" field="txn_no" display="menu" class="p-ml-auto">
+                    </p-columnFilter>
+                  </div>
+                </th>
+                <th pSortableColumn="txn_no">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Beneficiary Name
+                    <p-sortIcon field="txn_no"></p-sortIcon>
+                    <p-columnFilter type="text" field="txn_no" display="menu" class="p-ml-auto">
+                    </p-columnFilter>
+                  </div>
+                </th>
+                <th pSortableColumn="trasaction_date">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Created Date
+                    <p-sortIcon field="trasaction_date"></p-sortIcon>
+                  </div>
+                </th>
+                <th pSortableColumn="updatedOn">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Beneficiary Acc
+                    <p-sortIcon field="updatedOn"></p-sortIcon>
+                  </div>
+                </th>
+                <th pSortableColumn="beneficiary_number">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                      Bank
+                    <p-sortIcon field="beneficiary_number"></p-sortIcon>
+                  </div>
+                </th>
+        
+                <th pSortableColumn="narration">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                     Remarks
+                  </div>
+                </th>
+                <th pSortableColumn="status">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Cheque
+                 
+                  </div>
+                </th>  
+                <th pSortableColumn="status">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Status
+                    <p-sortIcon field="status"></p-sortIcon>
+                  </div>
+                </th>       
+                <th>Action</th>
+                <th>#</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-cp let-i="rowIndex">
+              <tr class="p-selectable-row">
+                <td>
+                  {{i+1}}.
+                </td>
+                <td>
+                  {{cp.memberName}}
+                </td>
+                <td>
+                  {{cp.beneficiaryName +'-'+cp.beneficiaryNumber}}
+                </td>
+                <td>
+                  {{cp.createdOn| date: 'dd-MM-yyyy hh:mm aa'}}
+                </td>
+                <td>
+                  {{cp.beneficiaryAcc}}
+                 
+                </td>
+                <td>
+                  {{cp.bank+ '-'+cp.ifsc }}
+                </td>
+                
+                <td>{{cp.remarks}}</td>
+                <td><button type="button" *ngIf="cp?.txnSlip" class="btn btn-primary" (click)="openModel(cp.txnSlip)" > <span class="fas fa-eye"></span></button></td>
+                <td class="text-center">{{cp?.isStatus==1?'Approved':cp?.isStatus==2?'Declined':cp?.isStatus==0?'Initiated':'Pending'}} </td>
+                <td><button type="button" class="btn btn-primary" (click)="openModelAP(cp)" > <span class="fas fa-eye"></span></button></td>
+                <td><button type="button" *ngIf="cp?.isStatus==1?false:true" class="btn btn-danger" (click)="onDeleteBene(cp)" > <span class="fa fa-trash"></span></button></td>
+              </tr>
+            </ng-template>
+           
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="14">No records found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+       
+      </div>
+    </div>
+
+
+<p-dialog header="Slip" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+  [(visible)]="isModelSlip">
+  <img width="600px" src="{{filePath}}">
+</p-dialog>
+<p-dialog header="Account Details" class="dailogbox fund-request-pop" [baseZIndex]="10000"
+[style]="{'max-width': '800px'}" [(visible)]="isModel">
+<div class="update-form">
+  <form (ngSubmit)="f.form.valid && onAddBene()" #f="ngForm" name="fundRequestForm">
+    <div class="modal-body">
+      <div class="row border-button">
+        <div class="col-sm-6 form-group">
+          <label>Account Name</label>
+          <input type="text" disabled class="form-control" name="beneficiaryName"
+                          [(ngModel)]="modalData.beneficiaryName" #beneficiaryName="ngModel"
+                          [ngClass]="{ 'is-invalid': f.submitted && beneficiaryName.invalid }"
+                          placeholder="Account Name" required />
+                        <div *ngIf="f.submitted && beneficiaryName.invalid" class="invalid-feedback">
+                          <div *ngIf="beneficiaryName.errors">Account name is required</div>
+                        </div>
+        </div>
+        <div class="col-sm-6 form-group">
+          <label>Account Number</label>
+          <input type="text" disabled class="form-control" maxlength="25" name="beneficiaryAcc"
+                          [(ngModel)]="modalData.beneficiaryAcc" #beneficiaryAcc="ngModel"
+                          [ngClass]="{ 'is-invalid': f.submitted && beneficiaryAcc.invalid }"
+                          placeholder="Bank Account No" required />
+                        <div *ngIf="f.submitted && beneficiaryAcc.invalid" class="invalid-feedback">
+                          <div *ngIf="beneficiaryAcc.errors">Bank account number is required</div>
+                        </div>
+        </div>
+        <div class="col-sm-6 form-group">
+          <label>Bank Name</label>
+          <input type="text" disabled class="form-control" name="bank" [(ngModel)]="modalData.bank"/>
+        </div>
+        <div class="col-sm-6 form-group">
+          <label>IFSC</label>
+          <input type="text" disabled class="form-control" name="ifsc" [(ngModel)]="modalData.ifsc"
+                              #ifsc="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ifsc.invalid }"
+                              placeholder="IFSC" required />
+                            <div *ngIf="f.submitted && ifsc.invalid" class="invalid-feedback">
+                              <div *ngIf="ifsc.errors">IFSC is required</div>
+                            </div>
+        </div>        
+        <div class="col-sm-12 form-group">
+          <label>Remarks</label>
+          <input type="text" class="form-control" name="remarks" [(ngModel)]="modalData.remarks"
+            #remarks="ngModel" [ngClass]="{ 'is-invalid': f.submitted && remarks.invalid }"
+            required />
+          <div *ngIf="f.submitted && remarks.invalid" class="invalid-feedback">
+            <div *ngIf="remarks.errors">Remark is required</div>
+          </div>
+        </div>
+        
+      
+      </div>
+    </div>
+    <div class="modal-footer" style="display: block;">
+      <div class="row">
+        <div class="col-sm-4 text-left" *ngIf="modalData.isStatus!='1'"> <button type="submit" (click)="modalData.isStatus='2'" class="btn btn-danger waves-effect">Declined</button></div>
+        <div class="col-sm-4 text-center" *ngIf="modalData.isStatus!='1'">
+          <button type="submit" class="btn btn-warning waves-effect" (click)="modalData.isStatus='3'">Pending</button>
+        </div>      
+        <div class="col-sm-4 text-right"> <button type="submit" (click)="modalData.isStatus='1'" class="btn btn-primary waves-effect">Approved</button></div>
+      </div>
+    </div>
+  </form>
+</div>
+</p-dialog>

@@ -1,0 +1,523 @@
+<app-retailer-layout></app-retailer-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Statement</h2>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-body">
+        
+          <p-tabView (onChange)="handleChange($event)">         
+            <p-tabPanel header="Statement">
+              <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+            </p-tabPanel>
+            <p-tabPanel header="Transfer To Wallet">
+              <ng-container *ngTemplateOutlet="blanceTrans"></ng-container>
+            </p-tabPanel>
+            <!-- <p-tabPanel header="Transfer To Bank">
+              <ng-container *ngTemplateOutlet="bankTrans"></ng-container>
+            </p-tabPanel>            -->
+          </p-tabView>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #statementTemplate>
+    <p-table class="table-rt" #dt [value]="statementList" dataKey="remitterId" [rowHover]="true"
+    [rows]="50" [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,200,500]" 
+    [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+    [globalFilterFields]="['TxnNo','CustomerNumber','ApiStatus','ApiMsg','AdharNumber','Service','TrasactionType','Trnamount','OpBalance','ClBalance','ClBalance','Utr','MobileNumber']">
+    <ng-template pTemplate="caption">
+      <div class="row table-header">
+        <div class="col-md-4 col-sm-6">
+          <ng-select [items]="sharedMethodService.SearchType" placeholder="Search Type" bindLabel="name" bindValue="id"
+            name="searchType" [(ngModel)]="searchType">
+          </ng-select>
+        </div>
+        <div class="col-md-4 col-sm-6 pb-1">
+          <input class="form-control" [(ngModel)]="txnNo" type="text" placeholder="Enter txn" />
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Status" bindLabel="name" bindValue="id"
+            name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+          </ng-select>
+        </div>
+        <div class="col-md-4 col-sm-6 pb-1">
+          <p-calendar class="p-calendar" dateFormat="dd/mm/yy" [showIcon]="false" name="fromDt" [(ngModel)]="fromDt"
+            [maxDate]="minDate" placeholder="From Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-4 col-sm-6 pb-1">
+          <p-calendar class="p-calendar" name="toDt" [minDate]="fromDt" [maxDate]="maxDate" [showIcon]="false"
+            dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-4 col-sm-6 text-right">
+          <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+          <input pInputText class="form-control" type="text"
+            (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+        </div>
+        <div class="col-md-12 col-sm-12 text-center">
+          <button type="button" (click)="handleSearch(activeTab)" class="btn btn-primary w-20 mt-1">Search</button>
+        </div>
+        
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>S#</th>
+        <th pSortableColumn="TxnNo">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Txn#
+           
+          </div>
+        </th>
+        <th pSortableColumn="trasaction_date">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Txn Date
+          </div>
+        </th>
+        <th pSortableColumn="narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Customer No.
+          </div>
+        </th>
+        <th pSortableColumn="narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Aaddhar#
+          </div>
+        </th>
+        <th pSortableColumn="narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Bank
+          </div>
+        </th>
+        <th pSortableColumn="narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Type
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Bal Amount
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Transacation Amount
+          </div>
+        </th>
+        <th pSortableColumn="utr">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Opening Bal
+          </div>
+        </th>
+        <th pSortableColumn="utr" >
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Closing Bal
+          </div>
+        </th>
+        <th pSortableColumn="utr">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            RRN
+          </div>
+        </th>
+
+        <th pSortableColumn="status">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Status
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cp let-i="rowIndex">
+      <tr class="p-selectable-row">
+        <td>
+          {{i+1}}.
+        </td>
+        <td>
+          {{cp.TxnNo}}
+        </td>
+        <td>
+          {{cp.TrasactionDate| date: 'dd-MM-yyyy hh:mm aa'}}
+        </td>
+     
+        <td>
+          {{cp.CustomerNumber}}
+
+        </td>
+        <td>XXXXXXXX{{cp.AdharNumber}}</td>
+        <td> {{cp.Service}}</td>
+        <td>{{cp.TrasactionType=="CW"?"Cash Withdraw":cp.TrasactionType=="MS"?"Mini Statement":cp.TrasactionType=="AEPS2W"?"Transfer AePs Wallet To Main Wallet":"Balance Enquiry"}}</td>
+        <td>
+          {{cp.Trnamount | number : '1.2-2'}}
+        </td>
+        <td>
+          {{cp.CwAmount | number : '1.2-2'}}
+        </td>
+        <td >
+          {{cp.OpBalance | number : '1.2-2'}}
+        </td>
+        <td >
+          {{cp.ClBalance | number : '1.2-2'}}
+        </td>
+        <td>
+          {{cp.Utr}}
+        </td>
+
+        <td class="text-center">{{cp.ApiStatus}} </td>
+
+      
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td *ngIf="activeTab!=1" colspan="14">No records found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>
+<ng-template #blanceTrans>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 card m-2">
+      <div class="form-section card-bordy">
+        <form class="form" (ngSubmit)="creditMoneyForm.form.valid && onCreditMoneySave()" #creditMoneyForm="ngForm"
+          name="creditMoneyForm" autocomplete="off">         
+          <div class="form-group lavel-balace lavel-balace-member pb-2 pt-2" *ngIf="walletDetails">
+            <div class="row">
+            <div class="col-lg-6">
+                <div class="card top_counter mb-2">
+                  <div class="body">                     
+                      <div class="container-fluid">
+                          <div class="text">AEPS Balance</div>
+                          <h5 class="number">{{walletDetails.aepsBalance}}</h5>
+                      </div>
+                  </div>
+              </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="card top_counter mb-2">
+                  <div class="body">                    
+                      <div class="container-fluid">
+                          <div class="text">Wallet Balance</div>
+                          <h5 class="number">  {{walletDetails.walleT_BALANCE}}</h5>
+                      </div>
+                  </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Amount</label>
+            <input type="text" OnlyNumber class="form-control" name="amount" [(ngModel)]="creditMoneyModal.amount"
+              #amount="ngModel" [ngClass]="{ 'is-invalid': creditMoneyForm.submitted && amount.invalid }" required
+              autocomplete="off" />
+            <div *ngIf="creditMoneyForm.submitted && amount.invalid" class="invalid-feedback">
+              <div *ngIf="amount.errors">Amount is required.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Remark</label>
+            <input type="text" class="form-control" name="remark" [(ngModel)]="creditMoneyModal.remark"
+              #remark="ngModel" [ngClass]="{ 'is-invalid': creditMoneyForm.submitted && remark.invalid }" required
+              autocomplete="off" />
+            <div *ngIf="creditMoneyForm.submitted && remark.invalid" class="invalid-feedback">
+              <div *ngIf="remark.errors">Remark is required.</div>
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+</ng-template>
+<ng-template #bankTrans>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-section">
+        <div class="title">Transfer Amount To Bank
+        </div>
+        <form class="form" (ngSubmit)="creditMoneyForm.form.valid && confirmPayment()" #creditMoneyForm="ngForm"
+          name="creditMoneyForm" autocomplete="off">
+          <div class="form-group lavel-balace lavel-balace-member pb-2 " *ngIf="walletDetails">
+            <label>Wallet Balance : </label>
+            {{walletDetails.walleT_BALANCE}}
+          </div>
+          <div class="form-group lavel-balace lavel-balace-member pb-2 pt-2" *ngIf="walletDetails">
+            <label>AEPS Balance : </label>
+            <span style="color:crimson; font-weight: bold;"> {{walletDetails.aepsBalance}}</span>
+          </div>
+          <div class="form-group lavel-balace lavel-balace-member pb-2 pt-2">
+            <label>Account Number: </label>
+            <ng-select [items]="beneDetApprove" placeholder="Select Account Number"
+              (change)="SelectVal(creditMoneyModal.bankId)" bindLabel="beneficiaryAcc" bindValue="id"
+              name="beneficiaryAcc" [(ngModel)]="creditMoneyModal.bankId" #board="ngModel"
+              [ngClass]="{ 'is-invalid': creditMoneyForm.submitted && board.invalid }" required>
+            </ng-select>
+          </div>
+          <div class="form-group">
+            <label>Amount</label>
+            <input type="number" OnlyNumber
+              (change)="getPaymentPipe(creditMoneyModal.transactionType,creditMoneyModal.amount)" maxlength="8"
+              class="form-control" name="amount" [(ngModel)]="creditMoneyModal.amount" #amount="ngModel"
+              [ngClass]="{ 'is-invalid': creditMoneyForm.submitted && amount.invalid }" required autocomplete="off" />
+            <div *ngIf="creditMoneyForm.submitted && amount.invalid" class="invalid-feedback">
+              <div *ngIf="amount.errors">Amount is required.</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label">Charge<sup>*</sup></label>
+                <input type="text" disabled OnlyNumber class="form-control" name="chargeAmt" [(ngModel)]="chargeAmt">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label">Net Total<sup>*</sup></label>
+                <input type="text" disabled OnlyNumber class="form-control" name="netTotal" [(ngModel)]="netTotal">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label">Transaction Type<sup>*</sup></label>
+                <br>
+                <div class="radio form-check-inline">
+                  <input type="radio" name="paymentModes"
+                    (change)="getPaymentPipe(creditMoneyModal.transactionType,creditMoneyModal.amount)"
+                    value="IMPS-AEPS" [(ngModel)]="creditMoneyModal.transactionType">
+                  <label style="margin:1px;padding-left: 5px;">IMPS</label>
+                </div>
+                <div class="radio form-check-inline">
+                  <input type="radio" name="paymentModes"
+                    (change)="getPaymentPipe(creditMoneyModal.transactionType,creditMoneyModal.amount)"
+                    value="NEFT-AEPS" [(ngModel)]="creditMoneyModal.transactionType">
+                  <label style="margin:1px;padding-left: 5px;">NEFT</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label">MPIN*<sup>*</sup></label>
+                <input type="password" OnlyNumber maxlength="8" class="form-control" name="mPin"
+                  [(ngModel)]="creditMoneyModal.mPin" #mPin="ngModel"
+                  [ngClass]="{ 'is-invalid': creditMoneyForm.submitted && mPin.invalid }" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Remark</label>
+            <input type="text" class="form-control" name="remark" [(ngModel)]="creditMoneyModal.remark"
+              #remark="ngModel" [ngClass]="{ 'is-invalid': creditMoneyForm.submitted && remark.invalid }" required
+              autocomplete="off" />
+            <div *ngIf="creditMoneyForm.submitted && remark.invalid" class="invalid-feedback">
+              <div *ngIf="remark.errors">Remark is required.</div>
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" *ngIf="beneDetails?.isStatus==1 && pipeList" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-section">
+        <div class="title"> Bank Information
+          <span class="float-right">
+            <button *ngIf="!ishow" class="btn btn-primary" (click)="openModal()"><i class="fa fa-plus"></i> Add Account
+            </button> </span>
+        </div>
+        <div style="margin-left: 5px;">
+          <p-table class="table-home table-wrapper-commision" #dt [value]="beneDet" [rowHover]="true" [rows]="50"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,200,500]" [loading]="commonService.isLoader"
+            [paginator]="false" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="['isStatus','memberName','beneficiaryName','beneficiaryNumber','beneficiary_number','beneficiaryAcc','bank']">
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th>S.R.</th>
+                <th pSortableColumn="txn_no">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Account Name
+                    <p-sortIcon field="txn_no"></p-sortIcon>
+                    <p-columnFilter type="text" field="txn_no" display="menu" class="p-ml-auto">
+                    </p-columnFilter>
+                  </div>
+                </th>
+                <th pSortableColumn="trasaction_date">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Created Date
+                    <p-sortIcon field="trasaction_date"></p-sortIcon>
+                  </div>
+                </th>
+                <th pSortableColumn="updatedOn">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Account Number
+                    <p-sortIcon field="updatedOn"></p-sortIcon>
+                  </div>
+                </th>
+                <th pSortableColumn="beneficiary_number">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Bank
+                    <p-sortIcon field="beneficiary_number"></p-sortIcon>
+                  </div>
+                </th>
+                <th pSortableColumn="beneficiary_number">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    IFSC
+                    <p-sortIcon field="beneficiary_number"></p-sortIcon>
+                  </div>
+                </th>
+                <th pSortableColumn="narration">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Remarks
+                  </div>
+                </th>
+                <th pSortableColumn="status">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Cheque
+
+                  </div>
+                </th>
+                <th pSortableColumn="status">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Status
+                    <p-sortIcon field="status"></p-sortIcon>
+                  </div>
+                </th>
+                <th>Action</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-cp let-i="rowIndex">
+              <tr class="p-selectable-row">
+                <td>
+                  {{i+1}}.
+                </td>
+                <td>
+                  {{cp.beneficiaryName}}
+                </td>
+                <td>
+                  {{cp.createdOn| date: 'dd-MM-yyyy hh:mm aa'}}
+                </td>
+                <td>
+                  {{cp.beneficiaryAcc}}
+
+                </td>
+                <td>
+                  {{cp.bank}}
+                </td>
+                <td>
+                  {{cp.ifsc}}
+                </td>
+                <td>{{cp.remarks}}</td>
+                <td><button type="button" *ngIf="cp?.txnSlip" class="btn btn-primary" (click)="openModel(cp.txnSlip)">
+                    <span class="fas fa-eye"></span></button></td>
+                <td class="text-center">
+                  {{cp?.isStatus==1?'Approved':cp?.isStatus==2?'Declined':cp?.isStatus==0?'Initiated':'Pending'}} </td>
+                <td><button type="button" *ngIf="(cp?.isStatus==3?true:false)" class="btn btn-primary"
+                    (click)="openModelAP(cp)"> <span class="fas fa-eye"></span></button></td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="14">No records found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<p-dialog header="Account Details" class="dailogbox fund-request-pop" [baseZIndex]="10000"
+  [style]="{'max-width': '800px'}" [(visible)]="isModel">
+  <div class="update-form">
+    <form (ngSubmit)="f.form.valid && onAddBene()" #f="ngForm" name="fundRequestForm">
+      <div class="modal-body">
+        <div class="row border-button">
+          <div class="col-sm-6 form-group">
+            <label>Account Name</label>
+            <input type="text" class="form-control" name="beneficiaryName" [(ngModel)]="modalData.beneficiaryName"
+              #beneficiaryName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && beneficiaryName.invalid }"
+              placeholder="Account Name" required />
+            <div *ngIf="f.submitted && beneficiaryName.invalid" class="invalid-feedback">
+              <div *ngIf="beneficiaryName.errors">Account name is required</div>
+            </div>
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Account Number</label>
+            <input type="text" class="form-control" maxlength="18" name="beneficiaryAcc"
+              [(ngModel)]="modalData.beneficiaryAcc" #beneficiaryAcc="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && beneficiaryAcc.invalid }" placeholder="Bank Account No"
+              required />
+            <div *ngIf="f.submitted && beneficiaryAcc.invalid" class="invalid-feedback">
+              <div *ngIf="beneficiaryAcc.errors">Bank account number is required</div>
+            </div>
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Bank Name</label>
+            <ng-select [items]="bankList" bindLabel="bankName" name="bankId" bindValue="bankId"
+              (change)="getIfsc(modalData.bankId)" [(ngModel)]="modalData.bankId" #bankId="ngModel"
+              placeholder="Select Bank Name" [ngClass]="{ 'is-invalid': f.submitted && bankId.invalid }" required>
+            </ng-select>
+            <div *ngIf="f.submitted && bankId.invalid" class="invalid-feedback">
+              <div *ngIf="bankId.errors">Bank name is required</div>
+            </div>
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>IFSC</label>
+            <input type="text" class="form-control" name="ifsc" [(ngModel)]="modalData.ifsc" #ifsc="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && ifsc.invalid }" placeholder="IFSC" required />
+            <div *ngIf="f.submitted && ifsc.invalid" class="invalid-feedback">
+              <div *ngIf="ifsc.errors">IFSC is required</div>
+            </div>
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Upload Cancel Cheque</label>
+            <input type="file" accept="image/*" class="form-control file" (change)="fileChangeEvent($event)" />
+          </div>
+
+          <div class="col-sm-6 form-group">
+            <label>Remarks</label>
+            <input type="text" class="form-control" name="remarks" [(ngModel)]="modalData.remarks" #remarks="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && remarks.invalid }" required />
+            <div *ngIf="f.submitted && remarks.invalid" class="invalid-feedback">
+              <div *ngIf="remarks.errors">Remark is required</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void(0)" (click)="openModal()" class="btn btn-secondary waves-effect">
+          Close
+        </a>
+        <button type="submit" class="btn btn-primary waves-effect">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>
+<p-dialog header="Slip" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+  [(visible)]="isModelSlip">
+  <img width="600px" src="{{filePath}}">
+</p-dialog>

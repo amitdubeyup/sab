@@ -1,0 +1,94 @@
+<div id="wrapper">
+   <app-admin-layout></app-admin-layout>
+    <div class="content-page"
+    >
+    <div class="container-fluid">
+      <div class="container-fluid">
+        <div class="card col-sm-12 col-md-6 col-lg-6 mx-auto mt-5" style="border-radius: 25px;">
+          <div class="card-header bg-white border-0"style="border-radius: 25px;">
+              <h2>Change Your MPIN</h2>
+          </div>
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-sm-12">
+                    <form (ngSubmit)="mPinForm.form.valid && onmPinChange()" #mPinForm="ngForm" name="mPinForm" pFocusTrap
+                    autocomplete="off">
+                    <div class="modal-body">
+                      <div class="row border-button">
+                        <div class="col-xl-12">
+                          <div class="form-group">
+                            <label> Name </label>
+                            <input type="text" class="form-control" name="userName" [(ngModel)]="userModel.userName" #userName="ngModel"
+                              [ngClass]="{ 'is-invalid': mPinForm.submitted && userName.invalid }" required placeholder="Name" disabled>
+                            <div *ngIf="mPinForm.submitted && userName.invalid" class="invalid-feedback">
+                              <div *ngIf="userName.errors">Name is required</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12">
+                          <label>
+                            Mobile No for Service Activation </label>
+                          <input type="text" class="form-control" name="mobileNo" [(ngModel)]="userModel.mobileNo" #mobileNo="ngModel"
+                            [ngClass]="{ 'is-invalid': mPinForm.submitted && mobileNo.invalid }" required placeholder=" Mobile No."
+                            disabled>
+                          <div *ngIf="mPinForm.submitted && mobileNo.invalid" class="invalid-feedback">
+                            <div *ngIf="mobileNo.errors"> Mobile No. is required</div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12" *ngIf="isOpt">
+                          <div class="form-group" >
+                            <label>
+                              New mPin </label>
+                            <input type="password" class="form-control" name="newmPin" [(ngModel)]="userModel.newmPin"
+                              #newmPin="ngModel" [ngClass]="{ 'is-invalid': mPinForm.submitted && newmPin.invalid }" required
+                              placeholder="New mPin">
+                            <div *ngIf="mPinForm.submitted && newmPin.invalid" class="invalid-feedback">
+                              <div *ngIf="newmPin.errors"> New mPin is required</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12" *ngIf="isOpt">
+                          <div class="form-group">
+                            <label>
+                              Confirm New mPin </label>
+                            <input type="password" class="form-control" name="confirmNewmPin" [(ngModel)]="userModel.confirmNewmPin"
+                              #confirmNewmPin="ngModel" [ngClass]="{ 'is-invalid': mPinForm.submitted && confirmNewmPin.invalid }"
+                              required placeholder="Confirm New mPin">
+                            <div *ngIf="mPinForm.submitted && confirmNewmPin.invalid" class="invalid-feedback">
+                              <div *ngIf="confirmNewmPin.errors"> Confirm New mPin is required</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12" *ngIf="isOpt">
+                          <div class="form-group">
+                            <label>
+                             OTP </label>
+                            <input type="password" class="form-control" name="otp"
+                              [(ngModel)]="userModel.otp" #otp="ngModel"
+                              [ngClass]="{ 'is-invalid': mPinForm.submitted && otp.invalid }" required
+                              placeholder="OTP">
+                            <div *ngIf="mPinForm.submitted && otp.invalid" class="invalid-feedback">
+                              <div *ngIf="otp.errors">OTP is required</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" *ngIf="isOpt" class="btn btn-primary waves-effect waves-light">Save
+                          changes</button>
+                          <button type="button" (click)="onOtpSend()"  *ngIf="!isOpt" class="btn btn-primary waves-effect waves-light">
+                            Send Otp</button>
+                      </div>
+                    </div>
+                  </form>
+                  </div>
+                 
+              </div>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+

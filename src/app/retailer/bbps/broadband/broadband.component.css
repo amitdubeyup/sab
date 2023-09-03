@@ -1,0 +1,12 @@
+.cardhead.card-header {
+  border-bottom: 1px solid #e8ebed;
+  background: 0 0;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 0px;
+}
+.pr1 {
+  padding-left: 20px;
+  padding-right: 20px;
+}

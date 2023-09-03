@@ -1,0 +1,64 @@
+a.edit-text {
+  color: #3f60cb;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.content .card-body {
+padding: 0px !important;
+}
+
+.tabs {
+margin: 0px 0px 10px 0px !important;
+padding: 0px !important;
+text-align: center;
+font-weight: 500;
+cursor: pointer;
+}
+
+.tab {
+padding: 5px !important;
+}
+
+.form-field {
+margin-bottom: 15px;
+}
+
+label {
+font-weight: 400;
+margin-bottom: 2px !important;
+}
+
+.file {
+padding: .225rem .225rem !important;
+}
+
+.checkbox-section {
+width: 100%;
+display: inline-flex;
+margin: 10px 0px 0px 0px;
+}
+
+.checkbox {
+width: 20px;
+height: 20px;
+margin-right: 10px;
+}
+
+.errors {
+padding: 10px;
+}
+
+.err-label {
+font-weight: 600;
+margin-bottom: 5px;
+}
+
+.err-value {
+color: #ff000094;
+display: initial;
+margin-right: 10px;
+padding: 3px 0px;
+font-weight: 400;
+}

@@ -1,0 +1,168 @@
+<app-md-layout></app-md-layout>
+<div  id="main-content">
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Credit Money</h4>
+        <h6>Dasboard / Credit Money</h6>
+      </div>
+    </div>
+    <p-tabView [(activeIndex)]="tabindex" (onChange)="handleChange($event)">
+      <p-tabPanel header="Credit Money">
+        <ng-container *ngTemplateOutlet="creditMoney"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="Details">
+        <ng-container *ngTemplateOutlet="detailsMoney"></ng-container>
+      </p-tabPanel>
+    </p-tabView>
+
+    <ng-template #creditMoney>
+      <div class="row">
+        <div class="col-lg-3 col-md-3">
+        
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <form class="form" (ngSubmit)="creditMoneyForm.form.valid && onCreditMoneySave()" #creditMoneyForm="ngForm"
+          name="creditMoneyForm" autocomplete="off">
+          <div class="row m-1">
+            <div class="col-lg-12 form-group">
+              <p-dropdown [options]="outletList" (onChange)="fetchWalletDetails(selectedMemberCr?.code)"
+                [style]="{'width':'100%'}" #selectedMembercr="ngModel" name="selectedMemberCr"
+                [(ngModel)]="selectedMemberCr" optionLabel="desc" [filter]="true" filterBy="desc" [showClear]="false"
+                placeholder="Select a Member">
+                <ng-template pTemplate="selectedItem">
+                  <div class="member-item member-item-value">
+                    <div>{{selectedMemberCr?.desc}}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-member pTemplate="item">
+                  <div class="member-item">
+                    <div>{{member.desc}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>       
+            <div class="col-lg-12 form-group">
+              <input type="number" class="form-control" name="amount" [(ngModel)]="creditMoneyModal.amount"
+                #amount="ngModel" placeholder="Amount"
+                [ngClass]="{ 'is-invalid': creditMoneyForm.submitted && amount.invalid }" required autocomplete="off" />
+              <div *ngIf="creditMoneyForm.submitted && amount.invalid" class="invalid-feedback">
+                <div *ngIf="amount.errors">Amount is required.</div>
+              </div>
+            </div>
+            <div class="col-lg-12" *ngIf="walletDetails">
+              <div class="card top_counter mb-2">
+                <div class="body">
+                    <div class="icon text-warning"><img  src="assets/images/icons8-wallet-64.png" height="30px"></div>
+                    <div class="container-fluid">
+                        <div class="text">Wallet Balance</div>
+                        <h5 class="number">{{walletDetails?.walleT_BALANCE}}</h5>
+                    </div>
+                </div>
+            </div>
+            
+            </div>
+            <div class="col-lg-12 form-group">
+              <input type="text" class="form-control" name="remark" [(ngModel)]="creditMoneyModal.remark"
+                #remark="ngModel" placeholder="Remark"
+                [ngClass]="{ 'is-invalid': creditMoneyForm.submitted && remark.invalid }" required autocomplete="off" />
+              <div *ngIf="creditMoneyForm.submitted && remark.invalid" class="invalid-feedback">
+                <div *ngIf="remark.errors">Remark is required.</div>
+              </div>
+            </div>
+          </div>
+          <div class="row m-1">
+            <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+              <button type="submit" [disabled]="commonService.isLoader" class="btn btn-primary">Proceed</button>
+            </div>
+          </div>
+        </form>
+        </div>
+        <div class="col-lg-3 col-md-3">
+        
+        </div>
+      </div>
+   
+    </ng-template>
+    <ng-template #detailsMoney>
+      <p-table class="table-rt table-home" #creditHistoryTable [value]="creditHistoryList" dataKey="id"
+        [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0" [globalFilterFields]="['wallet', 'amount','remark','date','status']">
+        <ng-template pTemplate="caption">
+          <div class="row table-header">
+            <div class="col-sm-6 pb-1">
+              <ng-select placeholder="-Outlet-" [items]="outletList" bindLabel="desc" bindValue="code" name="name"
+                [(ngModel)]="coutletid" #name="ngModel">
+              </ng-select>
+            </div>
+            <div class="col-sm-3 pb-1">
+              <p-calendar class="p-calendar" dateFormat="dd-mm-yy" [showIcon]="false" name="fromDt" [(ngModel)]="fromDt"
+                dateFormat="dd-mm-yy" placeholder="From Date">
+              </p-calendar>
+            </div>
+            <div class="col-sm-3 pb-1">
+              <p-calendar class="p-calendar" [showIcon]="false" name="toDt" [(ngModel)]="toDt" dateFormat="dd-mm-yy"
+                placeholder="To Date"></p-calendar>
+            </div>
+            <div class="col-sm-6 text-right">             
+              <input pInputText class="form-control" type="text"
+                (input)="creditHistoryTable.filterGlobal(changeText($event.currentTarget), 'contains')"
+                placeholder="Search" />
+            </div>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" name="amount" placeholder="Ref Number" [(ngModel)]="txnNo" />
+            </div>
+            <div class="col-sm-1">
+              <button type="button" (click)="handleSearch(tabindex)" class="btn btn-primary w-20 mt-1">Search</button>
+              
+            </div>
+            <div class="col-sm-1">
+            
+              <button type="button" (click)="exportAsXLSX()" class="btn btn-info w-20 mt-1">Export</button>
+            </div>
+
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Txn Ref No</th>
+            <th>Reciver Name</th>
+            <th>Amount</th>
+            <th>Remarks</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cp let-i="rowIndex">
+          <tr class="p-selectable-row">
+            <td>{{i+1}}</td>
+            <td>{{cp.CreatedOn | date: 'MM/dd/yyyy hh:mm aa'}}</td>
+            <td>{{cp.TxnNo}}</td>
+            <td>{{cp.Narration}}</td>
+            <td>{{cp.Amount | number : '1.2-2'}}</td>
+            <td>{{cp.Intent}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <tr class="p-selectable-row">
+            <td colspan="4" class="text-right">
+              <strong>Total</strong>
+            </td>
+            <td>
+              {{totalAmountCr | number : '1.2-2'}}
+            </td>
+            <td>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6">No records found.</td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+    </ng-template>
+  </div>
+</div>

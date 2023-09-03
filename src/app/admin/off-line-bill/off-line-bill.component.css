@@ -1,0 +1,13 @@
+
+
+.add-fund {
+    width: 160px;
+    position: absolute;
+    z-index: 1;
+    right: -10px;
+    top: 12px;
+  }
+  .text-red{color: #2a8493;}
+  .dailogbox .p-dialog-mask{
+      z-index: 999 !important;
+  }

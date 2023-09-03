@@ -1,0 +1,92 @@
+
+
+.add-fund {
+    width: 110px;
+    position: absolute;
+    z-index: 1;
+    right: 20px;
+    top: 22px;
+  }
+  .text-red{color: #2a8493;}
+  
+  
+   :host ::ng-deep .p-paginator .p-paginator-current {
+       margin-left: auto;
+  }
+   :host ::ng-deep .p-progressbar {
+       height: 0.5rem;
+       background-color: #d8dadc;
+  }
+   :host ::ng-deep .p-progressbar .p-progressbar-value {
+       background-color: #607d8b;
+  }
+   :host ::ng-deep .table-header {
+       display: flex;
+       justify-content: space-between;
+  }
+   :host ::ng-deep .p-calendar .p-datepicker {
+       min-width: 25rem;
+  }
+   :host ::ng-deep .p-calendar .p-datepicker td {
+       font-weight: 400;
+  }
+   :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-header {
+       padding: 1rem;
+       text-align: left;
+  }
+   :host ::ng-deep .p-datatable.p-datatable-customers .p-paginator {
+       padding: 1rem;
+  }
+   :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-thead > tr > th {
+       text-align: left;
+  }
+   :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td {
+       cursor: auto;	 
+  }
+   :host ::ng-deep .p-datatable.p-datatable-customers .p-dropdown-label:not(.p-placeholder) {
+       text-transform: uppercase;
+  }
+   :host ::ng-deep .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
+       display: none;
+  }
+   @media screen and (max-width: 960px) {
+       :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-thead > tr > th, :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tfoot > tr > td {
+           display: none !important;
+      }
+       :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr {
+          border: 1px solid #dddada !important;		
+          border-left: 2px solid #eeeaea !important;
+          border-bottom: 1px solid var(--layer-2);
+          margin-bottom: 2px !important;
+          box-shadow: 0px 0px 17px 0px #b2b2b2;
+  
+      }
+       :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td {
+           text-align: left;
+           display: block;
+           border: 0 none !important;
+           width: 100% !important;
+           float: left;
+           clear: left;
+           border: 0 none;
+           padding: 5px !important;
+           text-align: left !important;
+           border-bottom: 1px solid #e6e2e2 !important;
+      }
+       :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
+          padding: 2px;
+      width: 100%;
+      display: inline-block;
+      margin: -3px;
+      font-weight: bold;
+      }
+       :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td .p-progressbar {
+           margin-top: 0.5rem;
+      }
+      .text-center-button.ng-star-inserted button{
+          margin:0 auto;
+          display:block;
+      }
+   }
+   
+  

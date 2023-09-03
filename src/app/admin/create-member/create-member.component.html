@@ -1,0 +1,151 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>Create User</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                    <li class="breadcrumb-item active">Dashboard </li>
+                      
+                </ul>              
+            </div>
+        </div>
+    </div>
+          <div class="container-fluid">
+              <div class="row">
+
+                  <div class="col-sm-12 col-xl-12">
+                      <div class="card">
+                          <div class="card-body">
+                              
+                              <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" name="form" pFocusTrap autocomplete="off">
+                                  <div class="modal-body">
+                                      <div class="row border-button">
+                                          <div class="col-xl-4">
+                                              <div class="form-group">
+                                                  <label> User Type </label>
+                                                  <ng-select [items]="respData"
+                                                      [ngClass]="{ 'is-invalid': f.submitted && mtId.invalid }"
+                                                      placeholder="Select User Type" bindLabel="membType" (change)="GetMemberReportTo(cmodel.mtId)"
+                                                      name="mtId" bindValue="mtId" required [(ngModel)]="cmodel.mtId"
+                                                      #mtId="ngModel">
+                                                  </ng-select>
+                                                  <div *ngIf="f.submitted && mtId.invalid" class="invalid-feedback">
+                                                      <div *ngIf="mtId.errors">User type is required</div>
+                                                  </div>
+                                                  
+                                              </div>
+                                             
+                                          </div>
+
+                                          <div class="col-xl-4">
+                                              <div class="form-group">
+                                              <label>Report To</label>
+                                              <ng-select [items]="respReportTo" [virtualScroll]="true"
+                                                  [ngClass]="{ 'is-invalid': f.submitted && parentMemberId.invalid }"
+                                                  placeholder="Select Report To" bindLabel="desc" name="parentMemberId"
+                                                  bindValue="code" required [(ngModel)]="cmodel.parentMemberId"
+                                                  #parentMemberId="ngModel">
+                                              </ng-select>
+                                              <div *ngIf="f.submitted && parentMemberId.invalid"
+                                                  class="invalid-feedback">
+                                                  <div *ngIf="parentMemberId.errors">Report to is required</div>
+                                              </div>                                             
+                                          </div>
+                                          </div>
+                                          <div class="col-xl-4">
+                                              <div class="form-group">
+                                              <label> Name </label>
+                                              <input type="text" class="form-control" name="memberName"
+                                                  [(ngModel)]="cmodel.memberName" #memberName="ngModel"
+                                                  [ngClass]="{ 'is-invalid': f.submitted && memberName.invalid }"
+                                                  required placeholder="Name">
+                                              <div *ngIf="f.submitted && memberName.invalid" class="invalid-feedback">
+                                                  <div *ngIf="memberName.errors">Name is required</div>
+                                              </div>
+                                          </div>
+                                       </div>
+                                          <div class="col-xl-4">
+                                              <div class="form-group">
+                                              <label>
+                                                  Company Name </label>
+                                              <input type="text" class="form-control" name="companyName"
+                                                  [(ngModel)]="cmodel.companyName" #companyName="ngModel"
+                                                  [ngClass]="{ 'is-invalid': f.submitted && companyName.invalid }"
+                                                  required placeholder="Company Name">
+                                              <div *ngIf="f.submitted && companyName.invalid" class="invalid-feedback">
+                                                  <div *ngIf="companyName.errors">Company name is required</div>
+                                              </div>
+                                          </div>
+                                          </div>
+                                          <div class="col-xl-4">
+                                              <label>
+                                                  Mobile No for Service Activation </label>
+                                                  <input type="text" class="form-control" name="mobileNo"
+                                                  [(ngModel)]="cmodel.mobileNo" #mobileNo="ngModel"
+                                                  [ngClass]="{ 'is-invalid': f.submitted && mobileNo.invalid }"
+                                                  required placeholder=" Mobile No.">
+                                              <div *ngIf="f.submitted && mobileNo.invalid" class="invalid-feedback">
+                                                  <div *ngIf="mobileNo.errors"> Mobile No. is required</div>
+                                              </div>
+                                          </div>
+                                          <div class="col-xl-4">
+                                              <label>
+                                                  Email id <span>(Optional)</span> </label>
+                                                  <input type="text" class="form-control" name="emailId"
+                                                  [(ngModel)]="cmodel.emailId" #emailId="ngModel"
+                                                   placeholder="Email id">
+                                          </div>
+                                          <div class="col-xl-4">
+                                            <div class="form-group">
+                                            <label>
+                                                PAN </label>
+                                            <input type="text" class="form-control" name="pan"
+                                                [(ngModel)]="cmodel.pan" #pan="ngModel"
+                                                [ngClass]="{ 'is-invalid': f.submitted && pan.invalid }"
+                                                required placeholder="PAN">
+                                            <div *ngIf="f.submitted && pan.invalid" class="invalid-feedback">
+                                                <div *ngIf="pan.errors">PAN is required</div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                          <div class="col-xl-4">
+                                              <label>GST Type</label>
+                                              <ng-select [items]="gstTypeList"
+                                                  [ngClass]="{ 'is-invalid': f.submitted && gstType.invalid }"
+                                                  placeholder="Select GST Type" bindLabel="desc" name="gstType"
+                                                  bindValue="code" required [(ngModel)]="cmodel.gstType"
+                                                  #gstType="ngModel">
+                                              </ng-select>
+                                              <div *ngIf="f.submitted && gstType.invalid"
+                                                  class="invalid-feedback">
+                                                  <div *ngIf="gstType.errors">GST type is required</div>
+                                              </div>
+                                          </div>
+                                          <div class="col-xl-4" *ngIf="cmodel.gstType=='1'?true:false">
+                                              <label>GSTIN </label>
+                                              <input type="text" class="form-control" name="gstin"
+                                                  [(ngModel)]="cmodel.gstin" #gstin="ngModel"
+                                                   placeholder="GSTIN">
+                                          </div>
+                                        </div>
+                                         
+                                      
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" routerLink="/administrator/kyclist" class="btn btn-secondary waves-effect"
+                                          data-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-primary waves-effect waves-light">Save
+                                          changes</button>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+<div class="pageloader" *ngIf="isloder"></div>

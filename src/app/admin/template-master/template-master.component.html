@@ -1,0 +1,55 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>All TEMPLATES</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">                    
+                    <li class="breadcrumb-item active">  <a class="btn btn-dark" routerLink="/administrator/commission-recharge">Add New</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered grid-user-pay">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Template Name </th>
+                                      
+                                        <th>Created On </th>
+                                        <th>Updated On </th>
+                                        <th class="text-center">Status </th>
+                                        <th class="text-center">Action </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of respData; let i=index">
+                                        <td scope="row">{{i+1}}</td>
+                                        <td>{{row.templateName}}</td>                                
+                                        <td>{{row.createdOn | date:'dd-MM-yyyy hh:mm aa'}}</td>
+                                        <td>{{row.updatedOn | date:'dd-MM-yyyy hh:mm aa'}}</td>
+                                        <td class="text-center"> <span
+                                                class="{{row.isStatus=='A'?'badge-primary':'badge-warning'}} badge mr-2">{{row.isStatus=='A'?'Active':'InActive'}}</span>
+                                        </td>
+                                        <td class="text-center"> <a class="btn btn-primary btn-sm"
+                                                href="javascript:void(0)"
+                                                (click)="redrictTo(row.docType,row.templateId)">Edit</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

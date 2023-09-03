@@ -1,0 +1,144 @@
+
+
+<app-retailer-layout></app-retailer-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Payment Receipt</h2>
+      </div>
+      <div class="col-md-6 col-sm-12 text-right">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">Dashboard</li>
+          <li class="breadcrumb-item active">Payment Receipt</li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid"> 
+    <div class="row clearfix">
+      <div class="col-lg-12">
+        <div style="margin: 5px;" id="sectiontoprint">            
+            <div class="card">
+                <table style="border: solid 1px #000; width: 100%;">
+                    <tbody><tr>
+                        <td colspan="4" valign="top" align="center">
+                            <img src="https://fleetpay.in/assets/images/logo.png" style="width: 100px">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Outlet Name :</h4>
+                        </td>
+                        <td> {{transactionDetails?.CompanyName}}</td>
+                        <td>
+                          <h4>Mobile Number:</h4>
+                      </td>
+                      <td>
+                          {{transactionDetails?.BeneficiaryAcc}}
+                      </td>
+                        
+                    </tr>
+                    <tr>
+                      <td>
+                        <h4>Outlet Mobile No :</h4>
+                    </td>
+                    <td>{{transactionDetails?.MobileNo}}</td>
+                        <td>
+                            <h4>Operator</h4>
+                        </td>
+                        <td>
+                            {{transactionDetails?.RemitterName}}
+                        </td>
+                    </tr>                    
+                    <tr>
+                       
+                        <td>
+                            <h4>Date &amp; Time :</h4>
+                        </td>
+                        <td>
+                            {{transactionDetails?.TrasactionDate | date: 'medium'}}
+                        </td>
+                        <td>
+                          <h4>Circle</h4>
+                      </td>
+                      <td>
+                        {{transactionDetails?.Narration}}
+                      </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center">
+                            <hr>
+                            <h4>Transaction Summary</h4>
+                        </td>
+                    </tr>
+                    
+                            <tr>
+                                <td colspan="4">
+                                    <table class="table-rt" width="100%" cellspacing="0" cellpadding="3" border="1">
+                                        <tbody><tr>
+                                            <td>
+                                                <h4>Txn#</h4>
+                                            </td>
+                                            <td>Type
+                                            </td>
+                                            <td>
+                                              <h4>Amount</h4>
+                                          </td>
+                                            <td>Operator Id
+                                            </td>
+                                            <td>
+                                                <h4>Status</h4>
+                                            </td>
+                                        </tr>
+                        
+                            <tr *ngFor="let transaction of transactionDetails?.TrasactionSummaryList; let i = index;">
+                                <td>{{transaction?.TxnId}}
+                                </td>
+                                
+                                 <td>
+                                    {{(transactionDetails?.mode=='UPI-Payout'?'Mobile Pay':transactionDetails?.mode.replace('-Money-Transfer','').replace('-KYC-PAY',''))}}
+                                </td>
+                                
+                                <td>{{transaction?.Amount | number : '1.2-2'}}</td>
+                                <td>
+                                  {{transaction?.ReferenceNo}}
+                              </td>
+                                <td>{{transaction?.StatusChangeOn}}</td>
+                            </tr>
+
+                        
+                            </tbody></table>
+                                            </td>
+                                        </tr>
+                        
+                    <tr>
+                        <td colspan="4">
+                            <h4>Total Amount : Rs. {{totalAmount | number : '1.2-2'}}</h4>
+                            Amount (In Words) :{{excl.convertNumberToWords(totalAmount)}} Only
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="center">                            
+                            <h4>© 2023 All Rights Reserved</h4> 
+                            This is Electronically generated Invoice, No Signature & Seal required.
+                            <br>
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+        
+</div>
+      </div>
+      
+    </div>
+    <div class="row clearfix pb-5 pt-2">        
+        <div class="col-md-12 col-sm-12 col-lg-12 text-center">
+            <a href="javascript:void(0)" class="btn btn-info" (click)="cancel()">Next Transaction</a> &nbsp;
+            &nbsp; <div class="btn btn-outline-dark" (click)="printPage(true)" ><i class="fa icon-printer "></i> Print-1</div>
+        </div>
+      </div>
+  </div>
+</div>

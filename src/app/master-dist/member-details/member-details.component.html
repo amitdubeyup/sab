@@ -1,0 +1,306 @@
+<app-md-layout></app-md-layout>
+<div  id="main-content">
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Retailer Details</h4>
+        <h6>Retailer Details</h6>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Retailer <span class="float-right mb-1">
+            <a href="javascript:void(0)" (click)="openPageUrl('/distributor/add-member', null)"
+              class="btn btn-primary btn-sm waves-effect waves-light">Add
+              Member </a>
+          </span> </h5>
+        <div class="table-responsive">
+          <p-table class="table-rt table-home table-wrapper-commision" #dt [value]="respData" dataKey="memberId"
+            [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="['mtId','fullName','shopName','mobileNumber','isStatus','createByName']">
+            <ng-template pTemplate="header">
+              <tr>
+                <th pSortableColumn="mtId">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Member Id
+                    <p-sortIcon field="mtId"></p-sortIcon>
+                    <p-columnFilter type="text" field="mtId" display="menu" class="p-ml-auto">
+                    </p-columnFilter>
+
+                  </div>
+                </th>
+                <th pSortableColumn="fullName">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Name
+                    <p-sortIcon field="fullName"></p-sortIcon>
+                    <p-columnFilter type="text" field="fullName" display="menu" class="p-ml-auto">
+                    </p-columnFilter>
+
+                  </div>
+                </th>
+                <th pSortableColumn="shopName">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Firm Name
+                    <p-sortIcon field="shopName"></p-sortIcon>
+                    <p-columnFilter type="text" field="shopName" display="menu" class="p-ml-auto">
+                    </p-columnFilter>
+
+                  </div>
+                </th>
+                <th pSortableColumn="mobileNumber">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Phone Number
+                    <p-sortIcon field="mobileNumber"></p-sortIcon>
+                    <p-columnFilter type="text" field="mobileNumber" display="menu" class="p-ml-auto">
+                    </p-columnFilter>
+                  </div>
+                </th>
+                <th pSortableColumn="rechTemplateName">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Report To
+                    <p-sortIcon field="rechTemplateName"></p-sortIcon>
+                    <p-columnFilter type="text" field="rechTemplateName" display="menu" class="p-ml-auto">
+                    </p-columnFilter>
+                  </div>
+                </th>
+                <th pSortableColumn="dmtTemplateName">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    ASM
+                    <p-sortIcon field="dmtTemplateName"></p-sortIcon>
+                    <p-columnFilter type="text" field="dmtTemplateName" display="menu" class="p-ml-auto">
+                    </p-columnFilter>
+                  </div>
+                </th>
+                <th pSortableColumn="aepsTemplateName">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    GST Type
+                    <p-sortIcon field="aepsTemplateName"></p-sortIcon>
+
+                  </div>
+                </th>
+                <th pSortableColumn="isActive">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Status
+                    <p-sortIcon field="isActive"></p-sortIcon>
+                    <p-columnFilter type="text" field="isActive" display="menu" class="p-ml-auto">
+                    </p-columnFilter>
+                  </div>
+                </th>
+                <th>
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Created On
+
+                  </div>
+                </th>
+                <th style="width:10%;">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Action
+                  </div>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-cp>
+              <tr class="p-selectable-row">
+                <td>
+                  {{cp.memberType}}{{cp.userId}}
+                </td>
+                <td>
+                  {{cp.memberName}}
+                </td>
+                <td>
+                  {{cp.companyName}}
+                </td>
+                <td>
+                  {{cp.mobileNo}}
+                </td>
+                <td>
+                  {{cp.reportTo}}
+                </td>
+                <td>
+                  {{cp.asmName}}
+                </td>
+                <td>
+                  {{cp.gstType=='1'?'Registered':'UnRegistered'}}
+                </td>
+                <td>
+                  {{cp.isActive=='A'?'Active':cp.aepsType=='D'?'In-Active':'In-Active'}}
+                </td>
+                <td>
+                  {{cp.createdOn| date: 'MM/dd/yyyy hh:mm aa'}}
+                </td>
+                <td class="text-center">
+                  <a href="javascript:void(0)" *ngIf="!cp.kycStatus"
+                    (click)="openPageUrl('/distributor/kyc-details', {muid: cp.memberId})"
+                    class="btn btn-primary btn-sm waves-effect waves-light kyc">KYC</a>
+                  <a href="javascript:void(0)" (click)="onSetCommission(cp.memberId)"
+                    class="btn btn-primary btn-sm waves-effect waves-light">Edit</a>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="11">No records found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div id="wrapper">
+  <app-distributor-header></app-distributor-header>
+  <div class="content-page" [ngClass]="{'small-content': commonService?.collapseSideMenu, 'large-content': !commonService?.collapseSideMenu}">
+    <div class="container-fluid">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12 col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="mt-0 header-title">Members <span class="float-right mb-1">
+                  <a href="javascript:void(0)" (click)="openPageUrl('/distributor/add-member', null)" class="btn btn-primary btn-sm waves-effect waves-light">Add
+                      Member </a>
+                  </span> </h4>
+                <div class="table-responsive">
+                  <p-table  class="table-home table-wrapper-commision" #dt [value]="respData" dataKey="memberId"
+                    [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                     [paginator]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+                    [globalFilterFields]="['mtId','fullName','shopName','mobileNumber','isStatus','createByName']">
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th pSortableColumn="mtId">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Member Id
+                            <p-sortIcon field="mtId"></p-sortIcon>
+                            <p-columnFilter type="text" field="mtId" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="fullName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Name
+                            <p-sortIcon field="fullName"></p-sortIcon>
+                            <p-columnFilter type="text" field="fullName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="shopName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Firm Name
+                            <p-sortIcon field="shopName"></p-sortIcon>
+                            <p-columnFilter type="text" field="shopName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="mobileNumber">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Phone Number
+                            <p-sortIcon field="mobileNumber"></p-sortIcon>
+                            <p-columnFilter type="text" field="mobileNumber" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </th>
+                        <th pSortableColumn="rechTemplateName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Report To
+                            <p-sortIcon field="rechTemplateName"></p-sortIcon>
+                            <p-columnFilter type="text" field="rechTemplateName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </th>
+                        <th pSortableColumn="dmtTemplateName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            ASM
+                            <p-sortIcon field="dmtTemplateName"></p-sortIcon>
+                            <p-columnFilter type="text" field="dmtTemplateName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </th>
+                        <th pSortableColumn="aepsTemplateName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            GST Type
+                            <p-sortIcon field="aepsTemplateName"></p-sortIcon>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="isActive">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Status
+                            <p-sortIcon field="isActive"></p-sortIcon>
+                            <p-columnFilter type="text" field="isActive" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Created On
+
+                          </div>
+                        </th>
+                        <th style="width:10%;">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Action
+                          </div>
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-cp>
+                      <tr class="p-selectable-row">
+                        <td>
+                          {{cp.memberType}}{{cp.userId}}
+                        </td>
+                        <td>
+                          {{cp.memberName}}
+                        </td>
+                        <td>
+                          {{cp.companyName}}
+                        </td>
+                        <td>
+                          {{cp.mobileNo}}
+                        </td>
+                        <td>
+                          {{cp.reportTo}}
+                        </td>
+                        <td>
+                          {{cp.asmName}}
+                        </td>
+                        <td>
+                          {{cp.gstType=='1'?'Registered':'UnRegistered'}}
+                        </td>
+                        <td>
+                          {{cp.isActive=='A'?'Active':cp.aepsType=='D'?'In-Active':'In-Active'}}
+                        </td>
+                        <td>
+                          {{cp.createdOn| date: 'MM/dd/yyyy hh:mm aa'}}
+                        </td>
+                        <td class="text-center">
+                          <a href="javascript:void(0)" *ngIf="!cp.kycStatus" (click)="openPageUrl('/distributor/kyc-details', {muid: cp.memberId})"
+                            class="btn btn-primary btn-sm waves-effect waves-light kyc">KYC</a>
+                          <a href="javascript:void(0)" (click)="onSetCommission(cp.memberId)"
+                            class="btn btn-primary btn-sm waves-effect waves-light">Edit</a>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td colspan="11">No records found.</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

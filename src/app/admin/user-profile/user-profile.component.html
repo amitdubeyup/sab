@@ -1,0 +1,255 @@
+<div id="wrapper">
+   <app-admin-layout></app-admin-layout>
+    <div class="content-page" >
+      <div class="container-fluid">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12 col-xl-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row tabs">
+                    <div (click)="updateTabs(1)" class="col-sm-4 col-xl-4 tab"
+                      [ngStyle]="{'background-color': (activeTabIndex === 1) ? '#3f60cb' : '#f7eded', color: (activeTabIndex === 1) ? '#fff' : '#000'}">
+                      <div>Member Information</div>
+                    </div>
+                    <div (click)="updateTabs(2)" class="col-sm-4 col-xl-4 tab"
+                      [ngStyle]="{'background-color': (activeTabIndex === 2) ? '#3f60cb' : '#f7eded', color: (activeTabIndex === 2) ? '#fff' : '#000'}">
+                      <div>Password Change</div>
+                    </div>
+                    <div (click)="updateTabs(3)" class="col-sm-4 col-xl-4 tab"
+                      [ngStyle]="{'background-color': (activeTabIndex === 3) ? '#3f60cb' : '#f7eded', color: (activeTabIndex === 3) ? '#fff' : '#000'}">
+                      <div>mPIN Change</div>
+                    </div>
+                  </div>
+                  <form *ngIf="activeTabIndex === 1" (ngSubmit)="memberForm.form.valid && onMemberInfoSave()" #memberForm="ngForm"
+                  name="memberForm" pFocusTrap autocomplete="off">
+                  <div class="modal-body">
+                    <div class="row border-button">
+                      <div class="col-xl-4">
+                        <div class="form-group">
+                          <label> Member Type </label>
+                         <p>{{cmodel.memberType}}</p>
+                        </div>
+                      </div>
+
+                      <div class="col-xl-4">
+                        <div class="form-group">
+                          <label>Report To</label>
+                          <p>{{cmodel.reporttoName}}</p>
+                        </div>
+                      </div>
+
+
+                      <div class="col-xl-4">
+                        <div class="form-group">
+                          <label> Name </label>
+                          <p>{{cmodel.userName}}</p>
+                        </div>
+                      </div>
+                      <div class="col-xl-4">
+                        <div class="form-group">
+                          <label>
+                            Firm Name </label>
+
+                          <p>{{cmodel.companyName}}</p>
+                        </div>
+                      </div>
+                      <div class="col-xl-4">
+                        <label>
+                          Mobile No for Service Activation </label>
+                          <p>{{cmodel.rmn}}</p>
+                      </div>
+                      <div class="col-xl-4">
+                        <label>
+                          Email id <span>(Optional)</span> </label>
+                          <p>{{cmodel.emailId}}</p>
+                      </div>
+                      <div class="col-xl-4">
+                        <label>GSTIN</label>
+                        <p>{{cmodel.gstin}}</p>
+                      </div>
+
+                      <div class="col-xl-12 mt-4">
+                        <label>COMMISSION TEMPLATE </label>
+                      </div>
+                      <div class="col-xl-12 dropdown-divider">
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-group">
+                          <div class="row">
+                            <div class="col-sm-10"><label>Recharge</label></div>
+
+                          </div>
+
+                          <ng-select [items]="respTemplate?.rechTemplate" disabled placeholder="Select Recharge Template"
+                            bindLabel="templateName" name="rechTemplate" bindValue="templateId"
+                            [(ngModel)]="cmodel.rechTemplate" #rechTemplate="ngModel">
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-group">
+                          <div class="row">
+                            <div class="col-sm-10"><label> Direct Money Transfer</label></div>
+
+                          </div>
+                          <ng-select [items]="respTemplate?.dmtTemplate" disabled placeholder="Select DMT Template"
+                            bindLabel="templateName" name="dmtTemplate" bindValue="templateId"
+                            [(ngModel)]="cmodel.dmtTemplate" #dmtTemplate="ngModel">
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <div class="col-xl-6">
+                        <div class="form-group">
+                          <div class="row">
+                            <div class="col-sm-10"><label>BBPS</label></div>
+
+                          </div>
+                          <ng-select [items]="respTemplate?.bbpsTemplate" disabled placeholder="Select BBPS Template"
+                            bindLabel="templateName" name="bbpsTemplate" bindValue="templateId"
+                            [(ngModel)]="cmodel.bbpsTemplate" #bbpsTemplate="ngModel">
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-group">
+                          <div class="row">
+                            <div class="col-sm-10"><label>AEPS</label></div>
+
+                          </div>
+                          <ng-select [items]="respTemplate?.aepsTemplate" disabled placeholder="Select AEPS Template"
+                            bindLabel="templateName" name="aepsTemplate" bindValue="templateId"
+                            [(ngModel)]="cmodel.aepsTemplate" #aepsTemplate="ngModel">
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </form>
+                  <form *ngIf="activeTabIndex === 2" (ngSubmit)="passwordForm.form.valid && onPasswordChangeSave()" #passwordForm="ngForm"
+                  name="passwordForm" pFocusTrap autocomplete="off">
+                  <div class="modal-body">
+                    <div class="row border-button">
+                      <div class="col-xl-6">
+                        <div class="form-group">
+                          <label> Name </label>
+                          <input type="text" class="form-control" name="memberName" [(ngModel)]="cmodel.memberName"
+                            #memberName="ngModel" [ngClass]="{ 'is-invalid': passwordForm.submitted && memberName.invalid }"
+                            required placeholder="Name" disabled>
+                          <div *ngIf="passwordForm.submitted && memberName.invalid" class="invalid-feedback">
+                            <div *ngIf="memberName.errors">Name is required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <label>
+                          Mobile No for Service Activation </label>
+                        <input type="text" class="form-control" name="mobileNo" [(ngModel)]="cmodel.mobileNo"
+                          #mobileNo="ngModel" [ngClass]="{ 'is-invalid': passwordForm.submitted && mobileNo.invalid }" required
+                          placeholder=" Mobile No." disabled>
+                        <div *ngIf="passwordForm.submitted && mobileNo.invalid" class="invalid-feedback">
+                          <div *ngIf="mobileNo.errors"> Mobile No. is required</div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-group">
+                        <label>
+                          New Password </label>
+                        <input type="password" class="form-control" name="newPassword" [(ngModel)]="cmodel.newPassword"
+                          #newPassword="ngModel" [ngClass]="{ 'is-invalid': passwordForm.submitted && newPassword.invalid }"
+                          required placeholder="New Password">
+                        <div *ngIf="passwordForm.submitted && newPassword.invalid" class="invalid-feedback">
+                          <div *ngIf="newPassword.errors"> New password is required</div>
+                        </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-group">
+                        <label>
+                          Confirm New Password </label>
+                        <input type="password" class="form-control" name="confirmNewPassword"
+                          [(ngModel)]="cmodel.confirmNewPassword" #confirmNewPassword="ngModel"
+                          [ngClass]="{ 'is-invalid': passwordForm.submitted && confirmNewPassword.invalid }" required
+                          placeholder="Confirm New Password">
+                        <div *ngIf="passwordForm.submitted && confirmNewPassword.invalid" class="invalid-feedback">
+                          <div *ngIf="confirmNewPassword.errors"> Confirm New password is required</div>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" routerLink="/admin/user-details"
+                        class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary waves-effect waves-light">Save
+                        changes</button>
+                    </div>
+                  </div>
+                  </form>
+                  <form *ngIf="activeTabIndex === 3" (ngSubmit)="mPinForm.form.valid && onmPinChange()" #mPinForm="ngForm" name="mPinForm"
+                  pFocusTrap autocomplete="off">
+                  <div class="modal-body">
+                    <div class="row border-button">
+                      <div class="col-xl-6">
+                        <div class="form-group">
+                          <label> Name </label>
+                          <input type="text" class="form-control" name="memberName" [(ngModel)]="cmodel.memberName"
+                            #memberName="ngModel" [ngClass]="{ 'is-invalid': mPinForm.submitted && memberName.invalid }"
+                            required placeholder="Name" disabled>
+                          <div *ngIf="mPinForm.submitted && memberName.invalid" class="invalid-feedback">
+                            <div *ngIf="memberName.errors">Name is required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <label>
+                          Mobile No for Service Activation </label>
+                        <input type="text" class="form-control" name="mobileNo" [(ngModel)]="cmodel.mobileNo"
+                          #mobileNo="ngModel" [ngClass]="{ 'is-invalid': mPinForm.submitted && mobileNo.invalid }" required
+                          placeholder=" Mobile No." disabled>
+                        <div *ngIf="mPinForm.submitted && mobileNo.invalid" class="invalid-feedback">
+                          <div *ngIf="mobileNo.errors"> Mobile No. is required</div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-group">
+                        <label>
+                          New mPin </label>
+                        <input type="password" class="form-control" name="newmPin" [(ngModel)]="cmodel.newmPin"
+                          #newmPin="ngModel" [ngClass]="{ 'is-invalid': mPinForm.submitted && newmPin.invalid }"
+                          required placeholder="New mPin">
+                        <div *ngIf="mPinForm.submitted && newmPin.invalid" class="invalid-feedback">
+                          <div *ngIf="newmPin.errors"> New mPin is required</div>
+                        </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-group">
+                        <label>
+                          Confirm New mPin </label>
+                        <input type="password" class="form-control" name="confirmNewmPin"
+                          [(ngModel)]="cmodel.confirmNewmPin" #confirmNewmPin="ngModel"
+                          [ngClass]="{ 'is-invalid': mPinForm.submitted && confirmNewmPin.invalid }" required
+                          placeholder="Confirm New mPin">
+                        <div *ngIf="mPinForm.submitted && confirmNewmPin.invalid" class="invalid-feedback">
+                          <div *ngIf="confirmNewmPin.errors"> Confirm New mPin is required</div>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" routerLink="/admin/user-details"
+                        class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary waves-effect waves-light">Save
+                        changes</button>
+                    </div>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,218 @@
+<app-md-layout></app-md-layout>
+<div  id="main-content">
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Member Type</h4>
+        <h6>Distributor / Member Type</h6>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Member Type <span class="float-right mb-1"><button data-toggle="modal"
+              data-target="#model-member-type" (click)="updateMember('')" type="button"
+              class="btn btn-primary btn-sm waves-effect waves-light">Add Member</button>
+          </span> </h5>
+        <div class="table-responsive">
+          <table class="table table-bordered ">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Member Type Code </th>
+                <th>Member Type </th>
+                <th>Report Level </th>
+                <th>Status </th>
+                <th style="width: 3%;">Action </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of respData; let i=index">
+                <td scope="row">{{i+1}}</td>
+                <td>{{row.mtCode}}</td>
+                <td>{{row.membType}}</td>
+                <td>{{row.reportLevelName}}</td>
+                <td>{{row.isActive ? 'Active' : 'Active'}}</td>
+                <td class="text-center">
+                  <a data-toggle="modal" data-target="#model-member-type" type="button" (click)="updateMember(row)"
+                    href="javascript:void(0)" class="btn btn-primary btn-sm waves-effect waves-light update">Update</a>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade bs-example-modal-center" id="model-member-type" tabindex="-1" role="dialog"
+      aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title mt-0">Member Type Information</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" name="form" pFocusTrap autocomplete="off">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xl-12">
+                  <label>Role Type</label>
+                  <ng-select [items]="roleList" [ngClass]="{ 'is-invalid': f.submitted && roleType.invalid }"
+                    placeholder="Select Role Type" bindLabel="desc" name="roleType" bindValue="code" required
+                    [(ngModel)]="mbType.roleType" #roleType="ngModel">
+                  </ng-select>
+                  <div *ngIf="f.submitted && roleType.invalid" class="invalid-feedback">
+                    <div *ngIf="roleType.errors">Role Type is required</div>
+                  </div>
+                </div>
+                <div class="col-xl-12">
+                  <label>Report Level </label>
+                  <ng-select [items]="respData" [ngClass]="{ 'is-invalid': f.submitted && mtCode.invalid }"
+                    placeholder="Select Report Level" bindLabel="membType" name="mtId" bindValue="mtId" required
+                    [(ngModel)]="mbType.reportLevel" #reportLevel="ngModel">
+                  </ng-select>
+                  <div *ngIf="f.submitted && reportLevel.invalid" class="invalid-feedback">
+                    <div *ngIf="reportLevel.errors">Report level is required</div>
+                  </div>
+                </div>
+                <div class="col-xl-12">
+                  <label>Member Type Code </label>
+                  <input type="text" class="form-control" name="mtCode" [(ngModel)]="mbType.mtCode" #mtCode="ngModel"
+                    [ngClass]="{ 'is-invalid': f.submitted && mtCode.invalid }" required placeholder="Member Type Code">
+                  <div *ngIf="f.submitted && mtCode.invalid" class="invalid-feedback">
+                    <div *ngIf="mtCode.errors">Member type code is required</div>
+                  </div>
+                </div>
+                <div class="col-xl-12">
+                  <label> Name </label>
+                  <input type="text" class="form-control" name="membType" [(ngModel)]="mbType.membType"
+                    #membType="ngModel" [ngClass]="{ 'is-invalid': f.submitted && membType.invalid }" required
+                    placeholder="Member type">
+                  <div *ngIf="f.submitted && membType.invalid" class="invalid-feedback">
+                    <div *ngIf="membType.errors">Member type name is required</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div id="wrapper">
+  <div class="content-page"
+    [ngClass]="{'small-content': commonService?.collapseSideMenu, 'large-content': !commonService?.collapseSideMenu}">
+    <div class="container-fluid">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12 col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="mt-0 header-title">MEMBER TYPE <span class="float-right mb-1"><button data-toggle="modal"
+                      data-target="#model-member-type" (click)="updateMember('')" type="button"
+                      class="btn btn-primary btn-sm waves-effect waves-light">Add Member</button>
+                  </span> </h4>
+                <div class="table-responsive">
+                  <table class="table table-bordered ">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Member Type Code </th>
+                        <th>Member Type </th>
+                        <th>Report Level </th>
+                        <th>Status </th>
+                        <th style="width: 3%;">Action </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of respData; let i=index">
+                        <td scope="row">{{i+1}}</td>
+                        <td>{{row.mtCode}}</td>
+                        <td>{{row.membType}}</td>
+                        <td>{{row.reportLevelName}}</td>
+                        <td>{{row.isActive ? 'Active' : 'Active'}}</td>
+                        <td class="text-center">
+                          <a data-toggle="modal" data-target="#model-member-type" type="button"
+                            (click)="updateMember(row)" href="javascript:void(0)"
+                            class="btn btn-primary btn-sm waves-effect waves-light update">Update</a>
+
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bs-example-modal-center" id="model-member-type" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0">MEMBER TYPE INFORMATION</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" name="form" pFocusTrap autocomplete="off">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12">
+              <label>Role Type</label>
+              <ng-select [items]="roleList" [ngClass]="{ 'is-invalid': f.submitted && roleType.invalid }"
+                placeholder="Select Role Type" bindLabel="desc" name="roleType" bindValue="code" required
+                [(ngModel)]="mbType.roleType" #roleType="ngModel">
+              </ng-select>
+              <div *ngIf="f.submitted && roleType.invalid" class="invalid-feedback">
+                <div *ngIf="roleType.errors">Role Type is required</div>
+              </div>
+            </div>
+            <div class="col-xl-12">
+              <label>Report Level </label>
+              <ng-select [items]="respData" [ngClass]="{ 'is-invalid': f.submitted && mtCode.invalid }"
+                placeholder="Select Report Level" bindLabel="membType" name="mtId" bindValue="mtId" required
+                [(ngModel)]="mbType.reportLevel" #reportLevel="ngModel">
+              </ng-select>
+              <div *ngIf="f.submitted && reportLevel.invalid" class="invalid-feedback">
+                <div *ngIf="reportLevel.errors">Report level is required</div>
+              </div>
+            </div>
+            <div class="col-xl-12">
+              <label>Member Type Code </label>
+              <input type="text" class="form-control" name="mtCode" [(ngModel)]="mbType.mtCode" #mtCode="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && mtCode.invalid }" required placeholder="Member Type Code">
+              <div *ngIf="f.submitted && mtCode.invalid" class="invalid-feedback">
+                <div *ngIf="mtCode.errors">Member type code is required</div>
+              </div>
+            </div>
+            <div class="col-xl-12">
+              <label> Name </label>
+              <input type="text" class="form-control" name="membType" [(ngModel)]="mbType.membType" #membType="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && membType.invalid }" required placeholder="Member type">
+              <div *ngIf="f.submitted && membType.invalid" class="invalid-feedback">
+                <div *ngIf="membType.errors">Member type name is required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->

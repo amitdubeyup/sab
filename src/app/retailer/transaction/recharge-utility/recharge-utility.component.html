@@ -1,0 +1,413 @@
+<app-retailer-layout></app-retailer-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Recharge Utility Transactions </h2>
+      </div>
+      <div class="col-md-6 col-sm-12 text-right">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+          <li class="breadcrumb-item active">Recharge Utility Transactions </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">      
+        <p-table  class="table-rt table-wrapper-commision" #dt [value]="statementList"
+          dataKey="remitterId" [rowHover]="true"  [rows]="50" [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[50,100,200,500]" [loading]="commonService.isLoader" [paginator]="true"
+          currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+          [globalFilterFields]="['txn_no','utr','mode_of_payment','trasaction_date','narration','beneficiary_number','beneficiary_acc','bank']">
+          <ng-template pTemplate="caption">
+            <div class="row table-header">
+              <div class="col-md-3 pb-1">
+                <ng-select [items]="sharedMethodService.DsReportType" placeholder="Transaction Type" bindLabel="name"
+                  bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+                </ng-select>
+              </div>
+              <div class="col-sm-3 pb-1">
+                <ng-select [items]="sharedMethodService.SearchType" placeholder="Type" bindLabel="name" bindValue="id"
+                  name="searchTypes" [(ngModel)]="searchType">
+                </ng-select>
+              </div>
+              <div class="col-sm-3 pb-1">
+                <input class="form-control sizing-sm" [(ngModel)]="txnNo" type="text"
+                  placeholder="{{searchType=='txn'?'Transaction No.':searchType=='acc'?'Account No.':searchType=='send'?'Mobile No.':'Transaction No'}}" />
+              </div>
+              <div class="col-md-3 col-sm-6 pb-1">
+                <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Status" bindLabel="name"
+                  bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+                </ng-select>
+              </div>
+
+              <div class="col-md-3">
+                <p-calendar class="p-calendar p-inputtext-sm" dateFormat="dd/mm/yy" [readonlyInput]="true" name="fromDt"
+                  [(ngModel)]="fromDt" [maxDate]="minDate" placeholder="From Date">
+                </p-calendar>
+              </div>
+              <div class="col-md-3">
+                <p-calendar class="p-calendar p-inputtext-sm" name="toDt" [readonlyInput]="true" [minDate]="fromDt"
+                  [maxDate]="maxDate" dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+                </p-calendar>
+              </div>
+              <div class="col-md-3">
+                <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+                <input pInputText class="form-control" type="text"
+                  (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+              </div>
+              <div class="col-md-3">
+                <button type="button" (click)="handleSearch(activeTab)"
+                  class="btn btn-outline-success mt-1 mr-2 btn48">Search</button>
+                <button type="button" (click)="handleSearch(activeTab)" class="btn btn-outline-dark mt-1 btn48">Export</button>
+
+              </div>
+
+              <div class="col-md-2 border-success pt-1">
+                <div class="testimonial4 text-center">
+                  <div class="active item">
+                    <blockquote class="warning">
+                      <h6 class="mb-2">Total Transactions</h6>
+                      <h5 class="text-success">{{statementList?.length}}</h5>
+
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 border-success pt-1">
+                <div class="testimonial4 text-center">
+                  <div class="active item">
+                    <blockquote class="warning">
+                      <h6 class="mb-2">Total Amount</h6>
+                      <h5 class="text-success"> {{totalAmount | number : '1.2-2'}}</h5>
+
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-2 col-md-2 border-success pt-1">
+                <div class="testimonial4 text-center">
+                  <div class="active item">
+                    <blockquote class="warning">
+                      <h6 class="mb-2">Total Charge</h6>
+                      <h5 class="text-success"> {{totalCharge | number : '1.2-2'}}</h5>
+
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-2 col-md-2 border-success pt-1">
+                <div class="testimonial4 text-center">
+                  <div class="active item">
+                    <blockquote class="warning">
+                      <h6 class="mb-2">Total Commission</h6>
+                      <h5 class="text-success"> {{totalCommission | number : '1.2-2'}}</h5>
+
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-2 col-md-2 border-success pt-1">
+                <div class="testimonial4 text-center">
+                  <div class="active item">
+                    <blockquote class="warning">
+                      <h6 class="mb-2">Refund Pending</h6>
+                      <h5 class="text-success">0</h5>
+
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-2 col-md-2 border-success pt-1">
+                <div class="testimonial4 text-center">
+                  <div class="active item">
+                    <blockquote class="warning">
+                      <h6 class="mb-2">Refunded</h6>
+                      <h5 class="text-success">0</h5>
+
+                    </blockquote>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>S#</th>
+              <th pSortableColumn="txn_no">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Transaction#
+                  <p-sortIcon field="txn_no"></p-sortIcon>
+                  <!-- <p-columnFilter type="text" field="txn_no" display="menu" class="p-ml-auto">
+                  </p-columnFilter> -->
+                </div>
+              </th>                       
+              <th pSortableColumn="beneficiary_number">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  <ng-container >
+                    Customer No.
+                  </ng-container>
+                </div>
+              </th>
+              <th pSortableColumn="beneficiary_number">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  <ng-container >
+                    Ref Mobile No.
+                  </ng-container>
+                </div>
+              </th>
+              <th pSortableColumn="beneficiary_number">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  <ng-container >
+                    Product
+                  </ng-container>
+                </div>
+              </th>
+              <th pSortableColumn="narration">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Operator           
+                </div>
+              </th>
+              <th pSortableColumn="amount">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Amount              
+                </div>
+              </th>
+              <th pSortableColumn="charge">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Charge                
+                </div>
+              </th>
+              <th pSortableColumn="Commission">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Commission                  
+                </div>
+              </th>                       
+              <th pSortableColumn="utr">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Operator#                  
+                </div>
+              </th>
+              <th pSortableColumn="status">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Status             
+                </div>
+              </th>
+              <th pSortableColumn="trasaction_date">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Created Date
+                </div>
+              </th>   
+              <th>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-cp let-i="rowIndex">
+            <tr class="p-selectable-row">
+              <td>
+                <span class="srnumber"> {{i+1}} </span>
+              </td>
+              <td>
+                <span class="p-column-title">Transaction#</span>
+                {{cp.txn_no}}
+              </td>
+                         
+              <td>
+                <span class="p-column-title">
+                    Customer No.           
+                </span>
+                {{cp.beneficiary_acc}}
+              </td>
+              <td>
+                <span class="p-column-title">
+                    Ref Mobile No.             
+                </span>
+                {{cp.remName}}
+              </td>
+              <td>
+                <span class="p-column-title">
+                 Product
+                </span>
+                {{cp.service}} 
+              </td>
+              <td>
+                <span class="p-column-title">
+                 Operator
+                </span>
+                {{cp.Operator}}   
+                <!-- <ng-container *ngIf="cp.DocType=='DMT'">            
+                  {{cp.narration}}<br> 
+                  {{cp.beneficiary_acc}}<br>                                   
+                  {{cp.udf1}}<br>               
+                  <span class="l-seagreen text-white">{{cp.mode_of_payment}}</span> 
+                  </ng-container>      -->
+              </td>
+              <td>
+                <span class="p-column-title">Amount</span>
+                {{cp.amount | number : '1.2-2'}}
+              </td>
+              <td>
+                <span class="p-column-title">Charge</span>
+                {{cp.charge | number : '1.2-2'}}
+              </td>
+              <td>
+                <span class="p-column-title">Charge</span>
+                {{cp.rt_commission | number : '1.2-2'}}
+              </td>
+              <td >
+                <span class="p-column-title">UTR </span>
+                {{cp.utr}}
+              </td>
+              <td class="text-center">
+                <span class="p-column-title">Status </span>
+                {{cp.status}}
+                <a href="javascript:void(0)" class="btn btn-primary btn-sm" (click)="openClaim(cp)"
+                  *ngIf="cp?.api_responce_status=='Failure' && cp.service=='CC'"> <i class="fas fa-sync-alt"></i>
+                  Claim</a>
+              </td>
+              <td>
+                <span class="p-column-title"> Tran Date:</span>
+                {{cp.trasaction_date| date: 'dd-MM-yyyy hh:mm aa'}}
+              </td>  
+              <td *ngIf="activeTab != 4" class="text-center-button">
+                <button type="button" class="btn btn-outline-info btn-sm" (click)="printReceipt(cp)"><i
+                    class="fa icon-printer"></i></button>
+                <button *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3" type="button"
+                  class="btn btn-outline-info btn-sm ml-2" (click)="openComplaintPopup(cp)">
+                  <img alt="Complain" src="assets/images/complan.svg" height="20">
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+              <td colspan="6" style="text-align: right;">
+                <strong>Total</strong>
+              </td>
+              <td>
+                {{totalAmount | number : '1.2-2'}}
+              </td>
+              <td>
+                {{totalCharge | number : '1.2-2'}}
+              </td>
+              <td>
+                {{totalCommission | number : '1.2-2'}}
+              </td> 
+              <td colspan="4">
+              </td>           
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="14">No records found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+  </div>
+</div>
+<div class="content-page">
+  <div class="content main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card card-body">
+            <button class="btn btn-warning waves-effect waves-light add-fund m-fund" (click)="exportAsXLSX()"><i
+                class="fas fa-file-export mr-1"></i> Export
+            </button>
+            <!-- <img *ngIf="showblogo" style="float: right; position: absolute;right: 137px;top: -1px;" src="assets/images/bbplogo.png" alt="bbplogo"
+               class="bbp-logo1 d-md-block"> -->
+            <div class="float">
+              <img *ngIf="showblogo" src="assets/images/bbplogo.png" alt="bbplogo" class="bbp-logo1 d-md-block">
+            </div>
+            <div>
+            </div>
+            <div class="m-top">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- open complaint model popup code starts  -->
+<p-dialog header="Raise Complaint" class="dailogbox fund-request-pop" [baseZIndex]="10000"
+  [style]="{'max-width': '1000px'}" [(visible)]="complaintModelPopup">
+  <div class="update-form">
+    <form (ngSubmit)="complaintForm.form.valid && raiseComplaint()" #complaintForm="ngForm" name="complaintForm">
+      <div class="modal-body">
+        <div class="row border-button">
+          <div class="col-sm-6 form-group">
+            <label>Transaction Ref ID</label>
+            <input type="number" OnlyNumber class="form-control" name="TxnId" [(ngModel)]="complaintModel.txn_no"
+              readonly />
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Service Reason</label>
+            <ng-select placeholder="Select Service Reason" [items]="dataService.service_Reason" bindLabel="name"
+              placeholder="Select Service Reason" bindValue="code" name="serviceReason"
+              [(ngModel)]="complaintModel.serviceReason" #serviceReason="ngModel"
+              [ngClass]="{ 'is-invalid': complaintForm.submitted && serviceReason.invalid }" required>
+            </ng-select>
+            <div *ngIf="complaintForm.submitted && serviceReason.invalid" class="invalid-feedback">
+              <div *ngIf="serviceReason.errors">Service reason is required.</div>
+            </div>
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Prticipation Type</label>
+            <ng-select placeholder="Select Participation Type" [items]="dataService.participate_type" bindLabel="name"
+              bindValue="code" name="participationType" [(ngModel)]="complaintModel.participationType"
+              #participationType="ngModel"
+              [ngClass]="{ 'is-invalid': complaintForm.submitted && participationType.invalid }" required>
+            </ng-select>
+            <div *ngIf="complaintForm.submitted && participationType.invalid" class="invalid-feedback">
+              <div *ngIf="participationType.errors">Participation type is required</div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 form-group">
+            <label>Customer Name</label>
+            <input class="form-control" name="customerName" [(ngModel)]="complaintModel.customerName"
+              #customerName="ngModel" [ngClass]="{ 'is-invalid': complaintForm.submitted && customerName.invalid }"
+              required />
+            <div *ngIf="complaintForm.submitted && customerName.invalid" class="invalid-feedback">
+              <div *ngIf="customerName.errors">Customer name is required.</div>
+            </div>
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Customer Mobile Number</label>
+            <input type="text" class="form-control" name="mobilenNo" [(ngModel)]="complaintModel.mobileNo"
+              #mobilenNo="ngModel" [ngClass]="{ 'is-invalid': complaintForm.submitted && mobilenNo.invalid }"
+              maxlength="12" minlength="10" required />
+            <div *ngIf="complaintForm.submitted && mobilenNo.invalid" class="invalid-feedback">
+              <div *ngIf="mobilenNo.errors">Customer Mobile number is required</div>
+            </div>
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Description</label>
+            <textarea id="description" class="form-control" [(ngModel)]="complaintModel.description" name="description"
+              #description="ngModel" [ngClass]="{ 'is-invalid': complaintForm.submitted && description.invalid }"
+              required rows="4" cols="50" required>
+            </textarea>
+            <div *ngIf="complaintForm.submitted && description.invalid" class="invalid-feedback">
+              <div *ngIf="description.errors">Description is required</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void(0)" (click)="hideComplaintPopup()" class="btn btn-secondary waves-effect">
+          Close
+        </a>
+        <button type="submit" [disabled]="commonService.isLoader" class="btn btn-primary waves-effect">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>
+<!-- open complaint model popup code ends   -->

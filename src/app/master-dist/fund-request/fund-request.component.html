@@ -1,0 +1,448 @@
+<app-md-layout></app-md-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>Cash Request</h2>
+            </div>            
+            <div class="col-md-6 col-sm-12 text-right">                
+                <button class="btn btn-primary" *ngIf="isfundRequest1"
+                (click)="openModal()">
+                + New Request
+              </button> &nbsp;
+              <a href="javascript:void(0)" (click)="exportAsXLSX()"
+                            class="btn btn-warning"> <i class="fas fa-file-export"></i>Export</a>
+            </div>
+        </div>
+    </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="p-0 mobile-padding-fund">            
+              
+
+              <!-- <button class="btn btn-primary waves-effect waves-light add-fund-online" *ngIf="isfundRequest"
+                (click)="openModalOnline()">
+                Add Fund Request Online
+              </button> -->
+              <p-tabView [(activeIndex)]="activeTab" (onChange)="handleChange($event)">
+                <p-tabPanel header="Pending Cash Request ">
+                  <ng-container *ngTemplateOutlet="pendingTransaction"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="All Cash Request">
+                  <ng-container *ngTemplateOutlet="allTransaction"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="Bank Details">
+                  <ng-container *ngTemplateOutlet="depositBankDetails"></ng-container>
+                </p-tabPanel>
+              </p-tabView>
+              <ng-template #pendingTransaction>
+                <div class="card card-body">
+                  <p-table class="table-rt" #requestTable [value]="requestList"
+                    dataKey="remitterId" [rowHover]="true" [rows]="20" [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[20,50,100,500]" [paginator]="true"
+                    currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+                    [globalFilterFields]="['Amount','TxnId','TxnMode','BankName','DepositDate','CreateOn', 'SenderNote', 'IsStatus']">
+                    <ng-template pTemplate="caption">
+                      <div class="row table-header">
+                        <div class="col-sm-6 mobile-hide col-md-5 p-d-flex">
+
+                          <p-multiSelect class="" [options]="bankList" [(ngModel)]="selectedDepositBankList"
+                            optionLabel="desc" optionValue="code" placeholder="Select Bank"></p-multiSelect>
+
+                        </div>
+                        <div class="col-md-2 col-sm-6 text-right">
+                          <p-calendar class="p-calendar" dateFormat="dd-mm-yy" [showIcon]="false" name="fromDt"
+                            [maxDate]="minDate" [(ngModel)]="fromDt" dateFormat="dd-mm-yy" placeholder="From Date">
+                          </p-calendar>
+                        </div>
+                        <div class="col-md-2 col-sm-6 text-right">
+                          <p-calendar class="p-calendar" [showIcon]="false" name="toDt" [(ngModel)]="toDt"
+                            [minDate]="fromDt" [maxDate]="maxDate" dateFormat="dd-mm-yy"
+                            placeholder="To Date"></p-calendar>
+                        </div>
+                        <div class="col-md-1 col-sm-6">
+                          <button type="button" (click)="fetchFundRequestList()"
+                            class="btn btn-primary w-20">Search</button>
+                        </div>                       
+                        <div class="col-md-2 col-sm-6 text-right">
+                          <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+                          <input pInputText class="form-control" type="text"
+                            (input)="requestTable.filterGlobal(changeText($event.currentTarget), 'contains')"
+                            placeholder="Global Search" />
+                        </div>
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th>#</th>
+                        <th pSortableColumn="TxnId">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Transaction Id
+                            <p-sortIcon field="amount"></p-sortIcon>
+                          </div>
+                        </th>
+                        <th pSortableColumn="CreateOn">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Added Date
+                          </div>
+                        </th>
+                        <th pSortableColumn="UpdatedOn">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Updated Date
+                          </div>
+                        </th>
+                        <th pSortableColumn="TxnMode">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Mode
+                          </div>
+                        </th>
+                        <th pSortableColumn="BankName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Bank Account
+                          </div>
+                        </th>
+                        <th pSortableColumn="DepositDate">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Deposit Date
+                          </div>
+                        </th>
+                        <th pSortableColumn="Amount">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Amount
+                          </div>
+                        </th>
+
+                        <th pSortableColumn="SenderNote">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Remark
+                          </div>
+                        </th>
+                        <th pSortableColumn="RecieverNote">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Admin Remark
+                          </div>
+                        </th>
+                        <th pSortableColumn="IsStatus">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Status
+                          </div>
+                        </th>
+                        <th pSortableColumn="ApprovedDt">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Approved Date
+                          </div>
+                        </th>
+                        <th>Slip</th>
+                        <th>Action</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                      <tr class="p-selectable-row">
+                        <td>{{i+1}}.</td>
+                        <td>{{cp?.TxnId}}</td>
+                        <td>{{cp?.CreateOn | date: 'dd/MM/yyyy hh:mm aa'}}</td>
+                        <td>{{cp?.UpdatedOn | date: 'dd/MM/yyyy hh:mm aa'}}</td>
+                        <td>{{getPaymentMode(cp?.TxnMode)}}</td>
+                        <td>{{cp?.BankName}}</td>
+                        <td>{{cp?.DepositDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>&#8377;{{cp?.Amount}}</td>
+                        <td>{{cp?.SenderNote}}</td>
+                        <td>{{cp?.RecieverNote}}</td>
+                        <td style="vertical-align: middle;">
+                          <span [class]="getStatus(cp?.IsStatus)">{{cp?.IsStatus}}</span>
+                        </td>
+                        <td>{{cp?.ApprovedDt | date: 'dd/MM/yyyy hh:mm aa'}}</td>
+                        <td> <button type="button" *ngIf="cp?.TxnSlip" class="btn btn-primary"
+                            (click)="openModel(cp?.TxnSlip)"> <span class="fas fa-eye"></span></button></td>
+                        <td class="buttons">
+                          <button *ngIf="cp?.IsStatus=='pending'" class="btn btn-primary" (click)="editRequest(cp)">
+                            <span class="fas fa-pen"></span>
+                          </button>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                      <tr class="p-selectable-row" *ngIf="requestList.length > 0">
+                        <td colspan="5" style="text-align: right;">
+
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          {{totalAmount | number : '1.2-2'}}
+                        </td>
+
+                        <td colspan="7"><strong>Total</strong>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td colspan="13">No records found.</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </ng-template>
+              <ng-template #allTransaction>
+                <div class="card card-body">
+                  <p-table class="table-rt" #requestTable [value]="requestList"
+                    dataKey="remitterId" [rowHover]="true" [rows]="20" [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[20,50,100,500]" [paginator]="true"
+                    currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+                    [globalFilterFields]="['Amount','TxnId','TxnMode','BankName','DepositDate','CreateOn', 'SenderNote', 'IsStatus']">
+                    <ng-template pTemplate="caption">
+                      <div class="row table-header">
+                        <div class="col-md-3">
+                          <p-multiSelect class="" [options]="bankList" [(ngModel)]="selectedDepositBankList"
+                            optionLabel="desc" optionValue="code" placeholder="Select Bank"></p-multiSelect>
+                        </div>
+                        <div class="col-md-2">
+                          <ng-select [items]="StatusList" bindLabel="name" name="isStatus" bindValue="id"
+                            [(ngModel)]="isStatus" #apiId="ngModel" placeholder="Select">
+                          </ng-select>
+                        </div>
+                        <div class="col-md-2 text-right">
+                          <p-calendar class="p-calendar" dateFormat="dd-mm-yy" [showIcon]="false" name="fromDt"
+                            [(ngModel)]="fromDt" dateFormat="dd-mm-yy" placeholder="From Date">
+                          </p-calendar>
+                        </div>
+                        <div class="col-md-2 text-right">
+                          <p-calendar class="p-calendar" [showIcon]="false" name="toDt" [(ngModel)]="toDt"
+                            dateFormat="dd-mm-yy" placeholder="To Date"></p-calendar>
+                        </div>
+                        <div class="col-md-1 pr-0 pl-0">
+                          <button type="button" (click)="fetchFundRequestList()"
+                            class="btn btn-primary w-20">Search</button>
+                        </div>                   
+                        <div class="col-sm-10 col-md-2 text-right">
+                          <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                          <input pInputText class="form-control" type="text"
+                            (input)="requestTable.filterGlobal(changeText($event.currentTarget), 'contains')"
+                            placeholder="Global Search" />
+                        </div>
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th>Sno.</th>
+                        <th pSortableColumn="TxnId">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Txn Id
+                            <p-sortIcon field="amount"></p-sortIcon>
+                          </div>
+                        </th>
+                        <th pSortableColumn="CreateOn">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Txn Date
+                          </div>
+                        </th>
+                        <th pSortableColumn="CreateOn">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Updated On
+                          </div>
+                        </th>
+                        <th pSortableColumn="TxnMode">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Mode
+                          </div>
+                        </th>
+                        <th pSortableColumn="BankName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Bank Acc. No.
+                          </div>
+                        </th>
+                        <th pSortableColumn="DepositDate">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Dep Date
+                          </div>
+                        </th>
+                        <th pSortableColumn="Amount">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Amount
+                          </div>
+                        </th>
+
+                        <th pSortableColumn="SenderNote">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Remark
+                          </div>
+                        </th>
+                        <th pSortableColumn="RecieverNote">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Admin Remark
+                          </div>
+                        </th>
+                        <th pSortableColumn="IsStatus">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Status
+                          </div>
+                        </th>
+                        <th pSortableColumn="ApprovedDt">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Approved Date
+                          </div>
+                        </th>
+                        <th>Slip</th>
+                        <th>Bond</th>
+                        <th>Action</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                      <tr class="p-selectable-row">
+                        <td>{{i+1}}.</td>
+                        <td>{{cp?.TxnId}}</td>
+                        <td>{{cp?.CreateOn | date: 'dd/MM/yyyy hh:mm aa'}}</td>
+                        <td>{{cp?.UpdatedOn | date: 'dd/MM/yyyy hh:mm aa'}}</td>
+                        <td>{{getPaymentMode(cp?.TxnMode)}}</td>
+                        <td>{{cp?.BankName}}</td>
+                        <td>{{cp?.DepositDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>&#8377;{{cp?.Amount}}</td>
+                        <td>{{cp?.SenderNote}}</td>
+                        <td>{{cp?.RecieverNote}}</td>
+                        <td style="vertical-align: middle;">
+                          <span [class]="getStatus(cp?.IsStatus)">{{cp?.IsStatus}}</span>
+                        </td>
+                        <td>{{cp?.ApprovedDt | date: 'dd/MM/yyyy hh:mm aa'}}</td>
+                        <td> <button type="button" *ngIf="cp?.TxnSlip" class="btn btn-primary"
+                            (click)="openModel(cp?.TxnSlip)"> <span class="fas fa-eye"></span></button></td>
+                          <td><button type="button" class="btn btn-primary"
+                              (click)="printbound(cp)"> <span class="fas fa-eye"></span></button>
+                            </td>
+                        <td class="buttons">
+                          <button *ngIf="cp?.IsStatus=='pending'" class="btn btn-primary" (click)="editRequest(cp)">
+                            <span class="fas fa-pen"></span>
+                          </button>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                      <tr class="p-selectable-row" *ngIf="requestList.length > 0">
+                        <td>
+                        </td>
+                        <td></td>
+                        <td colspan="5" style="text-align: right;"> <strong>Total</strong></td>
+                        <td>
+                          {{totalAmount | number : '1.2-2'}}
+                        </td>
+
+                        <td colspan="7">
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td colspan="13">No records found.</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </ng-template>
+              <ng-template #depositBankDetails>
+                <div class="row m-1">
+                  <div class="col-lg-6 col-md-12"  *ngFor="let itm of resBank;">
+                    <div class="card">
+                        <div class="header">
+                            <h2>{{itm.bankName}}</h2>
+                        </div>
+                        <div class="body">
+                          <table border="0" cellpadding="0" cellspacing="0" class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th>Account Holder Name</th>
+                                <th>{{itm.nbin}}</th>
+                              </tr>
+                            </thead>
+                            <tbody>                            
+                              <tr>
+                                <td>Bank Name</td>
+                                <td>{{itm.bankName}}</td>
+                              </tr>
+                              <tr>
+                                <td>Account Number</td>
+                                <td>{{itm.accNo}}</td>
+                              </tr>
+                              <tr>
+                                <td>IFSC Code</td>
+                                <td>{{itm.ifsc}}</td>
+                              </tr>
+                              <tr>
+                                <td>Branch</td>
+                                <td>{{itm.branch}}</td>
+                              </tr>
+                              <tr>
+                                <td>PAN</td>
+                                <td>{{itm.district}}</td>
+                              </tr>
+                              <tr>
+                                <td>GSTIN</td>
+                                <td>{{itm.state}}</td>
+                              </tr>
+                            </tbody>
+                          </table>                     
+                        </div>
+                    </div>
+                </div>
+
+                  <div class="col-6 pb-3" *ngFor="let itm of resBank;">
+                   
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<p-dialog header="Fund Request Online" class="dailogbox fund-request-pop" [baseZIndex]="10000"
+  [style]="{'max-width': '400px'}" [(visible)]="isModelOnline">
+  <div class="update-form">
+    <form (ngSubmit)="fundRequestOnlineForm.form.valid && payWithRazorOnline()" #fundRequestOnlineForm="ngForm"
+      name="fundRequestOnlineForm">
+      <div class="modal-body">
+        <div class="row border-button">
+          <div class="col-sm-12 form-group">
+            <label>Amount</label>
+            <input type="number" OnlyNumber class="form-control" name="Amount" [(ngModel)]="fundRequestOnline.Amount"
+              #Amount="ngModel" [ngClass]="{ 'is-invalid': fundRequestOnlineForm.submitted && Amount.invalid }"
+              required />
+            <div *ngIf="fundRequestOnlineForm.submitted && Amount.invalid" class="invalid-feedback">
+              <div *ngIf="Amount.errors">Amount is required</div>
+            </div>
+          </div>
+          <div class="col-sm-12 form-group" *ngIf="!isRazor">
+            <label>Email ID</label>
+            <input type="text" class="form-control" name="email" [(ngModel)]="fundRequestOnline.email" #email="ngModel"
+              [ngClass]="{ 'is-invalid': fundRequestOnlineForm.submitted && email.invalid }" required />
+            <div *ngIf="fundRequestOnlineForm.submitted && email.invalid" class="invalid-feedback">
+              <div *ngIf="email.errors">Email Id is required</div>
+            </div>
+          </div>
+          <div class="col-sm-12 form-group">
+            <label>Remarks</label>
+            <input type="text" class="form-control" name="SenderNote" [(ngModel)]="fundRequestOnline.SenderNote"
+              #SenderNote="ngModel" [ngClass]="{ 'is-invalid': fundRequestOnlineForm.submitted && SenderNote.invalid }"
+              required />
+            <div *ngIf="fundRequestOnlineForm.submitted && SenderNote.invalid" class="invalid-feedback">
+              <div *ngIf="SenderNote.errors">Remark is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void(0)" (click)="openModalOnline()" class="btn btn-secondary waves-effect">
+          Close
+        </a>
+        <button type="submit" class="btn btn-primary waves-effect">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>
+<p-dialog header="Slip" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+  [(visible)]="isModelSlip">
+  <img width="600px" src="{{filePath}}">
+</p-dialog>

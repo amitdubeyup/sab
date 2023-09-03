@@ -1,0 +1,250 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>API List</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"></a></li>
+                    <li class="active"><button href="javascript:void(0)" (click)="addService()" class="btn btn-sm btn-dark">Add
+                    Add New </button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12 col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                
+                <div class="table-responsive">
+                  <p-table [style]="{'width':'100%'}" class="table-rt" #dt [value]="respData" dataKey="memberId"
+                    [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                    [loading]="commonService.isLoader" [paginator]="true"
+                    currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+                    [globalFilterFields]="['apiName','apiServiceName','gst','tds','perRemitterLimit','transferLimit']">
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th>S.R.</th>
+                        <th pSortableColumn="apiName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            API Name
+                            <p-sortIcon field="apiName"></p-sortIcon>
+                            <p-columnFilter type="text" field="apiName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="apiServiceName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                             Name
+                            <p-sortIcon field="apiServiceName"></p-sortIcon>
+                            <p-columnFilter type="text" field="apiServiceName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="gst">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            GST Rate
+                            <p-sortIcon field="gst"></p-sortIcon>
+                            <p-columnFilter type="text" field="gst" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="tds">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            TDS Rate
+                            <p-sortIcon field="tds"></p-sortIcon>
+                            <p-columnFilter type="text" field="tds" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </th>
+                        <th pSortableColumn="perRemitterLimit">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Per Remitter Limit
+                            <p-sortIcon field="perRemitterLimit"></p-sortIcon>
+                            <p-columnFilter type="text" field="perRemitterLimit" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </th>
+
+                        <th pSortableColumn="transferLimit">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Per Transaction Limit
+                            <p-sortIcon field="transferLimit"></p-sortIcon>
+                            <p-columnFilter type="text" field="transferLimit" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </th>
+
+                        <th pSortableColumn="isActive">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Status
+                            <p-sortIcon field="isActive"></p-sortIcon>
+
+                          </div>
+                        </th>
+                        <th>
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            #
+                          </div>
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                      <tr class="p-selectable-row">
+                        <td>{{i+1}}</td>
+                        <td>
+                          {{cp.apiName}}
+                        </td>
+                        <td>
+                          {{cp.apiServiceName}}
+                        </td>
+                        <td>
+                          {{cp.gst}}
+                        </td>
+                        <td>
+                          {{cp.tds}}
+                        </td>
+                        <td>
+                          {{cp.perRemitterLimit}}
+                        </td>
+                        <td>
+                          {{cp.transferLimit}}
+                        </td>
+                        <td>
+                          {{cp.isActive=='A' ? 'Active' : 'InActive'}}
+                        </td>
+                        <td>
+                          <button type="button" (click)="updateService(cp)"
+                            class="btn btn-primary btn-sm waves-effect waves-light">Edit</button>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td colspan="11">No records found.</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+
+
+<p-dialog header="WALLET" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+  [(visible)]="isModel">
+  <div class="update-form">
+    <form (ngSubmit)="serviceForm.form.valid && formSubmit()" #serviceForm="ngForm" name="serviceForm">
+      <div class="modal-body">
+        <div class="row border-button">
+          <div class="col-sm-4 form-group">
+            <label>API Name</label>
+            <input type="text" class="form-control" name="apiName" [(ngModel)]="serviceData.apiName" #apiName="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && apiName.invalid }" required />
+            <div *ngIf="serviceForm.submitted && apiName.invalid" class="invalid-feedback">
+              <div *ngIf="apiName.errors">Api name is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>API Service Name</label>
+            <input type="text" class="form-control" name="apiServiceName" [(ngModel)]="serviceData.apiServiceName"
+              #apiServiceName="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && apiServiceName.invalid }"
+              required />
+            <div *ngIf="serviceForm.submitted && apiServiceName.invalid" class="invalid-feedback">
+              <div *ngIf="apiServiceName.errors">Api service name is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Transfer Limit</label>
+            <input type="number" class="form-control" name="transferLimit" [(ngModel)]="serviceData.transferLimit"
+              #transferLimit="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && transferLimit.invalid }"
+              required />
+            <div *ngIf="serviceForm.submitted && transferLimit.invalid" class="invalid-feedback">
+              <div *ngIf="transferLimit.errors">Transfer limit is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Per Remitter Limit</label>
+            <input type="number" class="form-control" name="perRemitterLimit" [(ngModel)]="serviceData.perRemitterLimit"
+              #perRemitterLimit="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && perRemitterLimit.invalid }" required />
+            <div *ngIf="serviceForm.submitted && perRemitterLimit.invalid" class="invalid-feedback">
+              <div *ngIf="perRemitterLimit.errors">Per remitter limit is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Pay Mode</label>
+            <select type="text" class="form-control" name="payMode" [(ngModel)]="serviceData.payMode" #payMode="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && payMode.invalid }" required>
+              <option value="0">Wallet</option>
+              <option value="1">Premier Wallet</option>
+              <option value="3">Recharge/Bill Payment</option>
+              <option value="4">Payment Gateway</option>
+              <option value="5">AEPS</option>
+            </select>
+            <div *ngIf="serviceForm.submitted && payMode.invalid" class="invalid-feedback">
+              <div *ngIf="payMode.errors">Pay mode is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>GST Type</label>
+            <select type="text" class="form-control" name="gstType" [(ngModel)]="serviceData.gstType" #gstType="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && gstType.invalid }" required>
+              <option value="INC">Inclusive</option>
+              <option value="EXC">Exclusive</option>
+            </select>
+            <div *ngIf="serviceForm.submitted && gstType.invalid" class="invalid-feedback">
+              <div *ngIf="gstType.errors">GST type is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>GST</label>
+            <input type="number" class="form-control" name="gst" [(ngModel)]="serviceData.gst" #gst="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && gst.invalid }" required />
+            <div *ngIf="serviceForm.submitted && gst.invalid" class="invalid-feedback">
+              <div *ngIf="gst.errors">GST is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>TDS</label>
+            <input type="number" class="form-control" name="tds" [(ngModel)]="serviceData.tds" #tds="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && tds.invalid }" required />
+            <div *ngIf="serviceForm.submitted && tds.invalid" class="invalid-feedback">
+              <div *ngIf="tds.errors">TDS is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Status</label>
+            <select type="text" class="form-control" name="isActive" [(ngModel)]="serviceData.isActive"
+              #isActive="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && isActive.invalid }" required>
+              <option value="A">Active</option>
+              <option value="I">Inactive</option>
+            </select>
+            <div *ngIf="serviceForm.submitted && isActive.invalid" class="invalid-feedback">
+              <div *ngIf="isActive.errors">Status is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="toggleModal()" class="btn btn-dark waves-effect">
+          Close
+        </button>
+        <button type="submit" class="btn btn-primary waves-effect">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

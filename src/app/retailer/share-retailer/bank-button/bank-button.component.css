@@ -1,0 +1,92 @@
+/* common bank css  */
+.btn_width {
+    width: 147px;
+  }
+  .btn_aeps {
+    width: 152px;
+  }
+  .sm-font {
+    font-size: 10px;
+  }
+  .sbi {
+    background-color: #0066e1;
+    color: #fff;
+  }
+  .sbi:hover {
+    background-color: rgb(4 78 168)!important;
+  
+  }
+  .bom {
+    background-color: #0d8dcd;
+    color: #fff;
+  }
+  .bom:hover {
+    background-color:#0a5479!important;
+  
+  }
+  .icici {
+    background-color: #b02a30;
+    color: #fff;
+  }
+  .icici:hover {
+    background-color:rgb(112 6 11)!important;
+  
+  }
+  .canara {
+    background-color: #15b0ec;
+    color: #fff;
+  }
+  .canara:hover {
+    background-color:#066f98!important;
+  }
+  .indian {
+    background-color: #104490;
+    color: #fff;
+  }
+  .indian:hover {
+    background-color:#021b3f!important;
+  }
+  .union {
+    background-color: #ea0020;
+    color: #fff;
+  }
+  .union:hover {
+    background-color:#800415!important;
+  }
+  .central {
+    background-color: #1972be;
+    color: #fff;
+  }
+  .central:hover {
+    background-color:#064f8d!important;
+  }
+  .pnb {
+    background-color: #a30634;
+    color: #fff;
+  }
+  .pnb:hover {
+    background-color:#780426!important;
+  }
+  .bnb {
+    background-color: #ff6b11;
+    color: #fff;
+  }
+  .bnb:hover {
+    background-color:#ab4406!important;
+  }
+  .bindia {
+    background-color: #003f8e;
+    color: #fff;
+  }
+  .bindia:hover {
+    background-color:#042752!important;
+  }
+  .btn_height {
+    margin-bottom: 1px;
+    line-height: 18px;
+  }
+  .aeps_height {
+    margin-bottom: 1px;
+    line-height: 13px;
+  }
+  

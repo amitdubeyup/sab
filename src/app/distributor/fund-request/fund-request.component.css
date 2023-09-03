@@ -1,0 +1,136 @@
+table.table-banl-deposit {
+  width: 100%;
+  text-transform: uppercase;
+  border-collapse: collapse;
+}
+
+table.table-banl-deposit thead tr th {
+  background: #3f60cb;
+  color: #fff;
+  padding: 6px 5px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid #3f60cb;
+}
+
+table.table-banl-deposit tbody tr td {
+  padding: 6px 5px;
+  border: 1px solid #3f60cb;
+  font-size: 14px;
+  font-weight: 700;
+  background: #f4f7ff;
+}
+
+.tabs {
+  margin: 0px 0px 10px 0px !important;
+  padding: 0px !important;
+  text-align: center;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tab {
+  padding: 5px !important;
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: 400;
+  margin-bottom: 2px !important;
+}
+
+.file {
+  padding: .225rem .225rem !important;
+}
+
+.checkbox-section {
+  width: 100%;
+  display: inline-flex;
+  margin: 10px 0px 0px 0px;
+}
+
+.height-calender.card-body {
+  min-height: 60vh;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.errors {
+  padding: 10px;
+}
+
+.err-label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.err-value {
+  color: #ff000094;
+  display: initial;
+  margin-right: 10px;
+  padding: 3px 0px;
+  font-weight: 400;
+}
+
+.form-show-eye {
+  position: absolute;
+  right: 25px;
+  top: 28px;
+  z-index: 9;
+}
+
+.fas {
+  position: relative;
+  top: 1px;
+  right: 5px;
+}
+
+button span {
+  position: relative;
+  right: 0px;
+  top: 0px;
+}
+
+i.fas.fa-plus {
+  float: right;
+  position: relative;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+}
+
+.add-fund {
+  width: 180px;
+  position: absolute;
+  z-index: 1;
+  right: 2px;
+  top: 2px;
+  cursor: pointer;
+  top:5px;
+}
+.add-fund-online
+{
+  width: 230px;
+  position: absolute;
+  z-index: 1;
+  right: 424px;
+  top: 2px;
+  cursor: pointer;
+  top:5px;
+}
+.import-fund {
+  width: 200px;
+  position: absolute;
+  z-index: 1;
+  right: 202px;
+  top: 2px;
+  cursor: pointer;
+  top:5px;
+}

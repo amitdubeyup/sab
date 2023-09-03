@@ -1,0 +1,285 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>User Registration</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">                  
+                    <a
+                    routerLink="/administrator/add-user" class="btn btn-primary btn-sm waves-effect waves-light">Add
+                    User </a>
+                </ul>              
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid">
+          <p-tabView (onChange)="handleChange($event)">
+            <p-tabPanel header="User Registration Detail">
+              <ng-container *ngTemplateOutlet="keypending"></ng-container>
+            </p-tabPanel>                 
+            <p-tabPanel header="User Registration KYC">
+              <ng-container *ngTemplateOutlet="parkyc"></ng-container>
+            </p-tabPanel>
+          </p-tabView>
+          <ng-template #keypending>
+            <div class="table-responsive">
+              <p-table [style]="{'width':'100%'}" class="table-rt" #dt [value]="respData" dataKey="memberId"
+                [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                [loading]="commonService.isLoader" [paginator]="true"
+                currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+                [globalFilterFields]="['mtId','fullName','shopName','mobileNumber','isStatus','createByName']">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="mtId">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        User Id
+                        <p-sortIcon field="mtId"></p-sortIcon>
+                       
+                      </div>
+                    </th>
+                    <th pSortableColumn="fullName">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Name
+                        <p-sortIcon field="fullName"></p-sortIcon>
+                        
+                      </div>
+                    </th>
+                    <th pSortableColumn="shopName">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Firm Name
+                        <p-sortIcon field="shopName"></p-sortIcon>
+                        
+                      </div>
+                    </th>
+                    <th pSortableColumn="mobileNumber">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Phone Number
+                        <p-sortIcon field="mobileNumber"></p-sortIcon>
+                        
+                      </div>
+                    </th>
+                    <th pSortableColumn="mobileNumber">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Role
+                        <p-sortIcon field="mobileNumber"></p-sortIcon>
+                        
+                      </div>
+                    </th>
+                    <th pSortableColumn="rechTemplateName">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        PAN
+                        <p-sortIcon field="rechTemplateName"></p-sortIcon>
+                       
+                      </div>
+                    </th>
+                    <th pSortableColumn="dmtTemplateName">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        GST
+                        <p-sortIcon field="dmtTemplateName"></p-sortIcon>
+                        
+                      </div>
+                    </th>                        
+                    <th pSortableColumn="isActive">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Status
+                       
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Created On
+
+                      </div>
+                    </th>
+                    <th style="width:10%;">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        #
+                      </div>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-cp>
+                  <tr class="p-selectable-row">
+                    <td>
+                      {{cp.memberType}}{{cp.userId}}
+                    </td>
+                    <td>
+                      {{cp.memberName}}
+                    </td>
+                    <td>
+                      {{cp.companyName}}
+                    </td>
+                    <td>
+                      {{cp.mobileNo}}
+                    </td>
+                    <td>
+                      {{cp.userType}}
+                    </td>
+                    <td>
+                      {{cp.pan}}
+                    </td>
+                    <td>
+                      {{cp.Gstin}}
+                    </td>                        
+                    <td style="vertical-align: middle; width: 120px;" >                            
+                      <span [class]="cp.isActive=='A'?'customer-badge status-qualified':'customer-badge status-unqualified'">{{cp.isActive=='A'?'KYC Done':cp.isActive=='D'?'KYC Pending':'KYC Pending'}}</span>
+                   </td> 
+                    
+                    <td>
+                      {{cp.createdOn| date: 'MM/dd/yyyy hh:mm aa'}}
+                    </td>
+                    <td class="text-center">
+                      <a href="javascript:void(0)" *ngIf="!cp.kycStatus" [routerLink]="['/administrator/kycapproved']"
+                        [queryParams]="{muid: cp.memberId}"
+                        class="btn btn-primary btn-sm waves-effect waves-light kyc">KYC</a> &nbsp;
+                      <a href="javascript:void(0)" (click)="onSetCommission(cp.memberId)"
+                        class="btn btn-primary btn-sm waves-effect waves-light">Edit</a>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="11">No records found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </ng-template>
+          <ng-template #parkyc>
+            <div class="table-responsive">
+              <p-table class="table-rt" #dt [value]="respData" dataKey="memberId" [rowHover]="true" [rows]="20"
+                [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]" [loading]="commonService.isLoader"
+                [paginator]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}"
+                [filterDelay]="0"
+                [globalFilterFields]="['fullName','shopName','shopAddress','reportTo','userId','createByName','memberName','companyName','mobileNumber','isActive','createdOn']">
+               
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="userId">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        User Id
+                        <p-sortIcon field="userId"></p-sortIcon>
+                       
+                      </div>
+                    </th>
+                    <th pSortableColumn="memberName">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Name
+                        <p-sortIcon field="memberName"></p-sortIcon>
+                        
+                      </div>
+                    </th>
+                    <th pSortableColumn="companyName">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Company Name
+                        <p-sortIcon field="companyName"></p-sortIcon>                              
+                      </div>
+                    </th>
+                    <th pSortableColumn="mobileNo">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Phone Number
+                        <p-sortIcon field="mobileNo"></p-sortIcon>
+                       
+                      </div>
+                    </th>
+                
+                  <th pSortableColumn="mobileNo">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Address
+                      <p-sortIcon field="mobileNo"></p-sortIcon>
+                    
+                    </div>
+                  </th>
+                  <th pSortableColumn="mobileNo">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Report To
+                      <p-sortIcon field="mobileNo"></p-sortIcon>
+                    
+                    </div>
+                  </th>
+
+
+                    <th pSortableColumn="isActive">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Status
+                        <p-sortIcon field="isActive"></p-sortIcon>
+                        
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        User Created Date
+
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        KYC Updated Date
+
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        KYC Updated By
+
+                      </div>
+                    </th>
+                    <th style="width:10%;">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        #
+                      </div>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-cp>
+                  <tr class="p-selectable-row">
+                    <td>
+                      {{cp.mtCode}}{{cp.mtId}}
+                    </td>
+                    <td>
+                      {{cp.fullName}}
+                    </td>
+                    <td>
+                      {{cp.shopName}}
+                    </td>
+                    <td>
+                      {{cp.mobileNumber}}
+                    </td>
+                    <td>
+                      {{cp.shopAddress}}
+                    </td>
+                    <td>
+                      {{cp.reportTo}}
+                    </td>
+                    <td>
+                      {{getStatusDesc(cp.isStatus==undefined?'1':cp.isStatus)}}
+                    </td>
+                    <td>
+                      {{cp.createOn| date: 'MM/dd/yyyy hh:mm aa'}}
+                    </td>
+                    <td>
+                      {{cp.updatedOn| date: 'MM/dd/yyyy hh:mm aa'}}
+                    </td>
+                    <td>
+                      {{cp.createByName}}
+                    </td>
+                    <td class="text-center">
+                      <a href="javascript:void(0)" [routerLink]="['/administrator/kycapproved']" [queryParams]="{muid: cp.memberId, uid:cp.kycId, mtCode: cp.mtCode}"
+                        class="btn btn-primary btn-sm waves-effect waves-light kyc">KYC</a>
+
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="9">No records found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </ng-template>
+         
+        </div>
+      </div>

@@ -1,0 +1,68 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>Dashboard</h2>
+            </div>           
+        </div>
+    </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xl-12">
+          
+                  <div class="responsive-table">
+                    <p-table [value]="respData" [scrollable]="false" class="table-home" [loading]="commonService.isLoader">
+                      <ng-template pTemplate="header" let-columns>
+                        <tr>
+                          <th style="width: 3%;">S.N.</th>
+                          <th>API Name</th>
+                          <th>Services Name </th>
+                          <th style="width: 8%; text-align: center;">On/Off</th>
+                          <th>Transfer Limit</th>
+                          <th>Default Remitter Limit</th>                          
+                          <th style="width: 6%;">Action </th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-rowData let-i="rowIndex" let-columns="columns">
+                        <tr>
+                          <td> {{i + 1}}</td>
+                          <td>{{rowData.apiName}}</td>
+                          <td>{{rowData.apiServiceName}}</td>
+                          <td style="text-align: center;">
+                            <ui-switch size="small" name="rowData.isActive{{i}}" [(ngModel)]="rowData.isActive"
+                              [checked]="rowData.isActive" checkedLabel="on" uncheckedLabel="off"></ui-switch>
+                          </td>                       
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <input type="number" name="transferLimit" class="form-control" [(ngModel)]="rowData.transferLimit"
+                                  #rate="ngModel">
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.transferLimit| number:'1.2-2'}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <input type="number" name="perRemitterLimit" class="form-control" [(ngModel)]="rowData.perRemitterLimit"
+                                  #minAmt="ngModel">
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.perRemitterLimit| number:'1.2-2'}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>                                               
+                          <td><button type="button" (click)="updateService(rowData)"
+                              class="btn btn-primary btn-sm waves-effect waves-light">Update</button></td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  

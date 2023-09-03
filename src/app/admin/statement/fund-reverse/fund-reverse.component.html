@@ -1,0 +1,523 @@
+<div id="wrapper">
+   <app-admin-layout></app-admin-layout>
+    <div class="content-page"
+      >
+      <div class="content main-content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card card-body">              
+                  <p-tabView (onChange)="handleChange($event)">                   
+                    <p-tabPanel header="Fund Request">
+                      <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                    </p-tabPanel>                    
+                  </p-tabView>            
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #statementTemplate>
+    <p-table class="table-home table-wrapper-commision" id="excel-table" #dt [value]="statementList"  [rowHover]="true"
+    [rows]="100" [showCurrentPageReport]="true"  [rowsPerPageOptions]="[100,250,500,750,1000,2000]" [loading]="commonService.isLoader"
+    [paginator]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+      [globalFilterFields]="['txn_no','trasaction_date','mode_of_payment','status','beneficiary_name','ApiName','ReferenceNo','toNarration','narration','beneficiary_number','beneficiary_acc','bank','UserName']">
+      <ng-template pTemplate="caption">
+        <div class="row table-header">
+          <div class="col-md-4">
+            <p-dropdown [options]="memberList" [style]="{'width':'370px'}" [(ngModel)]="selectedMemberList" optionLabel="desc" [filter]="true" filterBy="desc" [showClear]="true" placeholder="Select a Member">
+              <ng-template pTemplate="selectedItem">
+                  <div class="member-item member-item-value">                    
+                      <div>{{selectedMemberList?.desc}}</div>
+                  </div>
+              </ng-template>
+              <ng-template let-member pTemplate="item">
+                  <div class="member-item">                  
+                      <div>{{member.desc}}</div>
+                  </div>
+              </ng-template>
+          </p-dropdown>    
+          
+          </div>
+          <div class="col-md-2">
+            <ng-select [items]="sharedMethodService.SearchType" placeholder="Search Type" bindLabel="name" bindValue="id"
+              name="searchType" [(ngModel)]="searchType">
+            </ng-select>
+          </div>
+          <div class="col-md-2">
+            <input  class="form-control" [(ngModel)]="txnNo" type="text"
+            placeholder="{{searchType=='txn'?'Txn No':searchType=='acc'?'A/C No.':searchType=='send'?'Send By Mob. No.':searchType=='rcv'?'Recived Mob. No.':'Enter Txn'}}" />
+          </div>
+          <div class="col-md-2">
+            <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Status" bindLabel="name" bindValue="id"
+              name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+            </ng-select>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-2 pt-1">
+            <p-calendar class="p-calendar" dateFormat="dd/mm/yy" name="fromDt" [(ngModel)]="fromDt"
+              placeholder="From Date">
+            </p-calendar>
+          </div>
+          <div class="col-md-2  pt-1">
+            <p-calendar class="p-calendar" name="toDt"  dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+            </p-calendar>
+          </div>
+          <div class="col-md-2  pt-1" style="display: inline-flex;">
+            <button type="button" (click)="handleSearch(activeTab)" class="btn btn-primary w-20">Search</button> &nbsp;&nbsp;
+            <a href="javascript:void(0)" (click)="exportAsXLSX()" class="btn btn-warning"> <i class="fas fa-file-export"></i>Export</a> 
+          </div>
+          <div class="col-md-4  pt-1 text-right">
+            <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+            <input pInputText class="form-control" type="text"
+              (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />            
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>S.R.</th>
+          <th pSortableColumn="txn_no">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Txn Id
+              <p-sortIcon field="txn_no"></p-sortIcon>
+             </div>
+          </th>
+          <th pSortableColumn="trasaction_date">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Tran Date
+            </div>
+          </th>
+          <th pSortableColumn="updatedOn">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              UpdatedOn
+             </div>
+          </th>
+          <th pSortableColumn="beneficiary_number">
+            <div class="p-d-flex p-jc-between p-ai-center">
+             {{activeTab == 5?'Send By':'Member Name'}} 
+             </div>
+          </th>
+  
+          <th pSortableColumn="narration" style="width: 30%;">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              {{activeTab == 5?' Received By':'Naration'}}
+             </div>
+          </th>
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Amount(CR)
+             </div>
+          </th>
+          <th pSortableColumn="amount" >
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Amount(DR)
+             </div>
+          </th>
+          <th pSortableColumn="charge">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Charge
+             </div>
+          </th>
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Commission
+             </div>
+          </th>
+          <th pSortableColumn="service">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Service
+             </div>
+          </th>
+  
+          <th pSortableColumn="status">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Status
+             </div>
+          </th>
+          <th pSortableColumn="utr" *ngIf="activeTab != 3">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              UTR
+             </div>
+          </th>
+          <th pSortableColumn="api_msg" *ngIf="activeTab != 3">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              TnxRefNo
+             </div>
+          </th>
+          <th>API Resp.</th>
+          <th *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3 || activeTab == 4  || activeTab == 12 || activeTab == 13 || activeTab == 17"></th>
+          <th *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3 || activeTab == 12"></th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cp let-i="rowIndex">
+        <tr class="p-selectable-row">
+          <td>
+            {{i+1}}.
+          </td>
+          <td>
+            {{cp.txn_no}}
+          </td>
+          <td>
+            {{cp.trasaction_date| date: 'dd-MM-yyyy hh:mm:ss aa'}}
+          </td>
+          <td>
+            {{cp.updatedOn| date: 'dd-MM-yyyy hh:mm aa'}}
+          </td>
+          <td style="text-transform:capitalize;">
+            {{activeTab == 5?cp.toNarration:cp.UserName}} 
+          </td>
+          <td style="width: 30%;">
+          <ng-container *ngIf="cp.service=='OBAL'">
+            <span>{{cp.narration}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.service=='QUICK_PAY'  && cp.DocType!='COMM'">
+            <span>Money Transfer :</span> {{' A/c#' + cp.beneficiary_acc + ', Mob#'+cp.beneficiary_number +', Ben#' +
+            cp.narration +',IFSC#'+cp.toNarration}} <span *ngIf="cp.status=='Refunded'"> Ref#{{cp?.RtxnNo}}</span>
+          </ng-container>
+          <ng-container  *ngIf="cp.service=='Ind-Nep'">
+            <span class="text-red">{{cp.remName + ' ' +cp.beneficiary_acc +' '+ cp.mode_of_payment}}</span>  
+          </ng-container>
+          <ng-container   *ngIf="cp.service=='AEPS-BANK'">
+            <span class="text-red">{{'A/C:'+ cp.beneficiary_acc +' '+ (cp.toNarration==null?'':cp.toNarration)}}</span>  
+            </ng-container>
+          <ng-container *ngIf="cp.DocType=='COMM' || cp.DocType=='UTCOMM'">           
+            <span>Comission :</span> {{cp.service +', Ref#' + cp.RtxnNo}} 
+          </ng-container>
+          <ng-container *ngIf="cp.service=='TATKAL_PAY' && cp.DocType!='COMM'">
+            <span>Money Transfer :</span> {{' A/c#' + cp.beneficiary_acc + ', Mob#'+cp.beneficiary_number +', Ben#' +
+            cp.narration +',IFSC#'+cp.toNarration}} <span *ngIf="cp.status=='Refunded'"> Refid#{{cp?.RtxnNo}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.service=='Verification'">
+            <span>Verification :</span> {{' A/c#' + cp.beneficiary_acc + ', Mob#'+cp.beneficiary_number +', Ben#' +
+            cp.narration}} <span *ngIf="cp.status=='Refunded'"> Refid#{{cp?.RtxnNo}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.service=='Fund-Request'">
+            <span>Fund Ref#</span> {{cp.ReferenceNo +' ,'+ cp.narration + ' Mobile# '+ cp.beneficiary_acc +','+  cp.toNarration}}
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='RECH'">
+            {{(cp.service=='DTH'?'DTH Recharge : ': 'Mobile Recharge : ')+ cp.beneficiary_acc + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }} <span *ngIf="cp.status=='Refunded'"> Refid#{{cp?.RtxnNo}}</span>
+          </ng-container>         
+          <ng-container *ngIf="cp.mode_of_payment=='BBPS' &&  (cp.service=='ELECTRICITY' || cp.service=='ELECTRICITY-ONLINE')">
+            <span>Electricity Bill :</span> {{' CA#'+ cp.beneficiary_acc + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo)+', '+cp.Operator }} <span *ngIf="cp.status=='Refunded'">Refid#{{cp?.RtxnNo}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='Part-Payment' &&  cp.service=='ELECTRICITY'">
+            <span>Part Payment :</span> {{' CA#'+ cp.beneficiary_acc + ', Name : ' +
+            cp.toNarration +', '+cp.Operator  }} <span *ngIf="cp.status=='Refunded'">Refid#{{cp?.RtxnNo}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='Part-Payment' &&  cp.service=='IGL-Commercial-Bill'">
+            <span>IGL-Commercial-Bill :</span> {{' CA#'+ cp.beneficiary_acc + ', Name : ' +
+            cp.toNarration +', '+cp.Operator  }} <span *ngIf="cp.status=='Refunded'">Refid#{{cp?.RtxnNo}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='Part-Payment' &&  cp.service=='Tata-Power-DDL'">
+            <span>Tata Power :</span> {{' CA#'+ cp.beneficiary_acc + ', Name : ' +
+            cp.toNarration +', '+cp.Operator  }} <span *ngIf="cp.status=='Refunded'">Refid#{{cp?.RtxnNo}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='BBPS' &&  cp.service=='GAS'">
+            <span>Gas Bill :</span> {{' CA#'+ cp.beneficiary_acc + ', Ref#' + (cp.ReferenceNo==null?'':cp.ReferenceNo) }}<span *ngIf="cp.status=='Refunded'">Refid#{{cp?.RtxnNo}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='BBPS' &&  cp.service=='WATER'">
+            <span>Water Bill :</span> {{' CA#'+ cp.beneficiary_acc + ', Ref#' + (cp.ReferenceNo==null?'':cp.ReferenceNo)
+            }} <span *ngIf="cp.status=='Refunded'">Refid#{{cp?.RtxnNo}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='BBPS' &&  cp.service=='INSURANCE'">
+            <span>Insurance Bill :</span> {{' CA#'+ cp.beneficiary_acc + ', Ref#' +
+            (cp.ReferenceNo==null?'':cp.ReferenceNo) }} <span *ngIf="cp.status=='Refunded'">Refid#{{cp?.RtxnNo}}</span>
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='WALLET' &&  cp.service=='Balance-Manager' && cp.trasaction_type=='CR'">
+            <span>Account Credited </span> Ref# {{cp.ReferenceNo+','+ cp.narration + ' From ' + cp.toNarration +','+ cp.Intent}}
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='WALLET' &&  cp.service=='Balance-Manager' && cp.trasaction_type=='DR'">
+            <span>Account Debited -</span>Ref# {{cp.ReferenceNo+','+cp.narration + ' To ' + cp.toNarration +','+ cp.Intent}}
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='WALLET' &&  cp.service=='wallet-to-wallet' && cp.trasaction_type=='CR' && activeTab !=5">
+            <span>Account Credited </span> Ref# {{cp.ReferenceNo+','+ cp.narration  +' From ' + cp.toNarration}}
+          </ng-container>
+          <ng-container *ngIf="cp.mode_of_payment=='WALLET' &&  cp.service=='wallet-to-wallet' && cp.trasaction_type=='DR' && activeTab !=5">
+            <span>Account Debited -</span> {{cp.toNarration  + ' To ' + cp.narration}}
+          </ng-container>
+          <ng-container *ngIf="cp.service=='PG-Request'">
+            <span>Payment Gateway:</span> {{ cp.narration + ' Mobile# '+ cp.beneficiary_acc+', '+ cp.toNarration }}
+          </ng-container>
+          <ng-container *ngIf="cp.service=='AEPS' && cp.mode_of_payment=='AEPS-BT'">
+          <span>AEPS Balance Transfer To Wallet :</span>  {{cp.toNarration}}
+          </ng-container>
+          <ng-container *ngIf="cp.service=='AEPS' && cp.mode_of_payment=='AEPS-CW'">
+            <span>AEPS Commision :</span> {{cp.narration}}
+          </ng-container>
+          <ng-container *ngIf="cp.service=='PAYTM' && cp.mode_of_payment=='CMS'">
+            <span>Paytm Wallet Topup:</span> {{ cp.beneficiary_acc}}
+          </ng-container>
+          <ng-container *ngIf="cp.service=='CC' && cp.mode_of_payment=='CMS'">
+            <span>Credit Card Payment:</span> {{ cp.beneficiary_acc}}
+          </ng-container> 
+          <ng-container *ngIf="activeTab ==5">
+            {{cp.narration}}
+          </ng-container>
+          <ng-container *ngIf="cp.service=='EMI' && cp.mode_of_payment=='CMS'">
+            <span>EMI Payment:</span> {{ cp.beneficiary_acc +' ,'+cp.toNarration +','+cp.Operator }}
+          </ng-container> 
+          <ng-container *ngIf="cp.service=='FASTAG' && cp.mode_of_payment=='CMS'">
+            <span>Fastag:</span> {{ cp.toNarration+' '+ cp.beneficiary_acc+','+cp.Operator}}
+          </ng-container>
+          <ng-container  *ngIf="cp.service=='QR-PAYMENT'">
+          <span>{{cp.mode_of_payment}} :</span> {{' A/c#' + cp.beneficiary_acc +'-'+cp.toNarration + ', Name#'+cp.remName +', Ben#' + cp.narration}} 
+          </ng-container>
+          <ng-container  *ngIf="cp.service=='UPI-1'">
+            <span>{{cp.mode_of_payment}} :</span> {{cp.remName+' UPI#' + cp.beneficiary_acc }} 
+            </ng-container>
+            <ng-container  *ngIf="cp.mode_of_payment=='TBO'">
+              <span>{{cp.service}} :</span> {{cp.toNarration}} 
+            </ng-container>
+          </td>       
+          <td class="credit-amount" [ngClass]="{'credit-amount': cp.amount>0}" class="net-earing">
+            {{cp.amount| number : '1.2-2'}}
+          </td>
+          <td class="debit-amount">
+            {{cp.amountDr| number : '1.2-2'}}
+          </td>
+          <td  class="debit-amount">
+            {{cp.charge | number : '1.2-2'}}
+          </td>
+          <td class="debit-amount">
+            {{cp.rt_commission| number : '1.2-2'}}
+          </td>
+          <td>
+            <ng-container *ngIf="activeTab == 0">
+              {{cp?.ApiName+' '+ cp.service}}-{{cp.mode_of_payment | replace:'-Money-Transfer':''}}
+            </ng-container>
+            <ng-container *ngIf="activeTab == 2">
+              <span>{{cp?.ApiName+' '+ cp.Operator}} </span> 
+            </ng-container>
+            <ng-container *ngIf="activeTab == 1 || activeTab == 3 || activeTab == 4 || activeTab == 5|| activeTab == 6 || activeTab == 7 || activeTab == 12 || activeTab == 14 ||  activeTab == 16 || activeTab == 17 || activeTab == 18 ||  activeTab == 19">
+              <span *ngIf="cp.mode_of_payment=='Part-Payment'">{{cp.mode_of_payment}}</span>
+              {{cp?.ApiName+' '+  cp.service}} {{cp.mode_of_payment | replace:'-Money-Transfer':''}}
+            </ng-container>
+  
+          </td>
+          <td>{{cp.status}}</td>
+          <td *ngIf="activeTab != 3">{{cp.utr}}</td>
+          <td *ngIf="activeTab != 3">{{cp.ReferenceNo}}</td>
+          <td>{{cp.api_msg}}</td>         
+          <td>
+            <button type="button" title="Reverse" *ngIf="cp.trasaction_type=='CR' && cp.status=='Success'" class="btn btn-primary" (click)="onReverse(cp)"><i class="fas fa-undo"></i></button>
+          </td>
+            
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+          <td colspan="6" style="text-align: right;">
+            <strong>Total</strong>
+          </td>
+          <td>
+            {{totalAmount | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalAmountDr | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalCharge | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalCommission | number : '1.2-2'}}
+          </td>
+          <td *ngIf="activeTab != 0">
+          </td>
+          <td *ngIf="activeTab == 0">
+          </td>
+          <td *ngIf="activeTab != 3">
+          </td>
+          <td *ngIf="activeTab != 3">
+          </td>
+         <td></td>
+         <td></td>
+         <td></td>
+      
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="18">No records found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-template>
+  <ng-template #apiTemplate>
+    <div class="row">
+  
+      <div class="col-sm-6 col-xl-3">
+          <div class="card">
+              <div class="card-heading p-4">
+                  <div class="mini-stat-icon float-right">
+                      <i class="mdi mdi-cube-outline bg-primary  text-white"></i>
+                  </div>
+                  <div>
+                      <h5 class="font-16">Fino Balance</h5>
+                  </div>
+                  <h3 class="mt-4">{{apiBalance?.FinoBalance | number : '1.2-2'}}</h3>
+                  <div class="progress mt-4" style="height: 4px;">
+                      <div class="progress-bar bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="text-muted mt-2 mb-0">Total Fino Balance<span class="float-right"></span></p>
+              </div>
+          </div>
+      </div>
+  
+      <div class="col-sm-6 col-xl-3">
+          <div class="card">
+              <div class="card-heading p-4">
+                  <div class="mini-stat-icon float-right">
+                      <i class="mdi mdi-briefcase-check bg-success text-white"></i>
+                  </div>
+                  <div>
+                      <h5 class="font-16">PaySprint Credit Balance</h5>
+                  </div>
+                  <h3 class="mt-4">{{apiBalance?.PaySprintBlance | number : '1.2-2'}}</h3>
+                  <div class="progress mt-4" style="height: 4px;">
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="text-muted mt-2 mb-0">Total PaySprint Balance<span class="float-right"></span></p>
+              </div>
+          </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-heading p-4">
+                <div class="mini-stat-icon float-right">
+                    <i class="mdi mdi-briefcase-check bg-success text-white"></i>
+                </div>
+                <div>
+                    <h5 class="font-16">PaySprint Debit Balance</h5>
+                </div>
+                <h3 class="mt-4">{{apiBalance?.PaySprintDebitBlance | number : '1.2-2'}}</h3>
+                <div class="progress mt-4" style="height: 4px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="text-muted mt-2 mb-0">Total PaySprint Balance<span class="float-right"></span></p>
+            </div>
+        </div>
+    </div>
+      <div class="col-sm-6 col-xl-3">
+          <div class="card">
+              <div class="card-heading p-4">
+                  <div class="mini-stat-icon float-right">
+                      <i class="mdi mdi-tag-text-outline bg-warning text-white"></i>
+                  </div>
+                  <div>
+                      <h5 class="font-16">IndiCore Balance</h5>
+                  </div>
+                  <h3 class="mt-4">{{apiBalance?.IndiCoreBlance | number : '1.2-2'}}</h3>
+                  <div class="progress mt-4" style="height: 4px;">
+                      <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="text-muted mt-2 mb-0">Total IndiCore Balance<span class="float-right"></span></p>
+              </div>
+          </div>
+      </div>
+  
+      <div class="col-sm-6 col-xl-3">
+          <div class="card">
+              <div class="card-heading p-4">
+                  <div class="mini-stat-icon float-right">
+                      <i class="mdi mdi-buffer bg-danger text-white"></i>
+                  </div>
+                  <div>
+                      <h5 class="font-16">Liven Balance</h5>
+                  </div>
+                  <h3 class="mt-4">{{apiBalance?.LevinBalance | number : '1.2-2'}}</h3>
+                  <div class="progress mt-4" style="height: 4px;">
+                      <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="text-muted mt-2 mb-0">Total Liven Balance<span class="float-right"></span></p>
+              </div>
+          </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-heading p-4">
+                <div class="mini-stat-icon float-right">
+                    <i class="mdi mdi-buffer bg-danger text-white"></i>
+                </div>
+                <div>
+                    <h5 class="font-16">Brandmart</h5>
+                </div>
+                <h3 class="mt-4">{{apiBalance?.BrandmartBalance | number : '1.2-2'}}</h3>
+                <div class="progress mt-4" style="height: 4px;">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="text-muted mt-2 mb-0">Total Brandmart Balance<span class="float-right"></span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="card">
+          <div class="card-heading p-4">
+              <div class="mini-stat-icon float-right">
+                  <i class="mdi mdi-buffer bg-danger text-white"></i>
+              </div>
+              <div>
+                  <h5 class="font-16">Sarthi</h5>
+              </div>
+              <h3 class="mt-4">{{apiBalance?.SarthiBalance | number : '1.2-2'}}</h3>
+              <div class="progress mt-4" style="height: 4px;">
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <p class="text-muted mt-2 mb-0">Total Sarthi Balance<span class="float-right"></span></p>
+          </div>
+      </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="card">
+        <div class="card-heading p-4">
+            <div class="mini-stat-icon float-right">
+                <i class="mdi mdi-buffer bg-danger text-white"></i>
+            </div>
+            <div>
+                <h5 class="font-16">Bill Mitra</h5>
+            </div>
+            <h3 class="mt-4">{{apiBalance?.BillMitraBalance | number : '1.2-2'}}</h3>
+            <div class="progress mt-4" style="height: 4px;">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p class="text-muted mt-2 mb-0">Total Bill Mitra Balance<span class="float-right"></span></p>
+        </div>
+    </div>
+  </div>
+    </div>
+  </ng-template>
+  <p-dialog header="EDIT STATUS" class="dailogbox" [baseZIndex]="10000" [style]="{'width': '30vw'}"
+  [(visible)]="isModel">
+  <div class="update-form">
+    <form (ngSubmit)="serviceForm.form.valid && payNow()" #serviceForm="ngForm" name="serviceForm">
+      <div class="modal-body">
+        <div class="row border-button">
+          <div class="col-sm-12 form-group">
+            <label>Category</label>
+            <ng-select [items]="sharedMethodService.PaymentStatusEdit" placeholder="paymentStatus" bindLabel="name" bindValue="id"
+            name="paymentStatus" [(ngModel)]="serviceData.paymentStatus" #paymentStatus="ngModel" required >
+           </ng-select>      
+            <div *ngIf="serviceForm.submitted && paymentStatus.invalid" class="invalid-feedback">
+              <div *ngIf="paymentStatus.errors">Status is required</div>
+            </div>
+          </div>  
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="toggleModal()" type="button" class="btn btn-dark waves-effect">
+          Close
+        </button>
+        <button type="submit" class="btn btn-primary waves-effect">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+  </p-dialog>
+  

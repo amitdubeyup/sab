@@ -1,0 +1,188 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>NOTIFICATION SETTING</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"></a></li>
+                    <li class="active"><button href="javascript:void(0)" (click)="addService()" class="btn btn-sm btn-dark">Add
+                       Notification</button></li>
+                      
+                </ul>
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xl-12">
+              <div class="card">
+                <div class="card-body">
+                 
+                  <div class="table-responsive">
+                    <p-table [style]="{'width':'100%'}" class="table-home table-wrapper-commision" #dt [value]="respData" dataKey="memberId"
+                      [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                      [loading]="commonService.isLoader" [paginator]="true"
+                      currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+                      [globalFilterFields]="['messageType','roleType','gst','tds','perRemitterLimit','transferLimit']">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th>S.R.</th>
+                          <th pSortableColumn="apiName">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                               User Type
+                              <p-sortIcon field="apiName"></p-sortIcon>
+                              <p-columnFilter type="text" field="apiName" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+  
+                            </div>
+                          </th>
+                          <th pSortableColumn="messageType">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                 Type
+                              <p-sortIcon field="messageType"></p-sortIcon>                             
+                            </div>
+                          </th>
+                          <th pSortableColumn="description">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                Description
+                              <p-sortIcon field="description"></p-sortIcon>                              
+                            </div>
+                          </th>                         
+                          <th pSortableColumn="isActive">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Status
+                              <p-sortIcon field="isActive"></p-sortIcon>
+  
+                            </div>
+                          </th>
+                          <th style="width:140px;">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Action
+                            </div>
+                          </th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                        <tr class="p-selectable-row">
+                          <td>{{i+1}}</td>
+                          <td>
+                            {{getapiDesc(cp.roleType)}}
+                          </td>
+                          <td>
+                            {{cp.messageType=='1' ? 'Emergency' : cp.messageType=='2'?'Optional':cp.messageType=='3'?'Banner':cp.messageType=='4'?'Contact Us':''}}
+                          </td>
+                          <td>
+                            {{cp.messageType=='3'?'Images':cp.description}}
+                           
+                          </td>                          
+                          <td>
+                            {{cp.isActive=='A' ? 'Active' : 'InActive'}}
+                          </td>
+                          <td>
+                            <button type="button" *ngIf="cp.messageType=='3'" class="btn btn-primary btn-sm" (click)="openModel(cp?.banners)" > <span class="icon-eye"></span></button>
+                            &nbsp;<button type="button" (click)="updateService(cp)"
+                              class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button> &nbsp;
+                              <button type="button" (click)="DeleteSubmit(cp)" class="btn btn-danger btn-sm "> 
+                                <i class="fa fa-trash-o"></i> </button>
+
+                                </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="11">No records found.</td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   
+  
+  
+  <p-dialog header="NOTIFICATION SETTING" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+    [(visible)]="isModel">
+    <div class="update-form">
+      <form (ngSubmit)="serviceForm.form.valid && formSubmit()" #serviceForm="ngForm" name="serviceForm">
+        <div class="modal-body">
+          <div class="row border-button">
+            <div class="col-sm-4 form-group">
+                    <label> Member Type </label>
+                    <ng-select [items]="roleList" [ngClass]="{ 'is-invalid': serviceForm.submitted && roleType.invalid }"
+                placeholder="Select Role Type" bindLabel="desc" name="roleType" bindValue="code" required
+                [(ngModel)]="serviceData.roleType" #roleType="ngModel">
+              </ng-select>
+              <div *ngIf="serviceForm.submitted && roleType.invalid" class="invalid-feedback">
+                <div *ngIf="roleType.errors">Role Type is required</div>
+              </div>
+            </div>
+            <div class="col-sm-4 form-group">
+                <label>Message Type</label>
+                <select type="text" class="form-control" name="messageType" [(ngModel)]="serviceData.messageType"
+                  #messageType="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && messageType.invalid }" required>
+                  <option value="1">Emergency</option>
+                  <option value="2">Optional</option>
+                  <option value="3">Dashboard Banner</option>  
+                  <option value="4">Contact Us</option>                
+                </select>
+                <div *ngIf="serviceForm.submitted && messageType.invalid" class="invalid-feedback">
+                  <div *ngIf="messageType.errors">Message type is required</div>
+                </div>
+              </div>
+              <div class="col-sm-4 form-group">
+                <label>Status</label>
+                <select type="text" class="form-control" name="isActive" [(ngModel)]="serviceData.isActive"
+                  #isActive="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && isActive.invalid }" required>
+                  <option value="A">Active</option>
+                  <option value="I">Inactive</option>
+                </select>
+                <div *ngIf="serviceForm.submitted && isActive.invalid" class="invalid-feedback">
+                  <div *ngIf="isActive.errors">Status is required</div>
+                </div>
+              </div>
+
+            <div class="col-sm-12 form-group" *ngIf="serviceData.messageType!='3'">
+              <label>Description</label>              
+              <textarea type="text" class="form-control" name="description" [(ngModel)]="serviceData.description"
+                #description="ngModel"
+                [ngClass]="{ 'is-invalid': serviceForm.submitted && description.invalid }" required ></textarea>
+              <div *ngIf="serviceForm.submitted && description.invalid" class="invalid-feedback">
+                <div *ngIf="description.errors">Description is required</div>
+              </div>
+            </div>
+            <div class="col-sm-9 form-field" *ngIf="serviceData.messageType=='3'">
+              <label>Select Image</label>
+              <input  type="file" accept="image/*"
+                class="form-control file" (change)="fileChangeEvent($event)" />                              
+            </div>
+            <div class="col-sm-3 form-field" *ngIf="serviceData.messageType=='3'">
+              <label>&nbsp;</label>
+              <a href="javascript:void(0)"> <img
+                  class="form-control" height="200" [src]="cardImageBase64"></a>
+            </div>
+           
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="toggleModal()" class="btn btn-dark waves-effect">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary waves-effect">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </p-dialog>
+  <p-dialog header="Banner" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '80vw'}"
+  [(visible)]="isModelSlip">
+  <img  height="600" [src]="filePath">
+</p-dialog>
+  

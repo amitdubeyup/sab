@@ -1,0 +1,138 @@
+<div class="card">
+    <div class="header">
+        <h2>INDEMNITY BOND</h2>
+        <ul class="header-dropdown dropdown dropdown-animated scale-left">
+           <li class="dropdown">
+                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
+            </li>
+        </ul>
+    </div>
+    <div class="body">
+        <div class="row clearfix">         
+            <div class="col-12">
+                <div class="form-group" id="sectiontoprint">
+                    <div style="border: solid 1px #000; padding: 10px;">
+                        <h2 style="text-align:center;">INDEMNITY BOND</h2><br>
+                        <b>Date:-</b> {{fundRequest.UpdatedOn | date: 'dd-MM-yyyy hh:mm:ss aa'}}
+                        <br>
+                        <br>
+                        <b>From:-</b>
+                        <br>
+                        <table width="100%" cellspacing="0" cellpadding="4" border="1">
+                        <tbody>
+                            <tr>
+                            <td>
+                                <b>Merchant/Agent name</b>
+                            </td>
+                            <td>{{commonService.userPram?.companyName}}
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>
+                                <b>BC Agent Id</b>
+                            </td>
+                            <td>{{commonService.userPram?.userType+''+commonService.userPram?.id}}</td>
+                            </tr>
+                            <tr>
+                            <td>
+                                <b>Registered Mobile number</b>
+                            </td>
+                            <td>{{commonService.userPram?.rmn}}</td>
+                            </tr>
+                            <tr>
+                            <td>
+                                <b>PAN number</b>
+                            </td>
+                            <td>{{boundDet?.pan}}</td>
+                            </tr>
+                            <tr>
+                            <td>
+                                <b>Request No.</b>
+                            </td>
+                            <td>{{fundRequest.TxnId}}</td>
+                            </tr>
+                            <tr>
+                            <td>
+                                <b>Amount</b>
+                            </td>
+                            <td>Rs. {{fundRequest.Amount}}</td>
+                            </tr>
+                            <tr>
+                            <td>
+                                <b>Amount (In Words)</b>
+                            </td>
+                            <td>{{excelService.convertNumberToWords(fundRequest.Amount)}}</td>
+                            </tr>
+                            <tr>
+                            <td>
+                                <b>Bank Account </b>
+                            </td>
+                            <td>{{getBoard(fundRequest.BankId)}}</td>
+                            </tr>
+                            <tr>
+                            <td>
+                                <b>Deposit Date</b>
+                            </td>
+                            <td>{{fundRequest.DepositDate| date: 'dd-MM-yyyy'}}</td>
+                            </tr>
+                            <tr>
+                            <td>
+                                <b>Payment Type</b>
+                            </td>
+                            <td>{{getPaymentMode(fundRequest.TxnMode)}}</td>
+                            </tr>
+                            <tr>
+                            <td>
+                                <b>Remark</b>
+                            </td>
+                            <td>{{fundRequest.SenderNote}}</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <br>
+                        <b>To,</b>
+                        <br>
+                        <b>The Board of Directors,</b>
+                        <br>
+                        <b>The Board of Directors,</b>
+                        <br>
+                        <b>FleetPay India Private Limited</b>
+                        <br>
+                        <b>First floor, F-02, A-88, Sector-4</b>
+                        <br>
+                        <b> Gautam Buddha Nagar </b>
+                        <br>
+                        <b>Noida-201301, UP</b><br>
+                        <br>
+                        <p>Dear Sir/Madam,</p>
+                        <p>
+                            <p>I, <b>{{commonService.userPram?.companyName}}</b>, hereby undertake and explicitly agree to indemnify FLEETPAY INDIA TECHNOLOGY PRIVATE LIMITED (FleetPay) towards the following points:</p>
+                            <p>FLEETPAY INDIA TECHNOLOGY PRIVATE LIMITED is providing us a platform to Wallet Top-Up/ Transfer/Receive by using various payment mode i.e., IMPS/NEFT/RTGS/UPI and many more from person to person (P2P) and person to merchant (P2M) against a separate consideration.</p>
+                            <p>I am wholly owned responsibility to arrange KYC/meeting accordance to statutory requirements and other required/mandatory documents/information from the sender/ receiver/both along with the reasons of the transactions.</p>
+                            <p>I am responsible and abide to provide the KYC &amp;/or other mandatory documents/information along with the reasons of each transaction from the end customers to the Fleetpay India Technology Private Limited (Fleetpay) discretion.</p>
+                            <p>I am wholly and solely responsible for those transactions which would be wrongly debited or credited by me from/to another party also for any incorrect entry/entries while using Fleetpay Platform/Portal; and</p>
+                            <p>After obtaining a proper understanding of the transaction patterns, I am giving my consent to use this platform with all the Terms and Conditions of Fleetpay; also assuring that after due consent of every Sender/Receiver/Both is/are using Fleetpay Portal for Top-up/Transfer/Receive by using various payment mode i.e., IMPS/NEFT/RTGS/UPI and many more.</p>
+                            <br>
+                        <p>Thanking you,</p>
+                        <br>
+                        <br>
+                        <b>{{commonService.userPram?.companyName}}
+                        <br>
+                        (Merchant’s/Agent’s Name)
+                        <br>
+                        Seal and Signature
+                        <br>
+                        <br>
+                        Timestamp : {{fundRequest.UpdatedOn | date: 'dd-MM-yyyy hh:mm:ss aa'}}
+                        </b>
+                    </div>
+                    </div>
+                    <div class="form-group text-center">
+                    <input type="button" name="btnPrint" value="Print" (click)="printPage();" class="btn btn-info">
+                    &nbsp;&nbsp;&nbsp;
+                     <input type="button" name="btnClose" value="Close" (click)="onClose();" class="btn btn-info">
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,168 @@
+<app-retailer-layout></app-retailer-layout> 
+<div id="main-content">
+    <div class="block-header mb-1">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>Money Transfer</h2>
+            </div>            
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ul>               
+            </div>
+        </div>
+    </div>
+      <div class="container-fluid">
+        <div class="row" *ngIf="remitterDetails">
+          <div class="col-sm-12">
+            <div class="chat-marging">
+              <div class="card chat-app">
+                <div class="chat">
+                  <div class="chat-header clearfix">
+                    <div class="row clearfix">
+                      <div class="col-lg-6">
+                          <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                              <img src="assets/images/customer-64.png" alt="avatar">
+                          </a>
+                          <div class="chat-about">
+                              <h6 class="m-b-0">{{remitterDetails.RemitterName}}</h6>
+                              <strong>{{remitterDetails.MobileNo}}</strong>
+                          </div>
+                      </div>
+                      <div class="col-lg-6 text-right">
+                          <div class="">
+                              <h6 class="m-b-0">AVAILABLE LIMIT</h6>
+                              <strong class="txt_17"><span *ngIf="paymentMode=='true'"
+                                  class="same-text">&#8377;{{remitterDetails.RazorLimit}}</span>
+                                <span *ngIf="paymentMode=='false'"
+                                  class="same-text">&#8377;{{remitterDetails.BankitLimit--remitterDetails.FinoLimit--remitterDetails.PaySprintLimit--remitterDetails.RazorLimit}} </span></strong>
+                          </div>
+                      </div>
+                  </div>
+                  </div>
+                  <div class="chat-history">                 
+                        <p-tabView [(activeIndex)]="activeTab" (onChange)="handleChange($event)">
+                          <p-tabPanel header="Old Beneficiary">
+                            <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                          </p-tabPanel>
+                          <p-tabPanel header="Other Beneficiary">
+                            <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                          </p-tabPanel>
+                        </p-tabView>                        
+                          <ng-template #statementTemplate>
+                            <p-table styleClass="p-datatable-customers" class="table-rt" #dt [value]="beneficiaryDetails"  [rowHover]="true"
+                              [rows]="20" [(selection)]="selectedBeneficiary" [showCurrentPageReport]="true"
+                              [rowsPerPageOptions]="[20,50,100]"  [paginator]="true"
+                              currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+                              [globalFilterFields]="['RemitterId','recipientName','bankName','udf2','udf1']"
+                              selectionMode="single">
+                              <ng-template pTemplate="caption">
+                                <div class="row table-header">                              
+                                  <div class="col-md-12">                                   
+                                    <form (ngSubmit)="f.form.valid && getBeneficiaryDetails()" #f="ngForm">
+                                      <div class="row">
+                                        <div class="col-md-5" *ngIf="activeTab == 1">
+                                          <ng-select [items]="pipeList" bindLabel="apiServiceName" name="apiId" bindValue="apiId"
+                                            [(ngModel)]="optionSearch.apiId" #apiId="ngModel" placeholder="Select"
+                                            [ngClass]="{ 'is-invalid': f.submitted && apiId.invalid }" required>
+                                          </ng-select>
+                                          <div *ngIf="f.submitted && apiId.invalid" class="invalid-feedback">
+                                            <div *ngIf="apiId.errors">Wallet is required</div>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                          <input type="text" class="form-control" name="mobileNo"
+                                            [(ngModel)]="optionSearch.mobileNo" #mobileNo="ngModel"
+                                            [ngClass]="{ 'is-invalid': f.submitted && mobileNo.invalid }"
+                                            placeholder="Mobile Number" value="" required />
+                                          <div *ngIf="f.submitted && mobileNo.invalid" class="invalid-feedback">
+                                            <div *ngIf="mobileNo.errors">Mobile number is required</div>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                          <button type="submit" class="btn btn-primary w-20">Search</button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>                               
+                                  
+                                </div>
+                              </ng-template>
+                              <ng-template pTemplate="header">
+                                <tr>
+                                  <th class="text-center" style="width: 3rem">
+                                    
+                                  </th>
+                                  <th>#</th>
+                                  <th pSortableColumn="BeneficiaryName">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Beneficiary
+                                     
+                                    </div>
+                                  </th>
+                                  <th pSortableColumn="Bank">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Bank
+                                     
+                                    </div>
+                                  </th>
+                                  <th pSortableColumn="Ifsc">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      IFSC
+                                     
+                                    </div>
+                                  </th>
+                                  <th pSortableColumn="BeneficiaryAcc">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Account Number
+                                      
+                                    </div>
+                                  </th>
+                                  <th>
+                                    Mobile Number
+                                  </th>                                  
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                                <tr class="p-selectable-row">
+                                  <td class="text-center">
+                                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                                  </td>
+                                  <td>{{rowIndex+1}}</td>
+                                  <td>
+                                    {{rowData.recipientName}}
+                                  </td>
+                                  <td>
+                                    {{rowData.bankName}}
+                                  </td>
+                                  <td>{{rowData.udf2}}</td>
+                                  <td>{{rowData.udf1}}</td>
+                                  <td>{{rowData.mobileNo}}</td>                                 
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="emptymessage">
+                                <tr>
+                                  <td colspan="8">No records found.</td>
+                                </tr>
+                              </ng-template>
+                            </p-table>
+                            <div class="col-sm-12 text-center pt-2 pb-2">
+                              <button class="btn btn-primary waves-effect waves-light import-bene" (click)="importBeneficiary()"
+                                    [disabled]="selectedBeneficiary?.length === 0"><i class="fa fa-file-download mr-2"></i> Add
+                                    Beneficiary</button> &nbsp;
+                              <button class="btn btn-primary back-blue " type="button" (click)="back()">CANCEL</button>
+                            </div>
+                          </ng-template>
+                                       
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+          </div>
+
+        </div>
+
+      </div>
+    </div>

@@ -1,0 +1,210 @@
+<!-- row 1 starts here  -->
+
+<div class="row mt-2">
+    <!-- <div class="col-1"></div> -->
+    <div [ngClass]="(page_name == 'aeps') ? 'col-sm-3 text-left col-form-label' :
+        'col-sm-2'">
+        <div class="form-group">
+            <label>Bank Name<span class="mandatory">*</span></label>
+        </div>
+    </div>
+
+    <div [ngClass]="(page_name == 'aeps') ? 'col-sm-8 text-left
+        wrapper-radion-inline' : 'col-10'">
+        <!-- sbi bank  -->
+        <button type="button" (click)="getIfsc(1229); getBankName('607094'); activeSbi()"
+            [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps sbi mb-1 mr-1' :
+            'btn btn_width sbi mb-1 mr-1'" 
+            [ngStyle]="{'background-color': (disableSbi)? 'gray': '#0066e1', 'border': (disableSbi)? '2px solid black': ''}"
+            data-toggle="modal">
+            <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">SBI 
+                <br><span class="sm-font">(State Bank of
+                    India)</span></p>
+        </button>
+        <!-- sbi bank  -->
+        <!-- bank of baroda  -->
+        <button type="button"  (click)="getIfsc(1134); getBankName('606985'); activeBob()"
+        [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps bnb mb-1 mr-1' :
+        'btn btn_width bnb mb-1 mr-1'" 
+        [ngStyle]="{'background-color': (disableBob)? 'gray': '#ff6b11',  'border': (disableBob)? '2px solid black': ''}"
+        data-toggle="modal">
+        <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">BOB
+            <br> <span class="sm-font">(Bank of
+                Baroda)</span></p>
+       </button>  
+       <!-- bank of baroda  -->
+       <!-- bank of idnia  -->
+       <button type="button"  (click)="getIfsc(1135); getBankName('508505'); activeBoI()"
+       [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps bindia mb-1 mr-1' :
+       'btn btn_width bindia mb-1 mr-1'" 
+       [ngStyle]="{'background-color': (disableBoi)? 'gray': '#003f8e',  'border': (disableBoi)? '2px solid black': ''}"
+       data-toggle="modal">
+       <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">BOI
+           <br> <span class="sm-font">(Bank of India)</span></p>
+        </button>   
+        <!-- bank of india   -->
+        <!-- pnb bank  -->
+        <button type="button"  (click)="getIfsc(1212); getBankName('607027'); activePnb()"
+        [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps pnb mb-1 mr-1' :
+        'btn btn_width pnb mb-1 mr-1'" 
+        [ngStyle]="{'background-color': (disablePnb)? 'gray': '#a30634',  'border': (disablePnb)? '2px solid black': ''}"
+        data-toggle="modal">
+        <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">PNB
+            <br> <span class="sm-font">(PNB Bank)</span></p>
+       </button>   
+       <!-- pnb bank   -->
+       <!-- indian bank      -->
+        <button type="button" (click)="getIfsc(1168); getBankName('607105'); activeIndian()"
+            [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps indian mb-1 mr-1' :
+            'btn btn_width indian mb-1 mr-1'"
+            [ngStyle]="{'background-color': (disbleIndian)? 'gray': '#104490',  'border': (disbleIndian)? '2px solid black': ''}"
+            data-toggle="modal">
+            <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">Indian Bank 
+                 <br> <span class="sm-font">(Indian Bank)</span></p>
+        </button>
+        <!-- indian bank  -->
+        <!-- Union bank of idnia  -->
+        <button *ngIf="(page_name == 'aeps')" type="button"
+        (click)="getIfsc(1269); getBankName('607161'); activeUnion()"
+            [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps union mb-1 mr-1' :
+            'btn btn_width union
+            mb-1 mr-1'" 
+            [ngStyle]="{'background-color': (disableUnion)? 'gray': '#ea0020',  'border': (disableUnion)? '2px solid black': ''}"
+            data-toggle="modal">
+            <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">UBI<br>
+                <span class="sm-font">(Union Bank of India )</span></p>
+        </button>
+        <!-- union bank of india  -->
+
+    </div>
+
+    <div class="col-sm-2"></div>
+</div>
+<!-- row 1 ends here  -->
+<!-- row 2 starts here  -->
+<div class="row mt-1">
+    <div
+        [ngClass]="(page_name == 'aeps') ? 'col-sm-3 text-left col-form-label' :
+        'col-sm-2'"></div>
+    <div
+        [ngClass]="(page_name == 'aeps') ? 'col-sm-8 text-left
+        wrapper-radion-inline' : 'col-10'">
+        <!-- Union bank of india   -->
+        <button *ngIf="(page_name != 'aeps')" type="button"
+        (click)="getIfsc(1269); getBankName('607161'); activeUnion()"
+            [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps union mb-1 mr-1' :
+            'btn btn_width union
+            mb-1 mr-1'" 
+            [ngStyle]="{'background-color': (disableUnion)? 'gray': '#ea0020',  'border': (disableUnion)? '2px solid black': ''}"
+            data-toggle="modal">
+            <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">UBI<br>
+                <span class="sm-font">(Union Bank of India)</span></p>
+        </button>
+        <!-- union bank of india  -->
+        <!-- central bank  -->
+        <button type="button"   (click)="getIfsc(1147); getBankName('607264'); activeCentral()"
+            [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps central mb-1 mr-1' :
+            'btn btn_width central mb-1 mr-1'" 
+            [ngStyle]="{'background-color': (disableCentral)? 'gray': '#1972be',  'border': (disableCentral)? '2px solid black': ''}"
+            data-toggle="modal">
+            <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">CBI
+                <br> <span class="sm-font">(Central Bank of India)</span></p>
+        </button>
+        <!-- central bank  -->
+        <!-- canara bank  -->
+        <button type="button" (click)="getIfsc(1145); getBankName('607396'); activeCanara()"
+        [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps canara mb-1 mr-1' :
+        'btn btn_width canara mb-1 mr-1'"
+        [ngStyle]="{'background-color': (disbleCanara)? 'gray': '#15b0ec', 'border': (disbleCanara)? '2px solid black': ''}"
+        data-toggle="modal">
+        <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">Canara Bank
+            <br> <span class="sm-font">(Canara Bank)</span></p>
+       </button>
+       <!-- canara bank  -->
+       <!-- bank of maharashtra  -->
+        <button type="button" (click)="getIfsc(1136); getBankName('607387'); activeBom()"
+        [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps bom mb-1 mr-1' :
+        'btn btn_width bom mb-1 mr-1'" 
+        [ngStyle]="{'background-color': (disableBom)? 'gray': '#0d8dcd',  'border': (disableBom)? '2px solid black': ''}"
+        data-toggle="modal">
+        <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">BOM
+            <br> <span class="sm-font">(Bank of Maharashtra)</span></p>
+       </button>
+       <!-- bank of maharashtra  -->
+       <!-- ICICI bank  -->
+       <button type="button" (click)="getIfsc(1165); getBankName('508534'); activeIcici()"
+       [ngClass]="(page_name == 'aeps') ? 'btn btn_aeps icici mb-1 mr-1' :
+       'btn btn_width icici mb-1 mr-1'"
+       [ngStyle]="{'background-color': (disableIcici)? 'gray': '#b02a30',  'border': (disableIcici)? '2px solid black': ''}"
+       data-toggle="modal">
+       <p [ngClass]="(page_name == 'aeps') ? 'aeps_height' : 'btn_height'">ICICI
+           <br> <span class="sm-font">(ICICI Bank)</span></p>
+       </button>
+       <!-- icici bank  -->
+         <button *ngIf="(page_name == 'aeps')" type="button"
+            (click)="show_banklist()" class="btn btn-primary"
+            data-toggle="modal">
+            <p class="btn_height">Other Banks</p>
+        </button>
+       
+    </div>
+
+    <div [ngClass]="(page_name == 'aeps') ? 'col-sm-3 text-left col-form-label' : 'col-sm-2'">
+
+    </div>
+    <div *ngIf="(page_name =='aeps')" [ngClass]="(page_name == 'aeps') ? 'col-sm-8 text-left
+        wrapper-radion-inline mt-2' : 'col-sm-2 mt-4'">
+
+        <div *ngIf="showbank" class="form-group">
+               <ng-select style="width: 100%;" [items]="banklistData"
+               
+                bindLabel="bankName" bindValue="iinno" name="bankName"
+                (change)="getBankName(modalData.bankName)"
+                [(ngModel)]="modalData.bankName" #bankName="ngModel" required
+                placeholder="Select Bank"
+                required>
+            </ng-select>   
+
+            <!-- <div *ngIf="f.submitted && bankId.invalid" class="invalid-feedback">
+           <div *ngIf="bankId.errors">Bank name is required</div>
+          </div> -->
+        </div>
+    </div>
+    <!-- <div class="col-sm-2"></div> -->
+    <div *ngIf="(page_name != 'aeps')" class="col-sm-2 pr-0 mt-2">
+        <button type="button"
+            (click)="show_banklist()" class="btn btn-primary"
+            data-toggle="modal">
+            <p class="btn_height">Other Banks</p>
+        </button>
+    </div>
+    <div  *ngIf="(page_name != 'aeps')" class="col-sm-8">
+
+    </div>
+    <div  *ngIf="(page_name != 'aeps')" class="col-sm-2">
+
+    </div>
+
+    <div  *ngIf="((page_name != 'aeps'))" class="col-sm-4 pr-0 mt-2">
+        <div *ngIf="showbank" class="form-group">
+          <ng-select [items]="banklistData" bindLabel="bankName" name="bankId"
+                (change)="getIfsc(modalData.bankId)" bindValue="bankId"
+                [(ngModel)]="modalData.bankId"
+                #bankId="ngModel" placeholder="Select Bank"
+                required>
+            </ng-select>
+          </div>
+    </div>
+    <!-- <div  *ngIf="((aeps_col != 'aeps') && (quickPay == 'q_pay'))" class="col-sm-4 pr-0 mt-2">
+        <div *ngIf="showbank" class="form-group">
+          <ng-select [items]="quickPayBankDataList" bindLabel="bankName" name="bankId"
+                (change)="getIfsc(modalData.bankId)" bindValue="bankId"
+                [(ngModel)]="modalData.bankId"
+                #bankId="ngModel" placeholder="Select Bank For QuickPay"
+                required>
+            </ng-select>
+           </div>
+    </div> -->
+<!-- 
+</div> -->
+<!-- row 2 ends here  -->

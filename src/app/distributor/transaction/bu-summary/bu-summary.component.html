@@ -1,0 +1,190 @@
+
+<app-distributor-layout></app-distributor-layout>
+<div id="main-content" >
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Business Summary</h4>
+        <h6>Dasboard / Business Summary Details</h6>
+      </div>
+    </div>
+ <div class="card">
+      <div class="row m-4">        
+        <div class="col-sm-4  pb-1">
+          <ng-select [items]="retList" bindLabel="desc" name="retid" bindValue="code" [(ngModel)]="retid"
+            #apiId="ngModel" placeholder="Select" required>
+          </ng-select>
+        </div>
+        <div class="col-md-2 text-right  pb-1">
+          <p-calendar class="p-calendar" dateFormat="dd-mm-yy" [showIcon]="false" name="fromDt" [(ngModel)]="fromDt"
+            dateFormat="dd-mm-yy" placeholder="From Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-2 text-right  pb-1">
+          <p-calendar class="p-calendar" [showIcon]="false" name="toDt" [(ngModel)]="toDt" dateFormat="dd-mm-yy"
+            placeholder="To Date"></p-calendar>
+        </div>
+        <div class="col-md-2  pb-1 text-center">
+          <button type="button" (click)="getBank()" class="btn btn-primary w-20">Search</button>
+        </div>
+      
+      </div>
+      <div class="row m-1">
+        <div class="col-sm-6 pb-3">
+          <div class="card table-responsive" >
+          <table border="0" width="100%" cellpadding="0" cellspacing="0" class="table">
+            <thead>
+              <tr>
+                <th colspan="2" align="center">Money Transaction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Transaction</td>
+                <td>{{resBank?.dmt?.totalTran}}</td>
+              </tr>
+              <tr>
+                <td>Total Transaction Amount</td>
+                <td>{{resBank?.dmt?.totalAmount | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Charge</td>
+                <td>{{resBank?.dmt?.totalCharge | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Commission</td>
+                <td>{{resBank?.dmt?.totalComm | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Failed Transaction </td>
+                <td>{{resBank?.dmt?.totalFailedTran}}</td>
+              </tr>
+              <tr>
+                <td>Total Refunded Transaction</td>
+                <td>{{resBank?.dmt?.totalRefundTran}}</td>
+              </tr>
+             
+            </tbody>
+          </table>
+        </div>
+        </div>
+        <div class="col-sm-6 pb-3">
+          <div class="card table-responsive" >
+          <table border="0"  width="100%" cellpadding="0" cellspacing="0" class="table">
+            <thead>
+              <tr>
+                <th colspan="2" align="center">Utility Transaction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Transaction</td>
+                <td>{{resBank?.utility?.totalTran}}</td>
+              </tr>
+              <tr>
+                <td>Total Transaction Amount</td>
+                <td>{{resBank?.utility?.totalAmount | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Charge</td>
+                <td>{{resBank?.utility?.totalCharge | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Commission</td>
+                <td>{{resBank?.utility?.totalComm | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Failed Transaction </td>
+                <td>{{resBank?.utility?.totalFailedTran}}</td>
+              </tr>
+              <tr>
+                <td>Total Refunded Transaction</td>
+                <td>{{resBank?.utility?.totalRefundTran}}</td>
+              </tr>
+             
+            </tbody>
+          </table>
+          </div>
+        </div>              
+        <div class="col-sm-6 pb-3">
+          <div class="card  table-responsive" >
+          <table border="0"  width="100%" cellpadding="0" cellspacing="0" class="table">
+            <thead>
+              <tr>
+                <th colspan="2" align="center">AEPS Transaction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Transaction</td>
+                <td>{{resBank?.aeps?.totalTran}}</td>
+              </tr>
+              <tr>
+                <td>Total Transaction Amount</td>
+                <td>{{resBank?.aeps?.totalAmount | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Charge</td>
+                <td>{{resBank?.aeps?.totalCharge | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Commission</td>
+                <td>{{resBank?.aeps?.totalComm | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Failed Transaction </td>
+                <td>{{resBank?.aeps?.totalFailedTran}}</td>
+              </tr>
+              <tr>
+                <td>Total Refunded Transaction</td>
+                <td>{{resBank?.aeps?.totalRefundTran}}</td>
+              </tr>
+             
+            </tbody>
+          </table>
+        </div>
+        </div> 
+        <div class="col-6 pb-3" style="display:none;">
+          <div class="card" >
+          <table border="0" cellpadding="0" cellspacing="0" class="table">
+            <thead>
+              <tr>
+                <th colspan="2" align="center">Travel</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Transaction</td>
+                <td>{{resBank?.aeps?.totalTran}}</td>
+              </tr>
+              <tr>
+                <td>Total Transaction Amount</td>
+                <td>{{resBank?.aeps?.totalAmount | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Charge</td>
+                <td>{{resBank?.aeps?.totalCharge | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Commission</td>
+                <td>{{resBank?.aeps?.totalComm | number : '1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Total Failed Transaction </td>
+                <td>{{resBank?.aeps?.totalFailedTran}}</td>
+              </tr>
+              <tr>
+                <td>Total Refunded Transaction</td>
+                <td>{{resBank?.aeps?.totalRefundTran}}</td>
+              </tr>
+             
+            </tbody>
+          </table>
+        </div>
+        </div>            
+      </div>
+  </div>
+    
+ </div>
+</div>
+

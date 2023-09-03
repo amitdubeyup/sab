@@ -1,0 +1,22 @@
+.wrapper-button-control .btn-theme-users{background: #fff; color: #000; font-size: 13px; padding: 5px 9px; border-radius: 50px; border: 1px solid #3f60cb;}
+.wrapper-button-control .btn-theme-users.active{background: #3f60cb; color: #fff;}
+.btn-theme-users {
+  margin-left: 5px;
+}
+
+.add-request {
+  cursor: pointer;
+}
+#textright{text-align:right}
+@media only screen and (max-width: 768px) {
+  #textright{text-align: initial;
+    margin-bottom: 10px;
+    margin-top: 5px;}
+    .add-request {
+      cursor: pointer;
+      margin-bottom: 7px;
+    }
+    .dailogbox{
+      width:90vw !important;
+    }
+}

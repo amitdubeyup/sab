@@ -1,0 +1,241 @@
+<app-retailer-layout></app-retailer-layout>
+<div id="main-content">
+  <div class="block-header mb-1">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Money Transfer</h2>
+      </div>
+      <div class="col-md-6 col-sm-12 text-right">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row" *ngIf="remitterDetails">
+      <div class="col-sm-12">
+        <div class="chat-marging">
+          <div class="card chat-app">
+            <div class="chat">
+              <div class="chat-header clearfix">
+                <div class="row clearfix">
+                  <div class="col-lg-6">
+                    <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                      <img src="assets/images/customer-64.png" alt="avatar">
+                    </a>
+                    <div class="chat-about">
+                      <h6 class="m-b-0">{{remitterDetails.RemitterName}}</h6>
+                      <strong>{{remitterDetails.MobileNo}}</strong>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 text-right">
+                    <div class="">
+                        <h6 class="m-b-0">AVAILABLE LIMIT</h6>
+                        <strong class="txt_17"><span *ngIf="paymentMode=='true'"
+                            class="same-text">&#8377;{{remitterDetails.RazorLimit}}</span>
+                          <span *ngIf="paymentMode=='false'"
+                            class="same-text">&#8377;{{remitterDetails.BankitLimit--remitterDetails.FinoLimit--remitterDetails.PaySprintLimit--remitterDetails.RazorLimit}} </span></strong>
+                    </div>
+                </div>
+                </div>
+              </div>
+              <div class="chat-history">
+                <div class="card">
+                  <div class="header">
+                    <h2>Add New Beneficiary</h2>
+                  </div>
+                  <div class="card-body">
+                    <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" autocomplete="off">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Bank Account No<span class="mandatory">*</span></label>
+                            <div class="input-group">
+                              <input type="text" NumberChar class="form-control" maxlength="24" name="beneficiaryAcc"
+                                [(ngModel)]="modalData.beneficiaryAcc" #beneficiaryAcc="ngModel"
+                                [ngClass]="{ 'is-invalid': f.submitted && beneficiaryAcc.invalid }"
+                                placeholder="Bank Account No" required />
+                              <div class="input-group-append">
+                                <span class="input-group-text">{{modalData?.beneficiaryAcc?.length>0?modalData?.beneficiaryAcc?.length:0}}</span>
+                              </div>
+                              <div *ngIf="f.submitted && beneficiaryAcc.invalid" class="invalid-feedback">
+                                <div *ngIf="beneficiaryAcc.errors">Bank account number is required</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Bank Name<span class="mandatory">*</span></label>
+                            <ng-select [items]="bankList" bindLabel="bankName" name="bankId"
+                              (change)="getIfsc(modalData.bankId)" bindValue="bankId" [(ngModel)]="modalData.bankId"
+                              #bankId="ngModel" placeholder="Select Bank Name"
+                              [ngClass]="{ 'is-invalid': f.submitted && bankId.invalid }" required>
+                            </ng-select>
+                            <div *ngIf="f.submitted && bankId.invalid" class="invalid-feedback">
+                              <div *ngIf="bankId.errors">Bank name is required</div>
+                            </div>
+                          </div>
+                        </div>
+                     
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Beneficiary Name<span class="mandatory">*</span></label>
+                            <div class="input-group">
+                              <input type="text" NumberChar class="form-control" name="beneficiaryName"
+                                [(ngModel)]="modalData.beneficiaryName" #beneficiaryName="ngModel"
+                                [ngClass]="{ 'is-invalid': f.submitted && beneficiaryName.invalid }"
+                                placeholder="Beneficiary Name" required />
+                              <div class="input-group-append">
+                                <button class="btn btn-success" appDebounceClick
+                                  (debounceClick)="processPayment()" [debounceTime]="700" type="button">Account
+                                  Verify</button>
+                              </div>
+                              <div *ngIf="f.submitted && beneficiaryName.invalid" class="invalid-feedback">
+                                <div *ngIf="beneficiaryName.errors">Beneficiary name is required</div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>                          
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>IFSC Code<span class="mandatory">*</span></label>
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="ifsc" [(ngModel)]="modalData.ifsc"
+                                #ifsc="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ifsc.invalid }"
+                                placeholder="IFSC" required />
+                              <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="openModal(true)" type="button">Search
+                                  IFSC Code</button>
+                              </div>
+                              <div *ngIf="f.submitted && ifsc.invalid" class="invalid-feedback">
+                                <div *ngIf="ifsc.errors">IFSC is required</div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 text-center pt-4 pb-4">
+                          <button type="submit" *ngIf="!beniId" class="btn btn-primary back-org" data-toggle="modal">
+                            ADD
+                            BENEFICIARY</button>  &nbsp;
+                          <button class="btn btn-primary back-blue" type="button" (click)="back()">CANCEL</button>  &nbsp;
+                          &nbsp; <button type="submit" *ngIf="beniId" class="btn btn-primary back-org"
+                            data-toggle="modal"> UPDATE
+                            BENEFICIARY</button>
+                        
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 text-center"> <strong>Verify Account Number? (₹ 3.00/- Charges Applicable per Transaction)</strong></div>
+            <div class="col-sm-12"><strong>*Alert: -</strong> In case the Account Number &/or IFSC is incorrect, your transaction will be UNSUCCESSFUL. The transaction Amount will be stuck and not be refunded immediately. The transaction amount will be refunded after due deduction of service charge(s) as soon as the bank reverse this amount to us. Such payment reversal is subject to bank conditions and may be take various days to refund.</div>
+          </div>
+        </div>
+
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Search Bank IFSC" class="dailogbox" [baseZIndex]="10000" [style]="{'width': '800px'}"
+  [(visible)]="isModel">
+  <div class="update-form">
+    <form (ngSubmit)="ifscForm.form.valid && onIfscSearch()" #ifscForm="ngForm" name="ifscForm">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group mb-20">
+              <label class="ifsc-label">Bank<sup class="req">*</sup></label>
+              <ng-select [items]="bankList" bindLabel="bankName" bindValue="bankId" name="bankCode"
+                [(ngModel)]="ifscData.bankCode" #bankCode="ngModel" (change)="bankSelected($event)"
+                placeholder="Select Bank" [ngClass]="{ 'is-invalid':
+                ifscForm.submitted && bankCode.invalid }" required>
+              </ng-select>
+              <div *ngIf="ifscForm.submitted && bankCode.invalid" class="invalid-feedback">
+                <div *ngIf="bankCode.errors">Bank name is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group mb-20">
+              <label class="ifsc-label">State<sup class="req">*</sup></label>
+              <ng-select [items]="stateList" bindLabel="desc" bindValue="code" name="stateCode"
+                [(ngModel)]="ifscData.stateCode" #stateCode="ngModel" (change)="stateSelected($event)"
+                placeholder="Select State" [ngClass]="{ 'is-invalid':
+                ifscForm.submitted && stateCode.invalid }" required>
+              </ng-select>
+              <div *ngIf="ifscForm.submitted && stateCode.invalid" class="invalid-feedback">
+                <div *ngIf="stateCode.errors">State is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group mb-20">
+              <label class="ifsc-label">City<sup class="req">*</sup></label>
+              <ng-select [items]="cityList" bindLabel="desc" bindValue="code" name="cityCode"
+                [(ngModel)]="ifscData.cityCode" #cityCode="ngModel" (change)="citySelected($event)"
+                placeholder="Select City" [ngClass]="{ 'is-invalid':
+                ifscForm.submitted && cityCode.invalid }" required>
+              </ng-select>
+              <div *ngIf="ifscForm.submitted && cityCode.invalid" class="invalid-feedback">
+                <div *ngIf="cityCode.errors">City is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group mb-20">
+              <label class="ifsc-label">District<sup class="req">*</sup></label>
+              <ng-select [items]="districtList" bindLabel="desc" bindValue="code" name="districtCode"
+                [(ngModel)]="ifscData.districtCode" #districtCode="ngModel" (change)="districtSelected($event)"
+                placeholder="Select District" [ngClass]="{ 'is-invalid':
+                ifscForm.submitted && districtCode.invalid }" required>
+              </ng-select>
+              <div *ngIf="ifscForm.submitted && districtCode.invalid" class="invalid-feedback">
+                <div *ngIf="districtCode.errors">District is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group mb-20">
+              <label class="ifsc-label">Branch<sup class="req">*</sup></label>
+              <ng-select [items]="branchList" bindLabel="desc" bindValue="code" name="branchCode"
+                [(ngModel)]="ifscData.branchCode" #branchCode="ngModel" (change)="branchSelected($event)"
+                placeholder="Select Branch" [ngClass]="{ 'is-invalid':
+                ifscForm.submitted && branchCode.invalid }" required>
+              </ng-select>
+              <div *ngIf="ifscForm.submitted && branchCode.invalid" class="invalid-feedback">
+                <div *ngIf="branchCode.errors">Branch is required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row bank-details" *ngIf="branchDetails">
+          <div class="col-6"><b>Bank: </b>{{branchDetails?.bankName}}</div>
+          <div class="col-6"><b>Branch: </b>{{branchDetails?.branch}}</div>
+          <div class="col-6"><b>IFSC: </b>{{branchDetails?.ifsc}}</div>
+          <div class="col-6"><b>MICR: </b>{{branchDetails?.micrCode}}</div>
+          <div class="col-6"><b>STD Code: </b>{{branchDetails?.stdcode}}</div>
+          <div class="col-6"><b>Contact: </b>{{branchDetails?.contact}}</div>
+          <div class="col-12"><b>Address: </b>{{branchDetails?.address}}</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <ng-container>
+          <button type="button" (click)="openModal(false)" class="btn btn-dark
+            submit-button">Close</button>
+          <button class="btn btn-primary submit-button">Submit</button>
+        </ng-container>
+      </div>
+    </form>
+  </div>
+</p-dialog>

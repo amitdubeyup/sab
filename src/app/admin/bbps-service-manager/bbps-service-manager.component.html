@@ -1,0 +1,318 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Money Transfer</h2>
+
+      </div>
+      <div class="col-md-6 col-sm-12 text-right">
+        <ul class="breadcrumb">
+
+          <li>
+            <div class="btn-group ml-1 mo-mb-2 float-right">
+              <button type="button" class="btn btn-sm btn-dark waves-light waves-effect dropdown-toggle"
+                data-toggle="dropdown" aria-expanded="true">
+                Action
+              </button>
+              <div class="dropdown-menu"
+                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-48px, 34px, 0px);"
+                x-placement="bottom-start">
+                <a class="dropdown-item" routerLink="/administrator/product-list">Recharge</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" [routerLink]="['/administrator/dmt-service-manager']"  [queryParams]="{type: 'DMT'}">DMT</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" [routerLink]="['/administrator/dmt-service-manager']"  [queryParams]="{type: 'KYC'}">KYC PAY</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" routerLink="/administrator/bbps-service-manager">BBPS</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" routerLink="/administrator/aeps-service-manager">AEPS</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" routerLink="/administrator/cms-service-manager">CMS</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" routerLink="/administrator/vendor-service-manager">VENDOR PAY</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" routerLink="/administrator/api-service">API Serives</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" routerLink="/administrator/travel-service-manager">TRAVEL</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" routerLink="/administrator/bbps-live-service-manager">BBPS LIVE</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" routerLink="/administrator/upi-payout-service">UPI</a>
+                <div class="dropdown-divider"></div>
+                <div class="text-center">
+                  <button type="button" class="btn btn-sm btn-dark text-center" (click)="openForm()">
+                    Add New
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xl-12">
+            <div class="card">
+              <div class="card-body">
+            
+                <div class="responsive-table">
+                  <p-table [value]="respData" [scrollable]="false" class="table-home" [loading]="commonService.isLoader">
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th style="width: 3%;">S.N.</th>
+                        <th>Name</th>
+                        <th pSortableColumn="apiName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Cagegory
+                            <p-sortIcon field="apiName"></p-sortIcon>
+                          </div>
+                        </th>
+                        <th style="width: 8%; text-align: center;">On/Off</th>
+                        <th style="width: 8%; text-align: center;">Online/Offline</th>
+                        <th>Service Type</th>
+                        <th>Service Charge</th>
+                        <th>Min Amt</th>
+                        <th>Max Amt</th>
+                        <th>API Pipe  </th>                        
+                        <th pSortableColumn="priority2">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Sort
+                            <p-sortIcon field="priority2"></p-sortIcon>
+                          </div>
+                        </th>
+                        <th style="width: 6%;">Action </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-i="rowIndex" let-columns="columns">
+                      <tr>
+                        <td> {{i + 1}}</td>
+                        <td pEditableColumn>
+                          <p-cellEditor>
+                            <ng-template pTemplate="input">
+                              <input type="text" name="apiName" class="form-control" [(ngModel)]="rowData.apiName"
+                                #apiName="ngModel">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                              {{rowData.apiName}}
+                            </ng-template>
+                          </p-cellEditor>
+                        </td>
+                        <td>{{rowData.category}}</td>
+                        <td style="text-align: center;">
+                          <ui-switch size="small" name="rowData.apiOnOff{{i}}" [(ngModel)]="rowData.apiOnOff"
+                            [checked]="rowData.apiOnOff" checkedLabel="on" uncheckedLabel="off"></ui-switch>
+                        </td>
+                        <td style="text-align: center;">
+                          <ui-switch size="small" name="rowData.apiOnline{{i}}" [(ngModel)]="rowData.apiOnline"
+                            [checked]="rowData.apiOnline" checkedLabel="on" uncheckedLabel="off"></ui-switch>
+                        </td>
+                        <td pEditableColumn>
+                          <p-cellEditor>
+                            <ng-template pTemplate="input">
+                              <ng-select [items]="RateTypeList" placeholder="Service Type" bindLabel="desc"
+                                name="rateType" bindValue="code" [(ngModel)]="rowData.rateType" #rateType="ngModel">
+                              </ng-select>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                              {{getapiDescRate(rowData.rateType)}}
+                            </ng-template>
+                          </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                          <p-cellEditor>
+                            <ng-template pTemplate="input">
+                              <input type="number" name="rate" class="form-control" [(ngModel)]="rowData.rate"
+                                #rate="ngModel">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                              {{rowData.rate| number:'1.2-2'}}
+                            </ng-template>
+                          </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                          <p-cellEditor>
+                            <ng-template pTemplate="input">
+                              <input type="number" name="minAmt" class="form-control" [(ngModel)]="rowData.minAmt"
+                                #minAmt="ngModel">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                              {{rowData.minAmt| number:'1.2-2'}}
+                            </ng-template>
+                          </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                          <p-cellEditor>
+                            <ng-template pTemplate="input">
+                              <input type="number" name="maxAmt" class="form-control" [(ngModel)]="rowData.maxAmt"
+                                #maxAmt="ngModel">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                              {{rowData.maxAmt| number:'1.2-2'}}
+                            </ng-template>
+                          </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                          <p-cellEditor>
+                            <ng-template pTemplate="input">
+                              <ng-select [items]="walletList" placeholder="Select priority-1" bindLabel="apiName"
+                                name="priority1" bindValue="apiId" [(ngModel)]="rowData.priority1" #priority1="ngModel">
+                              </ng-select>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                              {{getapiDesc(rowData.priority1)}}
+                            </ng-template>
+                          </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                          <p-cellEditor>
+                            <ng-template pTemplate="input">
+                              <input type="number" name="priority2" class="form-control" [(ngModel)]="rowData.priority2">                            
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                              {{rowData.priority2}}
+                            </ng-template>
+                          </p-cellEditor>
+                        </td>
+                        <td><button type="button" (click)="updateService(rowData)"
+                            class="btn btn-primary btn-sm waves-effect waves-light">Update</button></td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<p-dialog header="BBPS SERVICE MANAGEMENT" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+  [(visible)]="isModel">
+  <div class="update-form">
+    <form (ngSubmit)="serviceForm.form.valid && addService()" #serviceForm="ngForm" name="serviceForm">
+      <div class="modal-body">
+        <div class="row border-button">
+          <div class="col-sm-4 form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" name="apiName" [(ngModel)]="serviceData.apiName" #apiName="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && apiName.invalid }" required />
+            <div *ngIf="serviceForm.submitted && apiName.invalid" class="invalid-feedback">
+              <div *ngIf="apiName.errors">Name is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>API</label>
+            <select type="text" class="form-control" name="apiId" [(ngModel)]="serviceData.apiId" #apiId="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && apiId.invalid }" required>
+              <option *ngFor="let wallet of walletList;" [value]="wallet.apiId">{{wallet.apiName}}</option>
+            </select>
+            <div *ngIf="serviceForm.submitted && apiId.invalid" class="invalid-feedback">
+              <div *ngIf="apiId.errors">API is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Category</label>
+            <select type="text" class="form-control" name="category" [(ngModel)]="serviceData.category"
+              #category="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && category.invalid }" required>
+              <option value="BILLFETCH">BILL FETCH</option>
+              <option value="ELECTRICITY">ELECTRICITY OFFLINE</option>
+              <option value="ELECTRICITY-ONLINE">ELECTRICITY ONLINE</option>
+              <option value="GAS">GAS</option>
+              <option value="GASCL">GAS CYLINDER</option>  
+              <option value="WATER">WATER</option>
+              <option value="INSURANCE">INSURANCE</option>
+              <option value="LIC">LIC</option>
+              <option value="Part-Payment">Part Payment</option>
+              <option value="Due-Payment">After Due Payment</option>
+              <option value="Landline">Landline</option>
+              <option value="Broadband">Broadband</option>
+              <option value="Tata-Power-DDL">Tata Power-DDL</option>
+        
+            </select>
+            <div *ngIf="serviceForm.submitted && category.invalid" class="invalid-feedback">
+              <div *ngIf="category.errors">Category is required</div>
+            </div>
+          </div>
+          <div class="col-sm-2 form-group">
+            <label>Api On/Off</label>
+            <select type="text" class="form-control" name="apiOnOff" [(ngModel)]="serviceData.apiOnOff"
+              #apiOnOff="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && apiOnOff.invalid }" required>
+              <option value="true">On</option>
+              <option value="false">Off</option>
+            </select>
+            <div *ngIf="serviceForm.submitted && apiOnOff.invalid" class="invalid-feedback">
+              <div *ngIf="apiOnOff.errors">Api on/off is required</div>
+            </div>
+          </div>
+          <div class="col-sm-2 form-group">
+            <label>Online/Offline</label>
+            <select type="text" class="form-control" name="apiOnline" [(ngModel)]="serviceData.apiOnline"
+              #apiOnline="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && apiOnline.invalid }" required>
+              <option value="false">Online</option>
+              <option value="true">Offline</option>
+            </select>
+            <div *ngIf="serviceForm.submitted && apiOnline.invalid" class="invalid-feedback">
+              <div *ngIf="apiOnline.errors">Online/Offline is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Priority 1</label>
+            <select type="text" class="form-control" name="priority1" [(ngModel)]="serviceData.priority1"
+              #priority1="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && priority1.invalid }" required>
+              <option *ngFor="let wallet of walletList;" [value]="wallet.apiId">{{wallet.apiName}}</option>
+            </select>
+            <div *ngIf="serviceForm.submitted && priority1.invalid" class="invalid-feedback">
+              <div *ngIf="priority1.errors">Priority 1 is required</div>
+            </div>
+          </div>
+          <div class="col-sm-4 form-group">
+            <label>Priority 2</label>
+            <select type="text" class="form-control" name="priority2" [(ngModel)]="serviceData.priority2"
+              #priority2="ngModel">
+              <option *ngFor="let wallet of walletList;" [value]="wallet.priority2">{{wallet?.apiName}}</option>
+            </select>
+          </div>
+          <div class="col-sm-3 form-group">
+            <label>Minimum Amount</label>
+            <input type="number" class="form-control" name="minAmt" [(ngModel)]="serviceData.minAmt"
+              #minAmt="ngModel" />
+          </div>
+          <div class="col-sm-3 form-group">
+            <label>Maximum Amount</label>
+            <input type="number" class="form-control" name="maxAmt" [(ngModel)]="serviceData.maxAmt"
+              #maxAmt="ngModel" />
+          </div>
+          <div class="col-sm-3 form-group">
+            <label>Service Charge Type</label>
+            <select type="text" class="form-control" name="rateType" [(ngModel)]="serviceData.rateType"
+              #rateType="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && rateType.invalid }" required>
+              <option value="P">%</option>
+              <option value="R">Rs.</option>
+            </select>
+            <div *ngIf="serviceForm.submitted && rateType.invalid" class="invalid-feedback">
+              <div *ngIf="rateType.errors">Rate type is required</div>
+            </div>
+          </div>
+          <div class="col-sm-3 form-group">
+            <label>Service Charge</label>
+            <input type="number" class="form-control" name="rate" [(ngModel)]="serviceData.rate" #rate="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && rate.invalid }" required />
+            <div *ngIf="serviceForm.submitted && rate.invalid" class="invalid-feedback">
+              <div *ngIf="rate.errors">Rate is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="toggleModal()" class="btn btn-dark waves-effect">
+          Close
+        </button>
+        <button type="submit" class="btn btn-primary waves-effect">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

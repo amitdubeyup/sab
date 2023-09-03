@@ -1,0 +1,346 @@
+.chat-app .chat {
+    margin: 0px;
+    border-right: 1px solid #f0f0f0;
+  }
+  .chat-marging{
+    margin: 5PX;
+  }
+
+  
+.search {
+    padding: 5px 10px !important;
+  }
+
+  .fa-pencil-alt {
+    color: #fcbe2d !important;
+    font-size: 15px;
+    margin-left: 5px;
+  }
+  
+  .p-selectable-row td {
+    padding: 12px !important;
+  }
+  .active-tr {
+    background-color: #afc835 !important;
+   border: 2px solid #fcbe2d !important;
+  }
+  input[type=checkbox], input[type=radio] {
+    width: 22px;
+    height: 22px;
+  }
+  .verified-user{width: 20px; height: 20px; font-size:14px; font-weight: bold; margin-left: 5px; text-align: center; line-height: 20px; background: green; color: #fff; border-radius: 50%; display: inline-block;}
+  .table-rt  .p-datatable-wrapper {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    min-height: 200px;
+  }
+  
+  .form-check-inline {
+    margin-left: 10px;
+  }
+  
+  .form-check-inline label {
+    margin-bottom: 0px;
+    margin-left: 5px;
+  }
+  
+  .add-import {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    float: right;
+  }
+  .right-import
+  {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  i.mdi.mdi-database-import {
+    padding: 5px 8px;
+    background: #ff9a3e;
+    border-radius: 50%;
+    color: #fff;
+    margin-right: 5px;
+  }
+  
+  .trnfer {
+    margin-top: 5px;
+    margin-left: 15px;
+  }
+  
+  .disabled-tr, .disabled-tr td {
+    background-color: #fff;
+    z-index: 0;
+  }
+  
+  .beneficiary-table-row {
+    margin: 0px;
+    background-color: #509ff97d;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border: 2px solid #3f60cb;
+    border-top: 0px;
+  }
+  
+  .beneficiary-table td {
+    color: #5252cebf;
+  }
+  
+  .card-body.main-card {
+    margin-bottom: 0px;
+    background: #fff;
+  }
+  
+  .mt-4, .my-4 {
+    margin-top: 1.5rem!important;
+    margin-bottom: 1.5rem !important;
+    background: transparent;
+  }
+  
+  .transaction-table .primary {
+    background-color: #3f60cb;
+  }
+  
+  .submit-button {
+    margin-top: 20px;
+    margin-left: 10px;
+    min-width: 75px;
+  }
+  
+  .mpin-table label, .mpin-table input {
+    margin: 10px 0px;
+  }
+  
+  .mpin-table .head {
+    background-color: #3f60cb;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .transfer-amount-confirmation {
+    margin: 0px;
+  }
+  
+  .amount-table {
+    background-color: #fff;
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .confirmation-table {
+    background-color: #fff;
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .mpin-table {
+    margin: 0px;
+  }
+  
+  .mpin-table .col-12 {
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .primary {
+    background-color: #3f60cb;
+    color: #fff;
+    font-weight: 400;
+  }
+  
+  .price-text-center {
+    text-align: center;
+    color: #5252cebf;
+    padding: 15px 12px 6px 12px;
+  }
+  
+  .payment-confirmation {
+    margin: 0px;
+    padding: 0px;
+    background: #fff;
+  }
+  
+  .payment-confirmation {
+    margin: 30px 0px 20px 0px;
+    padding: 0px;
+  }
+  
+  .payment-header {
+    background-color: #3f60cb;
+    color: #fff;
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .payment-header-row {
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .payment-logo {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .header-logo {
+    width: 70px;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  .payment-text {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .payment-table {
+    margin: 0px;
+    padding: 0px;
+    margin-top: 30px;
+  }
+  
+  .address-header {
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .address-header-row {
+    margin: 0px;
+    padding: 0px;
+    background: #fff;
+  }
+  
+  .address-header-row div {
+    padding: 10px;
+  }
+  
+  .payment-table th, .payment-table td {
+    padding: 15px 30px;
+  }
+  .table-beneficial tr td input[name='transferAmount']{
+  color: green; font-weight: bold;
+  }
+  .bene-sr{
+    background-color: #3f60cb;
+    font-size: 14px;
+    color: #fff;
+    padding: 8px;
+    border-radius:5px;
+  
+  }
+  :host ::ng-deep {
+      /* Responsive */
+  }
+   :host ::ng-deep .p-paginator .p-paginator-current {
+       margin-left: auto;
+  }
+   :host ::ng-deep .p-progressbar {
+       height: 0.5rem;
+       background-color: #d8dadc;
+  }
+   :host ::ng-deep .p-progressbar .p-progressbar-value {
+       background-color: #607d8b;
+  }
+   :host ::ng-deep .table-header {
+       display: flex;
+       justify-content: space-between;
+  }
+   :host ::ng-deep .p-calendar .p-datepicker {
+       min-width: 25rem;
+  }
+   :host ::ng-deep .p-calendar .p-datepicker td {
+       font-weight: 400;
+  }
+   :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-header {
+       padding: 1rem;
+       text-align: left;
+       font-size: 1.5rem;
+  }
+   :host ::ng-deep .p-datatable.p-datatable-customers .p-paginator {
+       padding: 1rem;
+  }
+   :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-thead > tr > th {
+       text-align: left;
+  }
+   :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td {
+       cursor: auto;
+  }
+   :host ::ng-deep .p-datatable.p-datatable-customers .p-dropdown-label:not(.p-placeholder) {
+       text-transform: uppercase;
+  }
+   :host ::ng-deep .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
+       display: none;
+  }
+   @media screen and (max-width: 960px) {
+       :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-thead > tr > th, :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tfoot > tr > td {
+           display: none !important;
+      }
+       :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr {
+            border-bottom: 1px solid rgb(233, 229, 229);
+      }
+       :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td {
+           text-align: left;
+           display: block;
+           border: 0 none !important;
+           width: 100% !important;
+           float: left;
+           clear: left;
+           border: 0 none;
+       padding: 5px 15px!important;
+  text-align: left;
+      }
+       :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
+           padding: 0.4rem;
+           min-width: 30%;
+           display: inline-block;
+           margin: -0.4rem 1rem -0.4rem -0.4rem;
+           font-weight: bold;
+      }
+       :host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td .p-progressbar {
+           margin-top: 0.5rem;
+      }
+    .form-control.mobile-100-width{width: 127px !important;}
+    a span i.fas.fa-plus {
+      padding: 2px;
+      background: #ff9a3e;
+      border-radius: 40px;
+      color: #fff;
+      margin-right: 5px;
+      font-size: 14px;
+      position: relative;
+      top: 4px;
+    }
+    .bene-sr{
+      background-color: #3f60cb;
+      font-size: 14px;
+      color: #fff;
+      padding: 8px;
+      border-radius:0px 0px 5px 5px;
+    }
+    .p-datatable.p-datatable-customers .p-datatable-tbody > tr > td .btn
+    {
+      font-size: 20px !important;
+      font-weight: 600!important;
+    }
+   }
+.txt_17
+{
+  font-size: 20px;
+  font-weight: bold;
+}
+.txt_12
+{
+  font-size: 20px;
+  font-weight: bold;
+}

@@ -1,0 +1,317 @@
+<app-md-layout></app-md-layout>
+<div  id="main-content">
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Distributor Details</h4>
+        <h6>Dashboard / Distributor Details</h6>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">        
+        <div class="table-responsive">
+          <p-table class="table-rt table-home table-wrapper-commision" #dt [value]="respData" dataKey="memberId"
+            [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="['id','fullName','shopName','address','mobileNumber','isStatus','createByName']">
+            <ng-template pTemplate="caption">
+              <div class="row table-header">
+                <div class="col-sm-10 col-md-10 p-d-flex">
+
+                </div>
+                <div class="col-sm-10 col-md-2 text-right">
+                  <!-- <i class="pi pi-search" style="margin:4px 4px 0 0"></i> -->
+                  <input pInputText class="form-control" type="text"
+                    (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')"
+                    placeholder="Global Search" />
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>#</th>
+                <th pSortableColumn="id">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                     Code
+
+                  </div>
+                </th>
+                
+                <th pSortableColumn="userName">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Name
+                    
+                  </div>
+                </th>
+                <th pSortableColumn="shopName">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Company Name
+                    
+                  </div>
+                </th>
+                <th pSortableColumn="mobileNumber">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                   Mobile
+                   
+                  </div>
+                </th>
+                <th pSortableColumn="address">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Address
+                    
+                  </div>
+                </th>
+
+                <th pSortableColumn="isActive">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Active
+                   
+                  </div>
+                </th>
+                <th>
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Created Date
+
+                  </div>
+                </th>
+                <th>
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Balance
+
+                  </div>
+                </th>
+                <th style="width:10%;">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    #
+                  </div>
+                </th>
+
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-cp let-i="rowIndex">
+              <tr class="p-selectable-row">
+                <td>{{i+1}}</td>
+                <td>
+                  {{cp.roleType}}{{cp.id}}
+                </td>
+               
+                <td style="text-transform: capitalize;">
+                  {{cp.userName}}
+                </td>
+                <td>
+                  {{cp.companyName}}
+                </td>
+                <td>
+                  {{cp.rmn}}
+                </td>
+                <td style="text-transform: capitalize;">
+                  {{cp.address}}
+                </td>
+                <td>
+                  <ng-container *ngIf="cp.isActive=='A'">
+                    <span class="badge-success badge mr-2">Active</span>
+                  </ng-container>
+                  <ng-container *ngIf="cp.isActive=='D'">
+                    <span class="badge-danger badge mr-2">DeActive</span>
+                  </ng-container>
+
+                </td>
+
+                <td>
+                  {{cp.updatedDate| date: 'MM/dd/yyyy hh:mm aa'}}
+                </td>
+                <td>
+                  {{cp.walletBlance | number : '1.2-2'}}
+                </td>
+                <td class="text-center">
+
+                  <a href="javascript:void(0)"
+                    (click)="openPageUrl('/ds/profile-details', {uuid: cp.memberId,mtCode: cp.mtCode})"
+                    class="btn btn-primary btn-sm waves-effect waves-light kyc"><i class="fa fa-eye"></i></a>&nbsp;
+
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="3">No records found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div id="wrapper">
+  <div class="content-page"
+    [ngClass]="{'small-content': commonService?.collapseSideMenu, 'large-content': !commonService?.collapseSideMenu}">
+    <div class="container-fluid">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12 col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <p-table class="table-home table-wrapper-commision" #dt [value]="respData" dataKey="memberId"
+                    [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+                    [loading]="commonService.loading" [paginator]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+                    [globalFilterFields]="['id','fullName','shopName','address','mobileNumber','isStatus','createByName']">
+                    <ng-template pTemplate="caption">
+                      <div class="row table-header">
+                        <div class="col-sm-10 col-md-10 p-d-flex">
+                          Manage User Details
+                        </div>
+                        <div class="col-sm-10 col-md-2 text-right">
+                          <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                          <input pInputText class="form-control" type="text"
+                            (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')"
+                            placeholder="Global Search" />
+                        </div>
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th>S.R.</th>
+                        <th pSortableColumn="id">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            User Id
+                            <p-sortIcon field="id"></p-sortIcon>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="memberType">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            User Type
+                            <p-sortIcon field="memberType"></p-sortIcon>
+                            <p-columnFilter type="text" field="memberType" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="userName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Name
+                            <p-sortIcon field="userName"></p-sortIcon>
+                            <p-columnFilter type="text" field="userName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="shopName">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Firm Name
+                            <p-sortIcon field="shopName"></p-sortIcon>
+                            <p-columnFilter type="text" field="shopName" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+
+                          </div>
+                        </th>
+                        <th pSortableColumn="mobileNumber">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Login Id
+                            <p-sortIcon field="mobileNumber"></p-sortIcon>
+                            <p-columnFilter type="text" field="mobileNumber" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </th>
+                        <th pSortableColumn="address">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Address
+                            <p-sortIcon field="address"></p-sortIcon>
+                            <p-columnFilter type="text" field="address" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </th>
+
+                        <th pSortableColumn="isActive">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Active
+                            <p-sortIcon field="isActive"></p-sortIcon>
+                            <p-columnFilter type="text" field="isActive" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Created On
+
+                          </div>
+                        </th>
+                        <th>
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                          Balance
+
+                          </div>
+                        </th>
+                        <th style="width:10%;">
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                            Action
+                          </div>
+                        </th>
+
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                      <tr class="p-selectable-row">
+                        <td>{{i+1}}</td>
+                        <td>
+                          {{cp.roleType}}{{cp.id}}
+                        </td>
+                        <td>
+                          {{cp.memberType}}
+                        </td>
+                        <td style="text-transform: uppercase;">
+                          {{cp.userName}}
+                        </td>
+                        <td>
+                          {{cp.companyName}}
+                        </td>
+                        <td>
+                          {{cp.rmn}}
+                        </td>
+                        <td style="text-transform: uppercase;">
+                          {{cp.address}}
+                        </td>
+                        <td>
+                          <ng-container *ngIf="cp.isActive=='A'">
+                            <span class="badge-success badge mr-2">Yes</span>
+                          </ng-container>
+                          <ng-container *ngIf="cp.isActive=='D'">
+                            <span class="badge-danger badge mr-2">No</span>
+                          </ng-container>
+
+                        </td>
+
+                        <td>
+                          {{cp.updatedDate| date: 'MM/dd/yyyy hh:mm aa'}}
+                        </td>
+                        <td>
+                          {{cp.walletBlance | number : '1.2-2'}}
+                        </td>
+                        <td class="text-center">
+
+                          <a href="javascript:void(0)" (click)="openPageUrl('/distributor/profile-details', {uuid: cp.memberId,mtCode: cp.mtCode})"
+                            class="btn btn-primary btn-sm waves-effect waves-light kyc">Profile</a>&nbsp;
+
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td colspan="3">No records found.</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

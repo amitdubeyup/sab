@@ -1,0 +1,342 @@
+<div id="wrapper">
+   <app-admin-layout></app-admin-layout>
+    <div class="content-page"
+      >
+      <div class="container-fluid" *ngIf="respData">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xl-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+                      <h4 class="mt-2 header-title">DMT COMMISSIN MANAGEMENT</h4>
+                    </div>
+                    <div class="col-12 col-md-6" id="typeinput">
+                     
+                    </div>
+                  </div>
+                  <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" name="form" pFocusTrap autocomplete="off">
+                    <div class="row">
+                      <div class="col-5 col-md-2 pt-2">
+                        <div class="form-group">
+                          Template Name
+                        </div>
+                      </div>
+                      <div class="col-7 col-md-7">
+                        <div class="form-group">
+                          <input type="text" class="form-control" name="templateName" [(ngModel)]="respData.templateName"
+                            #templateName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && templateName.invalid }"
+                            required placeholder="Template Name">
+                          <div *ngIf="f.submitted && templateName.invalid" class="invalid-feedback">
+                            <div *ngIf="templateName.errors">Template name is required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-3 text-right">
+                        <a routerLink="/admin/templates" class="btn btn-secondary">Cancel</a>&nbsp;
+                        <button type="submit" class="btn btn-warning"> {{isstutas=='ID'?'Update Template':'Save
+                          Template'}}</button>
+                      </div>
+                    </div>
+                    <p-table [value]="respData?.commissionTemplate" class="table-home" [loading]="commonService.isLoader">
+                      <ng-template pTemplate="header" let-columns>
+                        <tr>
+                          <th style="width: 3%;">S.N.</th>
+                          <th>Name</th>
+                          <th>Service Name </th>
+                          <th>Service Charge</th>
+                          <th>Txn Route </th>
+                          <th>Min Amt</th>
+                          <th>Max Amt</th>
+                          <th>Comm Type</th>
+                          <th>Admin Comm </th>
+                          <th>MD Comm </th>
+                          <th>Dist Comm </th>
+                          <th>RT Comm </th>
+                          <th>API Charge Type </th>
+                          <th>API Charge </th>
+                          <th>Action </th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-rowData let-i="rowIndex" let-columns="columns">
+                        <tr>
+                          <td> {{i + 1}}</td>
+                          <td>{{rowData.apiName}}</td>
+                          <td>{{rowData.category}}</td>
+                          <td>
+                            {{rowData.rate | number : '1.2-2'}} {{rowData.rateType=='R'?'Rs.':'%'}}
+                          </td>
+                          <td>{{rowData.apiServiceName}}</td>
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <input type="number" name="minAmt" style="width: 100px;"  class="form-control" [(ngModel)]="rowData.minAmt"
+                                  #minAmt="ngModel">
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.minAmt| number:'1.2-2'}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <input type="number" style="width: 100px;"  name="maxAmt" class="form-control" [(ngModel)]="rowData.maxAmt"
+                                  #maxAmt="ngModel">
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.maxAmt| number:'1.2-2'}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <ng-select [items]="CommissionTypeList" placeholder="Commission Type" bindLabel="desc"
+                                  name="commType" bindValue="code" [(ngModel)]="rowData.commType" #commType="ngModel">
+                                </ng-select>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{getapiDesc(rowData.commType)}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+  
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <input type="number" name="adminComm" class="form-control" [(ngModel)]="rowData.adminComm"
+                                  #adminComm="ngModel">
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.adminComm | number : '1.2-2'}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <input type="number" name="mdComm" class="form-control" [(ngModel)]="rowData.mdComm"
+                                  #mdComm="ngModel">
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.mdComm | number : '1.2-2'}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <input type="number" name="distComm" class="form-control" [(ngModel)]="rowData.distComm"
+                                  #distComm="ngModel">
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.distComm | number : '1.2-2'}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <input type="number" name="rtComm" class="form-control" [(ngModel)]="rowData.rtComm"
+                                  #rtComm="ngModel">
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.rtComm | number : '1.2-2'}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <ng-select [items]="CommissionTypeList" placeholder="Commission Type" bindLabel="desc"
+                                  name="apiChargeType" bindValue="code" [(ngModel)]="rowData.apiChargeType" #apiChargeType="ngModel">
+                                </ng-select>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{getapiDesc(rowData.apiChargeType)}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          <td pEditableColumn>
+                            <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                <input type="number" name="apiComm" class="form-control" [(ngModel)]="rowData.apiComm"
+                                  #apiComm="ngModel">
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                {{rowData.apiComm | number : '1.2-2'}}
+                              </ng-template>
+                            </p-cellEditor>
+                          </td>
+                          <td>   <button type="button" (click)="deleteRow(i,rowData)" class="btn btn-danger"> Remove </button> </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="footer">
+                        <tr>
+                            <td colspan="14">   <button type="button" (click)="openForm()" class="btn btn-warning"> Add More </button> </td>                         
+                        </tr>
+                    </ng-template>
+                    </p-table>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-dialog header="Template" class="dailogbox" [baseZIndex]="10000" [style]="{'max-width': '60vw'}"
+    [(visible)]="isModel">
+    <div class="update-form">
+        <div class="modal-body">
+          <div class="row border-button">
+            <div class="col-sm-12">
+              <p-table [value]="TempltData?.commissionTemplate" class="table-home" [loading]="commonService.isLoader">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th style="width: 3%;">S.N.</th>
+                    <th>Name</th>
+                    <th>Service Name </th>
+                    <th>Service Charge</th>
+                    <th>Min Amt</th>
+                    <th>Max Amt</th>
+                    <th>Comm Type</th>
+                    <th>Admin Comm </th>
+                    <th>MD Comm </th>
+                    <th>Dist Comm </th>
+                    <th>RT Comm </th>
+                    <th>API Charge Type </th>
+                    <th>API Charge </th>
+                    <th> </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-i="rowIndex" let-columns="columns">
+                  <tr>
+                    <td> {{i + 1}}</td>
+                    <td>{{rowData.apiName}}</td>
+                    <td>{{rowData.category}}</td>
+                    <td>
+                      {{rowData.rate | number : '1.2-2'}} {{rowData.rateType=='R'?'Rs.':'%'}}
+                    </td>
+  
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <input type="number" name="minAmt" class="form-control" [(ngModel)]="rowData.minAmt"
+                            #minAmt="ngModel">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{rowData.minAmt| number:'1.2-2'}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <input type="number" name="maxAmt" class="form-control" [(ngModel)]="rowData.maxAmt"
+                            #maxAmt="ngModel">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{rowData.maxAmt| number:'1.2-2'}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <ng-select [items]="CommissionTypeList" placeholder="Commission Type" bindLabel="desc"
+                            name="commType" bindValue="code" [(ngModel)]="rowData.commType" #commType="ngModel">
+                          </ng-select>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{getapiDesc(rowData.commType)}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+  
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <input type="number" name="adminComm" class="form-control" [(ngModel)]="rowData.adminComm"
+                            #adminComm="ngModel">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{rowData.adminComm | number : '1.2-2'}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <input type="number" name="mdComm" class="form-control" [(ngModel)]="rowData.mdComm"
+                            #mdComm="ngModel">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{rowData.mdComm | number : '1.2-2'}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <input type="number" name="distComm" class="form-control" [(ngModel)]="rowData.distComm"
+                            #distComm="ngModel">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{rowData.distComm | number : '1.2-2'}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <input type="number" name="rtComm" class="form-control" [(ngModel)]="rowData.rtComm"
+                            #rtComm="ngModel">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{rowData.rtComm | number : '1.2-2'}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <ng-select [items]="CommissionTypeList" placeholder="Commission Type" bindLabel="desc"
+                            name="apiChargeType" bindValue="code" [(ngModel)]="rowData.apiChargeType" #apiChargeType="ngModel">
+                          </ng-select>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{getapiDesc(rowData.apiChargeType)}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <input type="number" name="apiComm" class="form-control" [(ngModel)]="rowData.apiComm"
+                            #apiComm="ngModel">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{rowData.apiComm | number : '1.2-2'}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td> <button type="button" (click)="SelectData(rowData)" class="btn btn-primary waves-effect">
+                      Select
+                    </button></td>
+                  </tr>
+                </ng-template>          
+              </p-table>
+            </div>
+            
+          </div>
+        </div>
+      
+    </div>
+  </p-dialog>
+  <div class="pageloader" *ngIf="isloder"></div>
+  

@@ -1,0 +1,10 @@
+
+
+.add-fund {
+    width: 150px;
+    position: absolute;
+    z-index: 1;
+    right: 20px;
+    top: 12px;
+  }
+  .text-red{color: #2a8493;}

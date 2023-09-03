@@ -1,0 +1,284 @@
+<app-distributor-layout></app-distributor-layout>
+<div  id="main-content">
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Money Transaction Details</h4>
+        <h6>Distributor / Money Transaction Details</h6>
+      </div>      
+    </div>
+
+    <div class="card">
+      <div class="card-body">      
+          <p-table  class="table-rt table-home table-wrapper-commision" #dt
+            [value]="statementList" dataKey="remitterId" [rowHover]="true" [rows]="100" [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[100,200,300,500]" [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+            [globalFilterFields]="['txn_no','utr','mode_of_payment','trasaction_date','narration','beneficiary_number','beneficiary_acc','bank']">
+            <ng-template pTemplate="caption">
+              <div class="row table-header">
+                <div class="col-md-4">
+                  <ng-select [items]="retList" bindLabel="desc" name="retid" bindValue="code" [(ngModel)]="retid"
+                    #apiId="ngModel" placeholder="Select" required>
+                  </ng-select>
+                </div>
+                <div class="col-sm-4 pb-1">
+                  <ng-select [items]="sharedMethodService.SearchType" placeholder="Type" bindLabel="name" bindValue="id"
+                    name="searchTypes" [(ngModel)]="searchType">
+                  </ng-select>
+                </div>
+                <div class="col-sm-4 pb-1">
+                  <input class="form-control sizing-sm" [(ngModel)]="txnNo" type="text"
+                    placeholder="{{searchType=='txn'?'Transaction No.':searchType=='acc'?'Account No.':searchType=='send'?'Mobile No.':'Transaction No'}}" />
+                </div>
+                <div class="col-md-2">
+                  <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Status" bindLabel="name"
+                    bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+                  </ng-select>
+                </div>
+                <div class="col-md-2">
+                  <p-calendar class="p-calendar" dateFormat="dd/mm/yy" [showIcon]="false" name="fromDt"
+                    [(ngModel)]="fromDt" placeholder="From Date">
+                  </p-calendar>
+                </div>
+                <div class="col-md-2">
+                  <p-calendar class="p-calendar" name="toDt" [showIcon]="false" dateFormat="dd/mm/yy" [(ngModel)]="toDt"
+                    placeholder="To Date">
+                  </p-calendar>
+                </div>
+                <div class="col-md-1">
+                  <button type="button" (click)="handleSearch(activeTab)" class="btn btn-primary w-20">Search</button>
+                </div>
+                <div class="col-md-1">
+                  <button  class="btn btn-warning waves-effect waves-light add-fund" (click)="exportAsXLSX()"><i
+                    class="fas fa-file-export mr-1"></i> Export
+                </button>
+                </div>           
+                <div class="col-md-4 text-right">
+                  <!-- <i class="pi pi-search" style="margin:4px 4px 0 0"></i> -->
+                  <input pInputText class="form-control" type="text"
+                    (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')"
+                    placeholder="Global Search" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 border-success pt-1">
+                  <div class="testimonial4 text-center">
+                    <div class="active item">
+                      <blockquote class="warning">
+                        <h6 class="mb-2">Transactions</h6>
+                        <h5 class="text-success">{{statementList?.length}}</h5>
+  
+                      </blockquote>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2 border-success pt-1">
+                  <div class="testimonial4 text-center">
+                    <div class="active item">
+                      <blockquote class="warning">
+                        <h6 class="mb-2">Amount</h6>
+                        <h5 class="text-success"> {{totalAmount | number : '1.2-2'}}</h5>
+  
+                      </blockquote>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 border-success pt-1">
+                  <div class="testimonial4 text-center">
+                    <div class="active item">
+                      <blockquote class="warning">
+                        <h6 class="mb-2">Charge</h6>
+                        <h5 class="text-success"> {{totalCharge | number : '1.2-2'}}</h5>
+  
+                      </blockquote>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 border-success pt-1">
+                  <div class="testimonial4 text-center">
+                    <div class="active item">
+                      <blockquote class="warning">
+                        <h6 class="mb-2">Commission</h6>
+                        <h5 class="text-success"> {{totalCommission | number : '1.2-2'}}</h5>
+  
+                      </blockquote>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 border-success pt-1">
+                  <div class="testimonial4 text-center">
+                    <div class="active item">
+                      <blockquote class="warning">
+                        <h6 class="mb-2">Refund Pending</h6>
+                        <h5 class="text-success">111</h5>
+  
+                      </blockquote>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 border-success pt-1">
+                  <div class="testimonial4 text-center">
+                    <div class="active item">
+                      <blockquote class="warning">
+                        <h6 class="mb-2">Refunded</h6>
+                        <h5 class="text-success">111</h5>  
+                      </blockquote>
+                    </div>
+                  </div>
+  
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                  <th>S#</th>
+                  <th pSortableColumn="txn_no">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Transaction#
+                      <p-sortIcon field="txn_no"></p-sortIcon>
+                      <!-- <p-columnFilter type="text" field="txn_no" display="menu" class="p-ml-auto">
+                      </p-columnFilter> -->
+                    </div>
+                  </th>                       
+                  <th pSortableColumn="beneficiary_number">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      <ng-container >
+                        Customer No.
+                      </ng-container>
+                    </div>
+                  </th>
+                  <th pSortableColumn="beneficiary_number">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      <ng-container >
+                        Ref Mobile No.
+                      </ng-container>
+                    </div>
+                  </th>
+                  <th pSortableColumn="beneficiary_number">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      <ng-container >
+                        Product
+                      </ng-container>
+                    </div>
+                  </th>
+                  <th pSortableColumn="narration">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Operator Name        
+                    </div>
+                  </th>
+                  <th pSortableColumn="amount">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Amount              
+                    </div>
+                  </th>
+                  <th pSortableColumn="charge">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Charge                
+                    </div>
+                  </th>
+                  <th pSortableColumn="Commission">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Commission                  
+                    </div>
+                  </th>                      
+                  <th pSortableColumn="Commission">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        Operator#                  
+                    </div>
+                  </th> 
+                  <th pSortableColumn="trasaction_date">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Created Date
+                    </div>
+                  </th>   
+                 
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                <tr class="p-selectable-row">
+                  <td>
+                    <span class="srnumber"> {{i+1}} </span>
+                  </td>
+                  <td>
+                    <span class="p-column-title">Transaction#</span>
+                    {{cp.txn_no}}
+                  </td>
+                             
+                  <td>
+                    <span class="p-column-title">
+                        Customer No.           
+                    </span>
+                    {{cp.beneficiary_acc}}
+                  </td>
+                  <td>
+                    <span class="p-column-title">
+                        Ref Mobile No.             
+                    </span>
+                    {{cp.remName}}
+                  </td>
+                  <td>
+                    <span class="p-column-title">
+                     Product
+                    </span>
+                    {{cp.service}} 
+                  </td>
+                  <td>
+                    <span class="p-column-title">
+                     Operator
+                    </span>
+                    {{cp.Operator}}   
+                  </td>
+                  <td>
+                    <span class="p-column-title">Amount</span>
+                    {{cp.amount | number : '1.2-2'}}
+                  </td>
+                  <td>
+                    <span class="p-column-title">Charge</span>
+                    {{cp.charge | number : '1.2-2'}}
+                  </td>
+                  <td>
+                    <span class="p-column-title">Charge</span>
+                    {{cp.rt_commission | number : '1.2-2'}}
+                  </td>
+                  <td >
+                    <span class="p-column-title">Operator# </span>
+                    {{cp.utr}}
+                  </td>
+                  <td>
+                    <span class="p-column-title"> Tran Date:</span>
+                    {{cp.trasaction_date| date: 'dd-MM-yyyy hh:mm aa'}}
+                  </td>                
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="footer">
+                <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+                  <td colspan="6" style="text-align: right;">
+                    <strong>Total</strong>
+                  </td>
+                  <td>
+                    {{totalAmount | number : '1.2-2'}}
+                  </td>
+                  <td>
+                    {{totalCharge | number : '1.2-2'}}
+                  </td>
+                  <td>
+                    {{totalCommission | number : '1.2-2'}}
+                  </td> 
+                  <td colspan="4">
+                  </td>           
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="14">No records found.</td>
+                </tr>
+              </ng-template>
+          </p-table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+

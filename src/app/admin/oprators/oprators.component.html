@@ -1,0 +1,252 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>OPRATORS</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                    <li class="breadcrumb-item active">OPRATORS </li>
+                      
+                </ul>              
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12 col-xl-12">
+              <div class="card">
+                <div class="card-body">                
+               
+                  <p-tabView [activeIndex]="activeTab" (onChange)="handleChange($event)">
+                    <p-tabPanel header="ELECTRICITY">
+                      <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                    </p-tabPanel>
+                    <p-tabPanel header="WATER">
+                      <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                    </p-tabPanel>
+                    <p-tabPanel header="GAS">
+                      <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                    </p-tabPanel>
+                    <p-tabPanel header="INSURANCE">
+                      <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                    </p-tabPanel>   
+                    <p-tabPanel header="LIC">
+                      <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                    </p-tabPanel> 
+                    <p-tabPanel header="GAS CYLINDER">
+                      <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                    </p-tabPanel>  
+                    <p-tabPanel header="EMI">
+                      <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                    </p-tabPanel>   
+                    <p-tabPanel header="FASTAG">
+                      <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                    </p-tabPanel>   
+                    <p-tabPanel header="ELECTRICITY-ONLINE">
+                      <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                    </p-tabPanel>          
+                  </p-tabView>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+  <ng-template #statementTemplate>
+    <p-table [style]="{'width':'100%'}" class="table-home" #dt [value]="respData" dataKey="memberId"
+    [rowHover]="true" [rows]="20" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,50,100]"
+    [loading]="commonService.isLoader" [paginator]="true"
+    currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+    [globalFilterFields]="['name','mobikwik','indicore','liven']">
+    <ng-template pTemplate="caption">
+      <div class="row table-header">
+        <div class="col-sm-10 col-md-10 p-d-flex">
+            
+        </div>
+        <div class="col-sm-10 col-md-2 text-right">
+          <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+          <input pInputText class="form-control" type="text"
+            (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')"
+            placeholder="Global Search" />
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+          <th>S.R.</th>
+        <th pSortableColumn="name" style="width:20%;">
+          <div class="p-d-flex p-jc-between p-ai-center">
+           Oprator Name
+            <p-sortIcon field="name"></p-sortIcon>                              
+          </div>
+        </th>
+       
+        <th pSortableColumn="mobikwik" style="width:20%;">
+          <div class="p-d-flex p-jc-between p-ai-center">
+              Mobikwik
+            <p-sortIcon field="mobikwik"></p-sortIcon>                             
+          </div>
+        </th>
+        <th pSortableColumn="indicore" style="width:20%;">
+          <div class="p-d-flex p-jc-between p-ai-center">
+              IndiCore
+            <p-sortIcon field="indicore"></p-sortIcon>                             
+          </div>
+        </th>
+        <th pSortableColumn="liven" style="width:20%;">
+          <div class="p-d-flex p-jc-between p-ai-center">
+              Levin
+            <p-sortIcon field="liven"></p-sortIcon>                             
+          </div>
+        </th>
+        <th pSortableColumn="liven" style="width:20%;">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Sarthi
+            <p-sortIcon field="liven"></p-sortIcon>                             
+          </div>
+        </th>
+        <th pSortableColumn="liven" style="width:20%;">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Billmitra
+            <p-sortIcon field="liven"></p-sortIcon>                             
+          </div>
+        </th>
+        <th>
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Status
+            
+           
+          </div>
+        </th>                          
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cp let-i="rowIndex">
+      <tr class="p-selectable-row">
+          <td>{{i+1}}</td>
+        <td>
+          {{cp.name}}
+        </td>                         
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <ng-select [items]="mobikwikElectricityList" style="width: 400px;" (change)="onSubmit(cp)" placeholder="Mobikwik" bindLabel="name"
+                name="mobikwik" bindValue="code" [(ngModel)]="cp.mobikwik">
+              </ng-select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{cp.mobikwik}}
+            </ng-template>
+          </p-cellEditor>
+        </td>   
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <ng-select [items]="indicoreElectricityList" style="width: 400px;" (change)="onSubmit(cp)" placeholder="Indicore" bindLabel="name"
+                name="indicore" bindValue="code" [(ngModel)]="cp.indicore">
+              </ng-select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{cp.indicore}}
+            </ng-template>
+          </p-cellEditor>
+        </td>   
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <ng-select [items]="finTechElectricityList" style="width: 400px;" (change)="onSubmit(cp)"  placeholder="Levin" bindLabel="name"
+                name="liven" bindValue="code" [(ngModel)]="cp.liven">
+              </ng-select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{cp.liven}}
+            </ng-template>
+          </p-cellEditor>
+        </td> 
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <ng-select [items]="sarthiList" style="width: 400px;" (change)="onSubmit(cp)"  placeholder="Sarthi" bindLabel="name"
+                name="sarthi" bindValue="code" [(ngModel)]="cp.sarthi">
+              </ng-select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{cp.sarthi}}
+            </ng-template>
+          </p-cellEditor>
+        </td> 
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <ng-select [items]="billMitraElectricityList" style="width: 400px;" (change)="onSubmit(cp)"  placeholder="Billmitra" bindLabel="name"
+                name="billmitra" bindValue="code" [(ngModel)]="cp.billmitra">
+              </ng-select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{cp.billmitra}}
+            </ng-template>
+          </p-cellEditor>
+        </td> 
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <ng-select [items]="bnkStatus" (change)="onSubmit(cp)" placeholder="Status" bindLabel="desc"
+                name="isActive" bindValue="code" [(ngModel)]="cp.isActive">
+              </ng-select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{cp.isActive=='A'?'Active':'In-Active'}}
+            </ng-template>
+          </p-cellEditor>
+        </td>                    
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="11">No records found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  </ng-template>
+  <p-dialog header="OPRATORS SERVICE" class="dailogbox" [baseZIndex]="10000" [style]="{'width': '40vw'}"
+  [(visible)]="isModel">
+  <div class="update-form">
+    <form (ngSubmit)="serviceForm.form.valid && addService()" #serviceForm="ngForm" name="serviceForm">
+      <div class="modal-body">
+        <div class="row border-button">
+          <div class="col-sm-12 form-group">
+            <label>Category</label>
+            <ng-select [items]="categoryList" bindLabel="desc" (change)="ddlChange(serviceData.category)" name="category" bindValue="code"
+            [(ngModel)]="serviceData.category"  #category="ngModel" [ngClass]="{ 'is-invalid': serviceForm.submitted && category.invalid }" required>
+           </ng-select>          
+            <div *ngIf="serviceForm.submitted && category.invalid" class="invalid-feedback">
+              <div *ngIf="category.errors">Category is required</div>
+            </div>
+          </div>  
+          <div class="col-sm-12 form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" name="apiName" [(ngModel)]="serviceData.apiName" #apiName="ngModel"
+              [ngClass]="{ 'is-invalid': serviceForm.submitted && apiName.invalid }" required />
+            <div *ngIf="serviceForm.submitted && apiName.invalid" class="invalid-feedback">
+              <div *ngIf="apiName.errors">Name is required</div>
+            </div>
+          </div>
+              
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="toggleModal()" class="btn btn-dark waves-effect">
+          Close
+        </button>
+        <button type="submit" class="btn btn-primary waves-effect">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>
+
+  

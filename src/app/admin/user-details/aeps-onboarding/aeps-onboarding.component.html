@@ -1,0 +1,326 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Aeps Onboarding / KYC </h4>
+        <h6>Dasboard / Onboarding / KYC </h6>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-body">
+          <p-tabView >
+            <p-tabPanel header="Onboarding  Details">
+              <ng-container *ngTemplateOutlet="creditMoney"></ng-container>
+            </p-tabPanel>           
+          </p-tabView>  
+          <ng-template #creditMoney>
+            <form (ngSubmit)="utilityForm.form.valid && onBodring()" autocomplete="off" #utilityForm="ngForm">
+              <div class="row m-1">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">First Name<span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="50" minlength="2" class="form-control" placeholder="First Name"
+                      name="firstName" [(ngModel)]="utilityModal.firstName" #firstName="ngModel"
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && firstName.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && firstName.invalid" class="invalid-feedback">
+                      <div *ngIf="firstName.errors">First name is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Last Name<span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="50" minlength="2" class="form-control" placeholder="Last Name"
+                      name="lastName" [(ngModel)]="utilityModal.lastName" #lastName="ngModel"
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && lastName.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && lastName.invalid" class="invalid-feedback">
+                      <div *ngIf="lastName.errors">Last Name is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">PAN<span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="10" minlength="10" class="form-control" placeholder="PAN" name="userPan"
+                      [(ngModel)]="utilityModal.userPan" #userPan="ngModel"
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && userPan.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && userPan.invalid" class="invalid-feedback">
+                      <div *ngIf="userPan.errors">PAN is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+  
+                    <label class="form-label">PAN Image<span class="required ml-1">*</span></label>
+                    <input type="file" name="merchantPanImage" #merchantPanImage="ngModel" [(ngModel)]="utilityModal.merchantPanImage"
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && merchantPanImage.invalid }" required
+                      accept="image/*" class="form-control file" (change)="filemerchantPanImage($event)" />
+                    <div *ngIf="utilityForm.submitted && merchantPanImage.invalid" class="invalid-feedback">
+                      <div *ngIf="merchantPanImage.errors">PAN is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Aadhaar Number<span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="12" minlength="3" class="form-control" placeholder="Aadhaar Number"
+                      name="aadhaarNumber" [(ngModel)]="utilityModal.aadhaarNumber" #aadhaarNumber="ngModel"
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && aadhaarNumber.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && aadhaarNumber.invalid" class="invalid-feedback">
+                      <div *ngIf="aadhaarNumber.errors">Aadhaar Number is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Masked Aadhar Image<span class="required ml-1">*</span></label>
+                    <input type="file" name="maskedAadharImage" #maskedAadharImage="ngModel" [(ngModel)]="utilityModal.maskedAadharImage"
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && maskedAadharImage.invalid }" required
+                      accept="image/*" class="form-control file" (change)="filmaskedAadharImage($event)" />
+                    <div *ngIf="utilityForm.submitted && maskedAadharImage.invalid" class="invalid-feedback">
+                      <div *ngIf="maskedAadharImage.errors">Masked Aadhar Image is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12"> <hr>
+                  <div class="form-group">
+                  <label class="form-label"> Address Information</label>
+                </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Address1<span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="250" minlength="2" class="form-control" placeholder="Address1"
+                      name="merchantAddress1" [(ngModel)]="utilityModal.merchantAddress1" #merchantAddress1="ngModel"                  
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && merchantAddress1.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && merchantAddress1.invalid" class="invalid-feedback">
+                      <div *ngIf="merchantAddress1.errors">Address1  is required.</div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Address2 <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="250" minlength="2" class="form-control" placeholder="Address2"
+                      name="merchantAddress2 " [(ngModel)]="utilityModal.merchantAddress2" #merchantAddress2="ngModel"
+                    
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && merchantAddress2 .invalid }" required>
+                    <div *ngIf="utilityForm.submitted && merchantAddress2 .invalid" class="invalid-feedback">
+                      <div *ngIf="merchantAddress2 .errors">Address2 is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label"> State <span class="required ml-1">*</span></label>
+                    <ng-select [items]="dataService.aepsState" placeholder="Merchant State" bindLabel="state"
+                      bindValue="stateId" [ngClass]="{ 'is-invalid': utilityForm.submitted && merchantState.invalid }" required name="merchantState" [(ngModel)]="utilityModal.merchantState" #merchantState="ngModel">
+                    </ng-select>
+                    <div *ngIf="utilityForm.submitted && merchantState.invalid" class="invalid-feedback">
+                      <div *ngIf="merchantState.errors">State name is required.</div>
+                    </div>
+                  </div>
+                </div>
+             
+                
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">City Name <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="50" minlength="2" class="form-control" placeholder="City Name"
+                      name="merchantCityName" [(ngModel)]="utilityModal.merchantCityName" #merchantCityName="ngModel"
+                      
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && merchantCityName.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && merchantCityName.invalid" class="invalid-feedback">
+                      <div *ngIf="merchantCityName.errors">City name is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label"> District Name <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="50" minlength="2" class="form-control" placeholder="District Name"
+                      name="merchantDistrictName" [(ngModel)]="utilityModal.merchantDistrictName"
+                      #merchantDistrictName="ngModel" 
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && merchantDistrictName.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && merchantDistrictName.invalid" class="invalid-feedback">
+                      <div *ngIf="merchantDistrictName.errors">District name is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label"> PinCode <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="6" minlength="6" class="form-control" placeholder="PinCode "
+                      name="merchantPinCode" [(ngModel)]="utilityModal.merchantPinCode" #merchantPinCode="ngModel"
+                     
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && merchantPinCode.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && merchantPinCode.invalid" class="invalid-feedback">
+                      <div *ngIf="merchantPinCode.errors">Pincode is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12"><hr>
+                  <div class="form-group">
+                    <label class="form-label"> Company /Shop Information</label>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Company Or Shop PAN<span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="10" minlength="10" class="form-control"
+                      placeholder="Company Or Shop PAN" name="companyOrShopPan"
+                      [(ngModel)]="utilityModal.companyOrShopPan" #companyOrShopPan="ngModel"
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && companyOrShopPan.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && companyOrShopPan.invalid" class="invalid-feedback">
+                      <div *ngIf="companyOrShopPan.errors">Company Or Shop PAN is required.</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label"> Shop Address <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="250" minlength="2" class="form-control" placeholder="Shop Address  "
+                      name="shopAddress" [(ngModel)]="utilityModal.shopAddress" #shopAddress="ngModel"
+                     
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && shopAddress.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && shopAddress.invalid" class="invalid-feedback">
+                      <div *ngIf="shopAddress.errors">Pincode  is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label"> Shop City <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="50" minlength="2" class="form-control" placeholder="shop City  "
+                      name="shopCity " [(ngModel)]="utilityModal.shopCity" #shopCity="ngModel"
+                     [ngClass]="{ 'is-invalid': utilityForm.submitted && shopCity.invalid }"
+                      required>
+                    <div *ngIf="utilityForm.submitted && shopCity.invalid" class="invalid-feedback">
+                      <div *ngIf="shopCity.errors">Pincode number is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label"> State <span class="required ml-1">*</span></label>
+                    <ng-select [ngClass]="{ 'is-invalid': utilityForm.submitted && shopState.invalid }" required [items]="dataService.aepsState" placeholder="Merchant State" bindLabel="state"
+                      bindValue="stateId" name="shopState" [(ngModel)]="utilityModal.shopState" #shopState="ngModel">
+                    </ng-select>
+                    <div *ngIf="utilityForm.submitted && shopState.invalid" class="invalid-feedback">
+                      <div *ngIf="shopState.errors">State is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label"> Shop District <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="50" minlength="2" class="form-control" placeholder="Shop District"
+                      name="shopDistrict" [(ngModel)]="utilityModal.shopDistrict" #shopDistrict="ngModel"
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && shopDistrict.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && shopDistrict.invalid" class="invalid-feedback">
+                      <div *ngIf="shopDistrict.errors">Pincode number is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Company Type <span class="required ml-1">*</span></label>
+                    <ng-select [items]="dataService.companyType" placeholder="Company Type" bindLabel="desc"
+                      bindValue="code" [ngClass]="{ 'is-invalid': utilityForm.submitted && companyType.invalid }" required name="companyType" [(ngModel)]="utilityModal.companyType" #companyType="ngModel">
+                    </ng-select>
+                    <div *ngIf="utilityForm.submitted && companyType.invalid" class="invalid-feedback">
+                      <div *ngIf="companyType.errors">Company Type is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Shop Pincode <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="6" minlength="2" class="form-control" placeholder="Shop Pincode  "
+                      name="shopPincode" [(ngModel)]="utilityModal.shopPincode" #shopPincode="ngModel"                
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && shopPincode.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && shopPincode.invalid" class="invalid-feedback">
+                      <div *ngIf="shopPincode.errors">Pincode number is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Image Of Shop <span class="required ml-1">*</span></label>
+                    <input type="file" name="backgroundImageOfShop" #backgroundImageOfShop="ngModel" [(ngModel)]="utilityModal.backgroundImageOfShop "
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && backgroundImageOfShop.invalid }" required
+                      accept="image/*" class="form-control file" (change)="filbackgroundImageOfShop($event)" />
+                    <div *ngIf="utilityForm.submitted && backgroundImageOfShop.invalid" class="invalid-feedback">
+                      <div *ngIf="backgroundImageOfShop.errors">Background image of shop is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12"><hr>
+                  <div class="form-group">
+                    <label class="form-label"> Bank Information</label>
+                  </div></div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Bank Account Number <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="30" minlength="2" class="form-control" placeholder="Bank Account Number"
+                      name="companyBankAccountNumber" [(ngModel)]="utilityModal.companyBankAccountNumber" #companyBankAccountNumber="ngModel"                
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && companyBankAccountNumber.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && companyBankAccountNumber.invalid" class="invalid-feedback">
+                      <div *ngIf="companyBankAccountNumber.errors">Bank Account Number is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Bank Ifsc Code <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="12" minlength="2" class="form-control" placeholder="bank Ifsc Code "
+                      name="bankIfscCode" [(ngModel)]="utilityModal.bankIfscCode" #bankIfscCode="ngModel"                
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && bankIfscCode.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && bankIfscCode.invalid" class="invalid-feedback">
+                      <div *ngIf="bankIfscCode.errors">Bank Ifsc Code is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label">Bank Name <span class="required ml-1">*</span></label>
+                    <input type="text" maxlength="100" minlength="2" class="form-control" placeholder="Bank Name"
+                      name="companyBankName" [(ngModel)]="utilityModal.companyBankName" #companyBankName="ngModel"                
+                      [ngClass]="{ 'is-invalid': utilityForm.submitted && companyBankName.invalid }" required>
+                    <div *ngIf="utilityForm.submitted && companyBankName.invalid" class="invalid-feedback">
+                      <div *ngIf="companyBankName.errors">Bank Name is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-label"> Account Type<span class="required ml-1">*</span></label>
+                      <ng-select [items]="dataService.accountType" placeholder="Account Type" bindLabel="desc" required
+                        bindValue="code" name="bankAccountName" [ngClass]="{ 'is-invalid': utilityForm.submitted && bankAccountName.invalid }" [(ngModel)]="utilityModal.bankAccountName" #bankAccountName="ngModel">
+                      </ng-select>
+                      <div *ngIf="utilityForm.submitted && bankAccountName.invalid" class="invalid-feedback">
+                      <div *ngIf="bankAccountName.errors">Account Type is required.</div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-sm-12 text-center">
+                  <button type="submit"  class="btn btn-primary submit-button">Onboarding</button>
+                </div>  
+              </div>
+            </form>
+          </ng-template>         
+         
+        </div>
+      </div>
+     
+    
+    </div>
+  </div>
+</div>

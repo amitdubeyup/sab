@@ -1,0 +1,14 @@
+.wrapper-button-control .btn-theme-users{background: #fff; color: #000; font-size: 13px; padding: 5px 10px; border-radius: 50px; border: 1px solid #3f60cb;}
+.wrapper-button-control .btn-theme-users.active{background: #3f60cb; color: #fff;}
+#textright{
+    text-align:right;
+}
+@media only screen and (max-width: 768px) {
+    #typeinput {
+        margin-top: 5px;
+        margin-bottom: 10px;
+      }
+      #textright{
+        text-align:inherit;
+    }
+}

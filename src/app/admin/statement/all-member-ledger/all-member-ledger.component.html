@@ -1,0 +1,355 @@
+<app-admin-layout></app-admin-layout>
+<div id="main-content">
+    <div class="block-header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>ACCOUNT STATEMENT</h2>
+            </div>
+            <div class="col-md-6 col-sm-12 text-right">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"></a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card card-body">
+                <p-tabView (onChange)="handleChange($event)">
+                  <p-tabPanel header="Account Statement">
+                    <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                  </p-tabPanel>
+                  <p-tabPanel header="Commisssion Statement">
+                    <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                  </p-tabPanel>        
+                </p-tabView>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   
+  
+  <ng-template #statementTemplate>
+    <p-table class="table-rt" id="excel-table" [scrollable]="true"  scrollHeight="90vh" #dt [value]="statementList"  [rowHover]="true"
+      [rows]="100" [showCurrentPageReport]="true" [rowsPerPageOptions]="[100,250,500]" 
+      [paginator]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}" [filterDelay]="0"
+      [globalFilterFields]="['txnNo','referenceNo','memberName','createdOn','narration','accountNumber','mobileNumber','toNarration','intent','modeOfPayment']">
+      <ng-template pTemplate="caption">
+        <div class="row table-header">
+          <div class="col-md-3 col-sm-6 pb-1">
+            <ng-select [virtualScroll]="true" [closeOnSelect]="true" [searchable]="true" [items]="retList" placeholder="User Type" bindLabel="desc"
+            bindValue="code" name="desc" [(ngModel)]="selectedMemberList" #ffff="ngModel">
+          </ng-select>
+          
+          </div>
+          <div class="col-md-3 col-sm-6 pb-1">
+            <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Select User" bindLabel="name"
+              bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+            </ng-select>
+          </div>
+          <div class="col-sm-2 pb-1">
+            <ng-select [items]="sharedMethodService.SearchType" placeholder="Type" bindLabel="name" bindValue="id"
+              name="searchTypes" [(ngModel)]="searchType">
+            </ng-select>
+          </div>
+          <div class="col-sm-2 pb-1">
+            <input class="form-control sizing-sm" [(ngModel)]="txnNo" type="text"
+              placeholder="{{searchType=='txn'?'Txn No':searchType=='acc'?'A/C No.':searchType=='send'?'Send By Mob. No.':searchType=='rcv'?'Recived Mob. No.':'Enter Txn'}}" />
+          </div>
+          <div class="col-md-2 col-sm-6 pb-1">
+            <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Status" bindLabel="name"
+              bindValue="id" name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+            </ng-select>
+          </div>
+  
+          <div class="col-md-3 col-sm-6">
+            <p-calendar class="p-calendar p-inputtext-sm" dateFormat="dd/mm/yy" [readonlyInput]="true" name="fromDt"
+              [(ngModel)]="fromDt" [maxDate]="minDate" placeholder="From Date">
+            </p-calendar>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <p-calendar class="p-calendar p-inputtext-sm" name="toDt" [readonlyInput]="true" [minDate]="fromDt"
+              [maxDate]="maxDate" dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+            </p-calendar>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+            <input pInputText class="form-control" type="text"
+              (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <button type="button" (click)="handleSearch(activeTab)"
+              class="btn btn-primary mt-1 mr-2 btn48">Search</button>
+            <button type="button" (click)="exportAsXLSX()" class="btn btn-default mt-1 btn48">Export</button>
+  
+          </div>
+          <div class="col-lg-3 col-md-3 border-success pt-1">
+            <div class="testimonial4 text-center">
+              <div class="active item">
+                <blockquote class="warning">
+                  <h6 class="mb-2">Transactions</h6>
+                  <h5 class="text-success">{{statementList?.length}}</h5>
+  
+                </blockquote>
+              </div>
+            </div>
+          </div>           
+          <div class="col-lg-3 col-md-3 border-success pt-1">
+            <div class="testimonial4 text-center">
+              <div class="active item">
+                <blockquote class="warning">
+                  <h6 class="mb-2">Credit Amount</h6>
+                  <h5 class="text-success"> {{ totalAmountCr| number : '1.2-2'}}</h5>
+  
+                </blockquote>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 border-success pt-1">
+            <div class="testimonial4 text-center">
+              <div class="active item">
+                <blockquote class="warning">
+                  <h6 class="mb-2">Debit Amount</h6>
+                  <h5 class="text-success"> {{totalAmountDr | number : '1.2-2'}}</h5>
+  
+                </blockquote>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 border-success pt-1">
+            <div class="testimonial4 text-center">
+              <div class="active item">
+                <blockquote class="warning">
+                  <h6 class="mb-2">Charge</h6>
+                  <h5 class="text-success">{{totalCharge | number : '1.2-2'}}</h5>
+  
+                </blockquote>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 border-success pt-1">
+            <div class="testimonial4 text-center">
+              <div class="active item">
+                <blockquote class="warning">
+                  <h6 class="mb-2">GST Amount</h6>
+                  <h5 class="text-success"> {{totalGst | number : '1.2-2'}}</h5>
+  
+                </blockquote>
+              </div>
+            </div>
+          </div>
+     
+         <div class="col-lg-3 col-md-3 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">Commission</h6>
+                <h5 class="text-success">{{totalCommission | number : '1.2-2'}}</h5>
+
+              </blockquote>
+            </div>
+          </div>
+
+        </div>     
+        <div class="col-lg-3 col-md-3 border-success pt-1">
+          <div class="testimonial4 text-center">
+            <div class="active item">
+              <blockquote class="warning">
+                <h6 class="mb-2">TDS Amount</h6>
+                <h5 class="text-success"> {{totalTax | number : '1.2-2'}}</h5>
+
+              </blockquote>
+            </div>
+          </div>
+        </div> 
+          <div class="col-lg-3 col-md-3 border-success pt-1">
+            <div class="testimonial4 text-center">
+              <div class="active item">
+                <blockquote class="warning">
+                  <h6 class="mb-2">Net Commission</h6>
+                  <h5 class="text-success">{{totalEarning | number : '1.2-2'}}</h5>
+  
+                </blockquote>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+
+
+
+
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>S.R.</th>        
+          <th pSortableColumn="txnNo">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Txn#
+              <p-sortIcon field="txnNo"></p-sortIcon>
+            </div>
+          </th>
+          <th pSortableColumn="trasaction_date">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Txn Date
+            </div>
+          </th>
+          <th pSortableColumn="updatedOn">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              UpdatedOn
+             </div>
+          </th>
+          <th pSortableColumn="MemberName">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              User Name
+             </div>
+          </th>
+          <th pSortableColumn="Narration">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Naration
+             </div>
+          </th>
+          <th>Type</th>
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Amount(CR)
+            </div>
+          </th>
+          <th pSortableColumn="amountDr">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Amount(DR)
+             </div>
+          </th>
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Charge
+            </div>
+          </th>
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Commission
+             </div>
+          </th>
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              TDS
+             </div>
+          </th>
+          <th pSortableColumn="Gst">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              GST
+            </div>
+          </th>          
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Opening
+            </div>
+          </th>
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+                Closing
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cp let-i="rowIndex">
+        <tr class="p-selectable-row">
+          <td>{{i+1}}.</td>     
+          <td>
+            {{cp?.txnNo}}
+          </td>
+          <td>
+            {{cp.createdOn| date: 'dd-MM-yyyy hh:mm:ss aa'}}
+          </td>
+          <td>
+            {{cp.updatedOn| date: 'dd-MM-yyyy hh:mm aa'}}
+          </td>
+          <td>
+            {{cp.memberName}}
+          </td>          
+          <td style="width:30%;">
+           {{returnNarration(cp)}}
+          </td>
+          <td>{{cp.serviceName}}</td>
+          <td class="credit-amount" [ngClass]="{'credit-amount': cp.amount>0}" class="net-earing">
+            {{cp.amount| number : '1.2-2'}}
+          </td>
+          <td class="debit-amount">
+            {{cp.amountDr| number : '1.2-2'}}
+          </td>
+          <td class="debit-amount">
+            {{cp.charge| number : '1.2-2'}}
+          </td>
+          <td class="debit-amount" [ngClass]="{'credit-amount': cp.rtCommission>0}">
+            {{cp.rtCommission| number : '1.2-2'}}
+          </td>
+          <td class="debit-amount">
+            {{cp.tdsRt| number : '1.2-2'}}
+          </td>
+          <td class="debit-amount">
+            {{cp.gst| number : '1.2-2'}}
+          </td>
+          
+          <td>
+            {{cp.openingBalanceAmount| number : '1.2-2'}}
+          </td>
+          <td>
+            {{cp.closingBalanceAmount| number : '1.2-2'}}
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+          <td>
+           
+          </td>
+          <td>
+          </td>
+          <td>
+          </td>
+          <td>
+          </td>
+          <td>
+          </td>
+          <td>
+          </td>
+          <td> <strong>Total</strong>
+          </td>
+          <td>
+            {{totalAmountCr | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalAmountDr | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalCharge | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalCommission | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalTax | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalGst | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalEarning | number : '1.2-2'}}
+          </td>
+          <td>           
+          </td>
+          <td>          
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="16">No records found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-template>
+  

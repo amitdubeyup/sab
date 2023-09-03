@@ -1,0 +1,534 @@
+
+<app-retailer-layout></app-retailer-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Pending Request</h2>
+      </div>
+      <div class="col-md-6 col-sm-12 text-right">
+
+        <a href="javascript:void(0)" (click)="exportAsXLSX()" class="btn btn-warning"> <i
+            class="fas fa-file-export"></i>Export</a>
+      </div>
+    </div>
+  </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12">
+
+
+          <p-tabView (onChange)="handleChange($event)">
+            <p-tabPanel header="Money Transfer">
+              <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+            </p-tabPanel>
+            <p-tabPanel header="Recharge/Utility">
+              <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+            </p-tabPanel>
+            <p-tabPanel header="AEPS Transactions">
+              <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+            </p-tabPanel>
+            <p-tabPanel header="Credit Card">
+              <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+            </p-tabPanel>
+            <p-tabPanel header="Other Transactions">
+              <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+            </p-tabPanel>
+          </p-tabView>
+
+        </div>
+      </div>
+    
+  </div>
+  <ng-template #statementTemplate>
+    <p-table class="table-home table-wrapper-commision" #dt [value]="statementList" dataKey="remitterId"
+      [rowHover]="true" [rows]="50" [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,200,500]"
+      [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [filterDelay]="0"
+      [globalFilterFields]="['txn_no','utr','trasaction_date','narration','beneficiary_number','beneficiary_acc','bank']">
+      <ng-template pTemplate="caption">
+        <div class="row table-header">
+
+          <div class="col-md-2 col-sm-6 text-right">
+            <p-calendar class="p-calendar" [showIcon]="true" dateFormat="dd/mm/yy" name="fromDt" [(ngModel)]="fromDt"
+              [maxDate]="minDate" placeholder="From Date">
+            </p-calendar>
+          </div>
+          <div class="col-md-2 col-sm-6 text-right">
+            <p-calendar class="p-calendar" [showIcon]="true" name="toDt" dateFormat="dd/mm/yy" [minDate]="fromDt"
+              [maxDate]="maxDate" [(ngModel)]="toDt" placeholder="To Date">
+            </p-calendar>
+          </div>
+          <div class="col-md-2 col-sm-6">
+            <button type="button" (click)="handleSearch(activeTab)" class="btn btn-primary w-20 mt-1">Search</button>
+          </div>
+          <div class="col-md-2 col-sm-6 text-right">
+            <input pInputText class="form-control" type="text"
+              (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>S.R.</th>
+          <th pSortableColumn="txn_no">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Txn Id
+              <p-sortIcon field="utr"></p-sortIcon>
+            </div>
+          </th>
+          <th pSortableColumn="trasaction_date">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Txn Date
+            </div>
+          </th>
+          <th pSortableColumn="updatedOn">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Updated On
+            </div>
+          </th>
+          <th pSortableColumn="beneficiary_number">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              <ng-container *ngIf="activeTab == 3">
+                Mobile
+              </ng-container>
+              <ng-container *ngIf="activeTab != 3">
+                Name/Mobile
+              </ng-container>
+
+            </div>
+          </th>
+
+          <th pSortableColumn="narration">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              <ng-container
+                *ngIf="activeTab == 0 || activeTab == 5 || activeTab == 6 || activeTab == 7 || activeTab == 8">
+                Beneficiary
+              </ng-container>
+              <ng-container *ngIf="activeTab == 1 || activeTab == 2">
+                Operator
+              </ng-container>
+              <ng-container *ngIf="activeTab == 3 || activeTab == 4 || activeTab == 9">
+                Naration
+              </ng-container>
+            </div>
+          </th>
+          <th pSortableColumn="amount">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Tran Amount
+            </div>
+          </th>
+          <th pSortableColumn="charge">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Charge
+            </div>
+          </th>
+
+          <th pSortableColumn="service">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Service
+            </div>
+          </th>
+
+          <th pSortableColumn="status">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Status
+            </div>
+          </th>
+          <th pSortableColumn="utr" *ngIf="activeTab != 3">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              UTR
+            </div>
+          </th>
+          <th pSortableColumn="api_msg" *ngIf="activeTab != 3">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Response
+            </div>
+          </th>
+          <th pSortableColumn="api_msg">
+
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cp let-i="rowIndex">
+        <tr class="p-selectable-row">
+          <td>
+            {{i+1}}.
+          </td>
+          <td>
+            {{cp.txn_no}}
+          </td>
+          <td>
+            {{cp.trasaction_date| date: 'dd-MM-yyyy hh:mm aa'}}
+          </td>
+          <td>
+            {{cp.updatedOn| date: 'dd-MM-yyyy hh:mm aa'}}
+          </td>
+          <td>
+            <ng-container
+              *ngIf="activeTab == 0 || activeTab == 5 || activeTab == 6 || activeTab == 7 || activeTab == 9 ">
+              {{cp.remName+ ' '+cp.beneficiary_number }}
+            </ng-container>
+            <ng-container *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3 || activeTab == 4">
+              {{cp.beneficiary_acc}}
+            </ng-container>
+          </td>
+          <td>
+            <ng-container
+              *ngIf="(activeTab == 0 || activeTab == 7) && (cp.service=='QUICK_PAY' || cp.service=='TATKAL_PAY')">
+              {{cp.narration + ' ' +cp.beneficiary_acc +' '+ (cp.toNarration==null?'':cp.toNarration)}}
+            </ng-container>
+            <ng-container *ngIf="activeTab == 6 || activeTab == 8">
+              {{cp.narration + ' ' +cp.beneficiary_acc}}
+            </ng-container>
+            <ng-container *ngIf="cp.service=='AEPS-BANK'">
+              {{'A/C: ' +cp.beneficiary_acc +' '+ (cp.toNarration==null?'':cp.toNarration)}}
+            </ng-container>
+            <ng-container *ngIf="activeTab == 0 && cp.service=='Verification'">
+              {{cp.narration}}
+            </ng-container>
+            <ng-container *ngIf="activeTab == 1 || activeTab == 2">
+              {{cp.Operator}} {{cp.Service=='INSURANCE'?'-'+cp.narration:''}}
+            </ng-container>
+            <ng-container *ngIf="activeTab ==3">
+              {{cp.toNarration +' '+ cp.beneficiary_acc +' To '+cp.narration +' '+cp.remName }}
+            </ng-container>
+            <ng-container *ngIf="cp.service=='PAYTM'">
+              <span>Paytm Wallet Topup:</span> {{ cp.beneficiary_acc}}
+            </ng-container>
+            <ng-container *ngIf="activeTab ==9">
+              {{cp.toNarration}}
+            </ng-container>
+          </td>
+          <td>
+            {{cp.amount | number : '1.2-2'}}
+          </td>
+          <td>
+            {{cp.charge | number : '1.2-2'}}
+          </td>
+          <td>
+            <ng-container *ngIf="activeTab == 0 || activeTab == 5 || activeTab == 6 || activeTab == 7">
+              {{cp.service}}-{{cp.mode_of_payment | replace:'-Money-Transfer':''}}
+            </ng-container>
+            <ng-container
+              *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3 || activeTab == 4  || activeTab == 8 || activeTab == 9">
+              {{cp.service}}
+            </ng-container>
+
+          </td>
+          <td>{{cp.status}}</td>
+          <td *ngIf="activeTab != 3">{{cp.utr}}</td>
+          <td *ngIf="activeTab != 3">{{cp.api_msg}}</td>
+          <td>
+            <button type="button" class="btn btn-primary" (click)="onRefund(cp)">Refund</button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+          <td colspan="6" style="text-align: right;">
+            <strong>Total</strong>
+          </td>
+          <td>
+            {{totalAmount | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalCharge | number : '1.2-2'}}
+          </td>
+          <td>
+            {{totalCommission | number : '1.2-2'}}
+          </td>
+          <td>
+          </td>
+          <td *ngIf="activeTab == 0">
+          </td>
+          <td *ngIf="activeTab != 3">
+          </td>
+          <td *ngIf="activeTab != 3">
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="14">No records found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-template>
+</div>
+
+
+
+
+
+
+
+<!-- <div id="wrapper">
+  <app-retailer-header></app-retailer-header>
+  <div class="content-page">
+    <div class="content main-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card card-body">
+              <button class="btn btn-warning waves-effect waves-light add-fund" (click)="exportAsXLSX()"><i
+                  class="fas fa-file-export mr-1"></i> Export
+                Data</button>
+              <p-tabView (onChange)="handleChange($event)">
+                <p-tabPanel header="DMT">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="Recharge">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="BBPS">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="Part Payment">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="CMS">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="AEPS">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="INDO-NEP">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="Vendor Pay">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="UPI">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="Travel">
+                  <ng-container *ngTemplateOutlet="statementTemplate"></ng-container>
+                </p-tabPanel>
+              </p-tabView>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #statementTemplate>
+  <p-table class="table-home table-wrapper-commision" #dt [value]="statementList" dataKey="remitterId" [rowHover]="true"
+    [rows]="50" [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,200,500]" [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+    [globalFilterFields]="['txn_no','utr','trasaction_date','narration','beneficiary_number','beneficiary_acc','bank']">
+    <ng-template pTemplate="caption">
+      <div class="row table-header">
+        <div class="col-md-4 mobile-hide p-d-flex">
+          <h6> Refund Pending Transaction</h6>
+        </div>
+
+        <div class="col-md-2 col-sm-6 text-right">
+          <p-calendar class="p-calendar" [showIcon]="true" dateFormat="dd/mm/yy" name="fromDt" [(ngModel)]="fromDt"
+            [maxDate]="minDate" placeholder="From Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-2 col-sm-6 text-right">
+          <p-calendar class="p-calendar" [showIcon]="true" name="toDt" dateFormat="dd/mm/yy" [minDate]="fromDt"
+            [maxDate]="maxDate" [(ngModel)]="toDt" placeholder="To Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-2 col-sm-6">
+          <button type="button" (click)="handleSearch(activeTab)" class="btn btn-primary w-20 mt-1">Search</button>
+        </div>
+        <div class="col-md-2 col-sm-6 text-right">
+          <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+          <input pInputText class="form-control" type="text"
+            (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>S.R.</th>
+        <th pSortableColumn="txn_no">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Txn Id
+            <p-sortIcon field="utr"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="trasaction_date">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Txn Date
+          </div>
+        </th>
+        <th pSortableColumn="updatedOn">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Updated On
+          </div>
+        </th>
+        <th pSortableColumn="beneficiary_number">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            <ng-container *ngIf="activeTab == 3">
+              Mobile
+            </ng-container>
+            <ng-container *ngIf="activeTab != 3">
+              Name/Mobile
+            </ng-container>
+
+          </div>
+        </th>
+
+        <th pSortableColumn="narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            <ng-container
+              *ngIf="activeTab == 0 || activeTab == 5 || activeTab == 6 || activeTab == 7 || activeTab == 8">
+              Beneficiary
+            </ng-container>
+            <ng-container *ngIf="activeTab == 1 || activeTab == 2">
+              Operator
+            </ng-container>
+            <ng-container *ngIf="activeTab == 3 || activeTab == 4 || activeTab == 9">
+              Naration
+            </ng-container>
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Tran Amount
+          </div>
+        </th>
+        <th pSortableColumn="charge">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Charge
+          </div>
+        </th>
+
+        <th pSortableColumn="service">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Service
+          </div>
+        </th>
+
+        <th pSortableColumn="status">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Status
+          </div>
+        </th>
+        <th pSortableColumn="utr" *ngIf="activeTab != 3">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            UTR
+          </div>
+        </th>
+        <th pSortableColumn="api_msg" *ngIf="activeTab != 3">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Response
+          </div>
+        </th>
+        <th pSortableColumn="api_msg">
+
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cp let-i="rowIndex">
+      <tr class="p-selectable-row">
+        <td>
+          {{i+1}}.
+        </td>
+        <td>
+          {{cp.txn_no}}
+        </td>
+        <td>
+          {{cp.trasaction_date| date: 'dd-MM-yyyy hh:mm aa'}}
+        </td>
+        <td>
+          {{cp.updatedOn| date: 'dd-MM-yyyy hh:mm aa'}}
+        </td>
+        <td>
+          <ng-container *ngIf="activeTab == 0 || activeTab == 5 || activeTab == 6 || activeTab == 7 || activeTab == 9 ">
+            {{cp.remName+ ' '+cp.beneficiary_number }}
+          </ng-container>
+          <ng-container *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3 || activeTab == 4">
+            {{cp.beneficiary_acc}}
+          </ng-container>
+        </td>
+        <td>
+          <ng-container
+            *ngIf="(activeTab == 0 || activeTab == 7) && (cp.service=='QUICK_PAY' || cp.service=='TATKAL_PAY')">
+            {{cp.narration + ' ' +cp.beneficiary_acc +' '+ (cp.toNarration==null?'':cp.toNarration)}}
+          </ng-container>
+          <ng-container *ngIf="activeTab == 6 || activeTab == 8">
+            {{cp.narration + ' ' +cp.beneficiary_acc}}
+          </ng-container>
+          <ng-container *ngIf="cp.service=='AEPS-BANK'">
+            {{'A/C: ' +cp.beneficiary_acc +' '+ (cp.toNarration==null?'':cp.toNarration)}}
+          </ng-container>
+          <ng-container *ngIf="activeTab == 0 && cp.service=='Verification'">
+            {{cp.narration}}
+          </ng-container>
+          <ng-container *ngIf="activeTab == 1 || activeTab == 2">
+            {{cp.Operator}} {{cp.Service=='INSURANCE'?'-'+cp.narration:''}}
+          </ng-container>
+          <ng-container *ngIf="activeTab ==3">
+            {{cp.toNarration +' '+ cp.beneficiary_acc +' To '+cp.narration +' '+cp.remName }}
+          </ng-container>
+          <ng-container *ngIf="cp.service=='PAYTM'">
+            <span>Paytm Wallet Topup:</span> {{ cp.beneficiary_acc}}
+          </ng-container>
+          <ng-container *ngIf="activeTab ==9">
+            {{cp.toNarration}}
+          </ng-container>
+        </td>
+        <td>
+          {{cp.amount | number : '1.2-2'}}
+        </td>
+        <td>
+          {{cp.charge | number : '1.2-2'}}
+        </td>
+        <td>
+          <ng-container *ngIf="activeTab == 0 || activeTab == 5 || activeTab == 6 || activeTab == 7">
+            {{cp.service}}-{{cp.mode_of_payment | replace:'-Money-Transfer':''}}
+          </ng-container>
+          <ng-container
+            *ngIf="activeTab == 1 || activeTab == 2 || activeTab == 3 || activeTab == 4  || activeTab == 8 || activeTab == 9">
+            {{cp.service}}
+          </ng-container>
+
+        </td>
+        <td>{{cp.status}}</td>
+        <td *ngIf="activeTab != 3">{{cp.utr}}</td>
+        <td *ngIf="activeTab != 3">{{cp.api_msg}}</td>
+        <td>
+          <button type="button" class="btn btn-primary" (click)="onRefund(cp)">Refund</button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+        <td colspan="6" style="text-align: right;">
+          <strong>Total</strong>
+        </td>
+        <td>
+          {{totalAmount | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalCharge | number : '1.2-2'}}
+        </td>
+        <td>
+          {{totalCommission | number : '1.2-2'}}
+        </td>
+        <td>
+        </td>
+        <td *ngIf="activeTab == 0">
+        </td>
+        <td *ngIf="activeTab != 3">
+        </td>
+        <td *ngIf="activeTab != 3">
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="14">No records found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template> -->

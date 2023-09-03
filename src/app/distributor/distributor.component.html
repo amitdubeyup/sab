@@ -1,0 +1,143 @@
+<app-distributor-layout></app-distributor-layout>
+<div  id="main-content">
+  <div class="container-fluid">
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-sm-3 col-md-3 mobile-menu" (click)="navigatePage('/ds/fund-manage')">
+            <div class="card" >
+                <div class="user-account">
+                    <div class="user_div">
+                    <img class="img-size" src="assets/images/credit_request.svg">               
+                    </div>
+                    <div class="dropdown rt-ds">                          
+                        <span>Credit Money</span>                          
+                    </div>
+                </div>  
+            </div>
+        </div>  
+        <div class="col-lg-3 col-sm-3 mobile-menu" (click)="navigatePage('/ds/fund-manage/fundwithdrawal')" >
+            <div class="card" >
+                <div class="user-account">
+                    <div class="user_div">
+                    <img class="img-size" src="assets/images/credit_request.svg">
+                    </div>
+                    <div class="dropdown rt-ds">                          
+                        <span>Withdraw Money</span>                          
+                    </div>
+                </div>  
+            </div>
+        </div>  
+        <div class="col-lg-3 col-sm-3 mobile-menu" (click)="navigatePage('/ds/wallet-to-wallet')">
+            <div class="card" >
+                <div class="user-account">
+                    <div class="user_div">
+                    <img class="img-size" src="assets/images/wallettowallet.svg">
+                    </div>
+                    <div class="dropdown rt-ds">                          
+                        <span>Wallet</span>                          
+                    </div>
+                </div>  
+            </div>
+        </div> 
+        <div class="col-lg-3 col-sm-3 mobile-menu"  (click)="navigatePage('/ds/money-request/newrequest')">
+            <div class="card" >
+                <div class="user-account">
+                    <div class="user_div">
+                    <img class="img-size" src="assets/images/60_MoneyBag.png">
+                    </div>
+                    <div class="dropdown rt-ds">                          
+                        <span>Money Request</span>                          
+                    </div>
+                </div>  
+            </div>
+        </div> 
+            
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="row short-wideget-wrapper">
+              <div class="col-8">
+                <h4>Funds Received</h4>
+              </div>
+              <div class="col-4 text-right">
+                <label
+                  class="total-amount-green">+{{recentList?.FundsReceived | currency : 'INR' : true : '1.0-0'}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="row short-wideget-wrapper">
+              <div class="col-8">
+                <h4>Refunded Amount</h4>
+              </div>
+              <div class="col-4 text-right">
+                <label class="total-amount-red">- {{recentList?.DmtRefund| currency : 'INR' : true : '1.0-0'}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="row short-wideget-wrapper">
+              <div class="col-8">
+                <h4>Fund Transferred</h4>
+              </div>
+              <div class="col-4 text-right">
+                <label class="total-amount-red">-
+                  {{recentList?.FundsTransfers| currency : 'INR' : true : '1.0-0'}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="row short-wideget-wrapper">
+              <div class="col-8">
+                <h4>AEPS</h4>
+              </div>
+              <div class="col-4 text-right">
+                <label class="total-amount-red">-
+                  {{recentList?.Utilities| currency : 'INR' : true : '1.0-0'}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+            <div class="col-sm-12 mobile-padding-issue">
+              <div class="card">
+                <div class="card-body wrapper-slider-image">
+                  <div class="widget-dashboard-image">            
+                         
+                    <!-- <iframe width="100%" height="415" src="https://www.youtube.com/embed/"
+                      title="Achieving The Milestone of 1200+ Cr. | Retailer, Distributor &amp; Master distributor | Soulpay Fintech"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen></iframe> -->
+                    <ngb-carousel *ngIf="banners?.messageList">
+                      <ng-template ngbSlide *ngFor="let event of banners?.messageList">
+                        <img [src]="event.banners" alt="Random slide">
+                        <div class="carousel-caption">
+                        </div>
+                      </ng-template>
+                    </ngb-carousel>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>      
+    </div>
+  </div>
+</div>
+
+
+
+

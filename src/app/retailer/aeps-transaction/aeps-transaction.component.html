@@ -1,0 +1,169 @@
+<app-retailer-layout></app-retailer-layout>
+<div id="main-content">
+  <div class="block-header">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Transaction</h2>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-body">
+          <p-table class="table-rt" #dt [value]="statementList" dataKey="remitterId" [rowHover]="true"
+    [rows]="50" [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,200,500]" 
+    [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+    [globalFilterFields]="['TxnNo','CustomerNumber','ApiStatus','ApiMsg','AdharNumber','Service','TrasactionType','Trnamount','OpBalance','ClBalance','ClBalance','Utr','MobileNumber']">
+    <ng-template pTemplate="caption">
+      <div class="row table-header">
+        <div class="col-md-4 col-sm-6">
+          <ng-select [items]="sharedMethodService.SearchType" placeholder="Search Type" bindLabel="name" bindValue="id"
+            name="searchType" [(ngModel)]="searchType">
+          </ng-select>
+        </div>
+        <div class="col-md-4 col-sm-6 pb-1">
+          <input class="form-control" [(ngModel)]="txnNo" type="text" placeholder="Enter txn" />
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <ng-select [items]="sharedMethodService.PaymentStatus" placeholder="Status" bindLabel="name" bindValue="id"
+            name="isStatus" [(ngModel)]="isStatus" #Status="ngModel">
+          </ng-select>
+        </div>
+        <div class="col-md-4 col-sm-6 pb-1">
+          <p-calendar class="p-calendar" dateFormat="dd/mm/yy" [showIcon]="false" name="fromDt" [(ngModel)]="fromDt"
+            [maxDate]="minDate" placeholder="From Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-4 col-sm-6 pb-1">
+          <p-calendar class="p-calendar" name="toDt" [minDate]="fromDt" [maxDate]="maxDate" [showIcon]="false"
+            dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+          </p-calendar>
+        </div>
+        <div class="col-md-4 col-sm-6 text-right">
+          <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+          <input pInputText class="form-control" type="text"
+            (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+        </div>
+        <div class="col-md-12 col-sm-12 text-center">
+          <button type="button" (click)="handleSearch(activeTab)" class="btn btn-primary w-20 mt-1">Search</button>
+        </div>
+        
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>S#</th>
+        <th pSortableColumn="TxnNo">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Txn#
+           
+          </div>
+        </th>
+        <th pSortableColumn="trasaction_date">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Txn Date
+          </div>
+        </th>
+        <th pSortableColumn="narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Customer No.
+          </div>
+        </th>
+        <th pSortableColumn="narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Aaddhar#
+          </div>
+        </th>
+        <th pSortableColumn="narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Bank
+          </div>
+        </th>
+        <th pSortableColumn="narration">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Type
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Bal Amount
+          </div>
+        </th>
+        <th pSortableColumn="amount">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Transacation Amount
+          </div>
+        </th>
+       
+        <th pSortableColumn="utr">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            RRN
+          </div>
+        </th>
+
+        <th pSortableColumn="status">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Status
+          </div>
+        </th>
+
+        <th pSortableColumn="api_msg">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Message
+          </div>
+        </th>
+        <th>#</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cp let-i="rowIndex">
+      <tr class="p-selectable-row">
+        <td>
+          {{i+1}}.
+        </td>
+        <td>
+          {{cp.TxnNo}}
+        </td>
+        <td>
+          {{cp.TrasactionDate| date: 'dd-MM-yyyy hh:mm aa'}}
+        </td>
+     
+        <td>
+          {{cp.CustomerNumber}}
+
+        </td>
+        <td>XXXXXXXX{{cp.AdharNumber}}</td>
+        <td> {{cp.Service}}</td>
+        <td>{{cp.TrasactionType=="CW"?"Cash Withdraw":cp.TrasactionType=="MS"?"Mini Statement":"Balance Enquiry"}}</td>
+        <td>
+          {{cp.Trnamount | number : '1.2-2'}}
+        </td>
+        <td>
+          {{cp.CwAmount | number : '1.2-2'}}
+        </td>
+        
+        <td>
+          {{cp.Utr}}
+        </td>
+
+        <td class="text-center">{{cp.ApiStatus}} </td>
+        <td>{{cp.ApiMsg}}</td>
+        <td>
+          <button type="button" class="btn btn-info btn-sm" (click)="printReceipt(cp.TxnId)">
+            <i class="fa fa-print"></i>
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td *ngIf="activeTab!=1" colspan="14">No records found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

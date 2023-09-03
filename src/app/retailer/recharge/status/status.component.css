@@ -1,0 +1,18 @@
+.tdcolor {
+  background-color: #f0f6ff;
+  width: 177px;
+}
+
+h4 {
+  padding: 0px !important;
+  margin: 0px 0px 3px 0px !important;
+  font-size: 16px;
+}
+
+hr {
+  margin-top: 0;
+  margin-bottom: 0;
+  border: 1;
+  border-top: 1x solid rgba(10, 6, 6, 0.1);
+}
+

@@ -1,0 +1,218 @@
+
+   
+        <p-table  class="table-rt table-wrapper-commision" [scrollable]="true"  scrollHeight="90vh" #dt [value]="statementList" dataKey="remitterId" [rowHover]="true"
+         [rows]="50" [showCurrentPageReport]="true" [rowsPerPageOptions]="[50,100,250,500]"
+         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+         [globalFilterFields]="['TxnNo','ReferenceNo','CreatedOn','Narration','AccountNumber','MobileNumber','ToNarration','Intent','ModeOfPayment']">
+         <ng-template pTemplate="caption">
+           <div class="row table-header">
+             <div class="col-md-3 col-sm-6">
+               <p-calendar class="p-calendar p-inputtext-sm" dateFormat="dd/mm/yy" [readonlyInput]="true" name="fromDt"
+                 [(ngModel)]="fromDt" [maxDate]="minDate" placeholder="From Date">
+               </p-calendar>
+             </div>
+             <div class="col-md-3 col-sm-6">
+               <p-calendar class="p-calendar p-inputtext-sm" name="toDt" [readonlyInput]="true" [minDate]="fromDt"
+                 [maxDate]="maxDate" dateFormat="dd/mm/yy" [(ngModel)]="toDt" placeholder="To Date">
+               </p-calendar>
+             </div>
+             <div class="col-md-3 col-sm-6">
+               <i class="pi pi-search" style="margin:7px 4px 0 0"></i>
+               <input pInputText class="form-control" type="text"
+                 (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Global Search" />
+             </div>
+             <div class="col-md-3 col-sm-6">
+               <button type="button" (click)="handleSearch(activeTab)"
+                 class="btn btn-outline-success mt-1 mr-2 btn48">Search</button>
+               <button type="button" (click)="exportAsXLSX()" class="btn btn-outline-dark mt-1 btn48">Export</button>
+     
+             </div>
+     
+             <div class="col-lg-2 col-md-2 border-success pt-1">
+               <div class="testimonial4 text-center">
+                 <div class="active item">
+                   <blockquote class="warning">
+                     <h6 class="mb-2">Transactions</h6>
+                     <h5 class="text-success">{{statementList?.length}}</h5>
+     
+                   </blockquote>
+                 </div>
+               </div>
+             </div>           
+             <div class="col-lg-2 col-md-2 border-success pt-1">
+               <div class="testimonial4 text-center">
+                 <div class="active item">
+                   <blockquote class="warning">
+                     <h6 class="mb-2">Credit Amount</h6>
+                     <h5 class="text-success"> {{ totalAmountCr| number : '1.2-2'}}</h5>
+     
+                   </blockquote>
+                 </div>
+               </div>
+             </div>
+             <div class="col-lg-2 col-md-2 border-success pt-1">
+               <div class="testimonial4 text-center">
+                 <div class="active item">
+                   <blockquote class="warning">
+                     <h6 class="mb-2">Debit Amount</h6>
+                     <h5 class="text-success"> {{totalAmountDr | number : '1.2-2'}}</h5>
+     
+                   </blockquote>
+                 </div>
+               </div>
+             </div>
+             <div class="col-lg-2 col-md-2 border-success pt-1">
+               <div class="testimonial4 text-center">
+                 <div class="active item">
+                   <blockquote class="warning">
+                     <h6 class="mb-2">Charge</h6>
+                     <h5 class="text-success">{{totalCharge | number : '1.2-2'}}</h5>
+     
+                   </blockquote>
+                 </div>
+               </div>
+             </div>
+             <div class="col-lg-2 col-md-2 border-success pt-1">
+              <div class="testimonial4 text-center">
+                <div class="active item">
+                  <blockquote class="warning">
+                    <h6 class="mb-2">TDS Amount</h6>
+                    <h5 class="text-success"> {{totalTax | number : '1.2-2'}}</h5>
+    
+                  </blockquote>
+                </div>
+              </div>
+            </div>
+             <div class="col-lg-2 col-md-2 border-success pt-1">
+               <div class="testimonial4 text-center">
+                 <div class="active item">
+                   <blockquote class="warning">
+                     <h6 class="mb-2">Commission</h6>
+                     <h5 class="text-success">{{totalCommission | number : '1.2-2'}}</h5>
+     
+                   </blockquote>
+                 </div>
+               </div>
+     
+             </div>
+           </div>
+         </ng-template>
+         <ng-template pTemplate="header">
+           <tr>
+             <th>S#</th>          
+             <th >
+               <div class="p-d-flex p-jc-between p-ai-center">
+                 Txn Date
+                </div>
+             </th>           
+               <th >
+               <div class="p-d-flex p-jc-between p-ai-center">
+                 Description
+     
+               </div>
+             </th>
+             <th >
+               <div class="p-d-flex p-jc-between p-ai-center">
+                 Amount(CR) 
+               </div>
+             </th>
+             <th >
+               <div class="p-d-flex p-jc-between p-ai-center">
+                 Amount(DR) 
+               </div>
+             </th>
+             <th >
+               <div class="p-d-flex p-jc-between p-ai-center">
+                 Charge              
+               </div>
+             </th>
+             <th>
+               <div class="p-d-flex p-jc-between p-ai-center">
+                 Commission
+                 
+               </div>
+             </th>
+             <th >
+               <div class="p-d-flex p-jc-between p-ai-center">
+                 TDS
+                 
+               </div>
+             </th>
+            
+             <th >
+               <div class="p-d-flex p-jc-between p-ai-center">
+                 Balance
+                
+               </div>
+             </th>
+           </tr>
+         </ng-template>
+         <ng-template pTemplate="body" let-cp let-i="rowIndex" class="transfer-grid">
+           <tr class="p-selectable-row">
+             <td>{{i+1}}</td>            
+             <td>
+               {{cp.CreatedOn| date: 'dd-MM-yyyy hh:mm:ss aa'}}
+             </td>
+             <td style="width:30%;">
+              <span>{{returnNarration(cp)}}</span>              
+             </td>
+             <td class="credit-amount" [ngClass]="{'credit-amount': cp.Amount>0}" class="net-earing">
+               {{cp.Amount| number : '1.2-2'}}
+             </td>
+             <td class="debit-amount">
+               {{cp.AmountDr| number : '1.2-2'}}
+             </td>
+             <td class="debit-amount" [ngClass]="{'credit-amount': cp.Status=='Refunded'}">
+               {{cp.Charge| number : '1.2-2'}}
+             </td>
+             <td class="debit-amount" [ngClass]="{'credit-amount': cp.RtCommission>0 && cp.Status!='Refunded'}">
+               {{cp.RtCommission| number : '1.2-2'}}
+             </td>
+             <td class="debit-amount" [ngClass]="{'credit-amount': cp.Status!='Refunded'}">
+               {{cp.TdsRt| number : '1.2-2'}}
+             </td>             
+             <td>
+               {{cp.ClosingBalanceAmount| number : '1.2-2'}}
+             </td>
+           </tr>
+         </ng-template>
+         <ng-template pTemplate="footer">
+           <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+             <td>
+              
+             </td>
+             <td>
+             </td>
+                       
+             <td style="text-align: right;"> <strong>Total</strong>
+             </td>
+             <td>
+               {{totalAmountCr | number : '1.2-2'}}
+             </td>
+             <td>
+               {{totalAmountDr | number : '1.2-2'}}
+             </td>
+             <td>
+               {{totalCharge | number : '1.2-2'}}
+             </td>
+             <td>
+               {{totalCommission | number : '1.2-2'}}
+             </td>
+             <td>
+               {{totalTax | number : '1.2-2'}}
+             </td>             
+             <td>
+               {{totalClosingBalance | number : '1.2-2'}}
+             </td>
+           </tr>
+         </ng-template>
+         <ng-template pTemplate="emptymessage">
+           <tr>
+             <td colspan="12">No records found.</td>
+           </tr>
+         </ng-template>
+       </p-table>
+              
+         
+   
+

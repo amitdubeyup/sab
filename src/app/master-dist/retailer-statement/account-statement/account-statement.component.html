@@ -1,0 +1,176 @@
+<app-md-layout></app-md-layout>
+<div  id="main-content">
+  <div class="container-fluid">
+    <div class="page-header">
+      <div class="page-title">
+        <h4>Transaction Details</h4>
+        <h6>Retailer / Transaction Details</h6>
+      </div>
+      
+    </div>
+  
+    <div class="card">
+      <div class="card-body">
+
+          <p-table class="table-rt table-home table-wrapper-commision" #dt [value]="statementList" dataKey="remitterId"
+            [rowHover]="true" [rows]="100" [showCurrentPageReport]="true" [rowsPerPageOptions]="[100,250,500]"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="['TxnNo','ReferenceNo','CreatedOn','Narration','AccountNumber','MobileNumber','ToNarration','Intent','ModeOfPayment']">
+            <ng-template pTemplate="caption">
+              <div class="row table-header">
+                <div class="col-md-4">
+                  <ng-select [items]="distList" bindLabel="desc" (change)="getRtUser(dist_id)" name="dist_id"  bindValue="code" [(ngModel)]="dist_id"
+                    #distid="ngModel" placeholder="Select" required>
+                  </ng-select>
+                </div> 
+                <div class="col-md-4">
+                  <ng-select [items]="retList" bindLabel="desc" name="retid"  bindValue="code" [(ngModel)]="retid"
+                    #apiId="ngModel" placeholder="Select" required>
+                  </ng-select>
+                </div>
+                <div class="col-md-2 text-right">
+                  <p-calendar class="p-calendar" dateFormat="dd/mm/yy" [showIcon]="false" name="fromDt"
+                    [(ngModel)]="fromDt" placeholder="From Date">
+                  </p-calendar>
+                </div>
+                <div class="col-md-2 text-right">
+                  <p-calendar class="treetableDate" name="toDt" [showIcon]="false" dateFormat="dd/mm/yy"
+                    [(ngModel)]="toDt" placeholder="To Date">
+                  </p-calendar>
+                </div>
+              </div>
+                <div class="row pt-2">               
+                <div class="col-md-4">
+                  <!-- <i class="pi pi-search" style="margin:4px 4px 0 0"></i> -->
+                  <input pInputText class="form-control" type="text"
+                    (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')"
+                    placeholder="Global Search" />
+                </div>
+                <div class="col-md-8">
+                  <button type="button" (click)="handleSearch(activeTab)" class="btn btn-primary w-20">Search</button>
+                 &nbsp;
+                <button class="btn btn-warning waves-effect waves-light add-fund" (click)="exportAsXLSX()"><i
+                  class="fas fa-file-export"></i> Export
+              </button>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>S#</th>          
+                <th >
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Txn Date
+                   </div>
+                </th>           
+                  <th >
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Description
+        
+                  </div>
+                </th>
+                <th >
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Amount(CR) 
+                  </div>
+                </th>
+                <th >
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Amount(DR) 
+                  </div>
+                </th>
+                <th >
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Charge              
+                  </div>
+                </th>
+                <th>
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                   RT Commission                    
+                  </div>
+                </th>
+                <th >
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    TDS
+                    
+                  </div>
+                </th>
+               
+                <th >
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Balance
+                   
+                  </div>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-cp let-i="rowIndex" class="transfer-grid">
+              <tr class="p-selectable-row">
+                <td>{{i+1}}</td>            
+                <td>
+                  {{cp.CreatedOn| date: 'dd-MM-yyyy hh:mm:ss aa'}}
+                </td>
+                <td style="width:30%;">
+                 <span>{{returnNarration(cp)}}</span>              
+                </td>
+                <td class="credit-amount" [ngClass]="{'credit-amount': cp.Amount>0}" class="net-earing">
+                  {{cp.Amount| number : '1.2-2'}}
+                </td>
+                <td class="debit-amount">
+                  {{cp.AmountDr| number : '1.2-2'}}
+                </td>
+                <td class="debit-amount" [ngClass]="{'credit-amount': cp.Status=='Refunded'}">
+                  {{cp.Charge| number : '1.2-2'}}
+                </td>
+                <td class="debit-amount" [ngClass]="{'credit-amount': cp.RtCommission>0 && cp.Status!='Refunded'}">
+                  {{cp.RtCommission| number : '1.2-2'}}
+                </td>
+                <td class="debit-amount" [ngClass]="{'credit-amount': cp.Status!='Refunded'}">
+                  {{cp.TdsRt| number : '1.2-2'}}
+                </td>             
+                <td>
+                  {{cp.ClosingBalanceAmount| number : '1.2-2'}}
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <tr class="p-selectable-row" *ngIf="statementList.length > 0">
+                <td>
+                 
+                </td>
+                <td>
+                </td>
+                          
+                <td style="text-align: right;"> <strong>Total</strong>
+                </td>
+                <td>
+                  {{totalAmountCr | number : '1.2-2'}}
+                </td>
+                <td>
+                  {{totalAmountDr | number : '1.2-2'}}
+                </td>
+                <td>
+                  {{totalCharge | number : '1.2-2'}}
+                </td>
+                <td>
+                  {{totalCommission | number : '1.2-2'}}
+                </td>
+                <td>
+                  {{totalTax | number : '1.2-2'}}
+                </td>             
+                <td>
+                  {{totalClosingBalance | number : '1.2-2'}}
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="12">No records found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+      </div>
+    </div>
+  </div>
+</div>

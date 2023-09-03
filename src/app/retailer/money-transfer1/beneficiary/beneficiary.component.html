@@ -1,0 +1,148 @@
+<app-retailer-layout></app-retailer-layout> 
+<div id="main-content">
+    <div class="block-header mb-1">
+        <div class="row clearfix">
+            <div class="col-md-6 col-sm-12">
+                <h2>Money Transfer</h2>
+            </div>            
+            <div class="col-md-6 col-sm-12 text-right">
+                
+                <button type="button" class="btn btn-dark mt-1" (click)="back()"> << Back</button> &nbsp;
+                <button (click)="addRemitter('imp')" class="btn btn-success mt-1" type="button"><i
+                  class="fa fa-file-download mr-2"></i>Add Old Beneficiary</button>&nbsp;
+                 <button (click)="addRemitter('add')" class="btn btn-primary mt-1" type="button"><i class="fa fa-plus"></i>
+                  Add Beneficiary</button>              
+            </div>
+        </div>
+    </div>
+    <div class="chat-marging">
+    <div class="card chat-app">
+        <div class="chat">
+            <div class="chat-header clearfix">
+                <div class="row clearfix">
+                    <div class="col-lg-6">
+                        <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                            <img src="assets/images/customer-64.png" alt="avatar">
+                        </a>
+                        <div class="chat-about">
+                            <h6 class="m-b-0">{{remitterDetails.RemitterName}}</h6>
+                            <strong>{{remitterDetails.MobileNo}}</strong>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-right">
+                        <div class="">
+                            <h6 class="m-b-0">AVAILABLE LIMIT</h6>
+                            <strong class="txt_17"><span *ngIf="paymentMode=='true'"
+                                class="same-text">&#8377;{{remitterDetails.RazorLimit}}</span>
+                              <span *ngIf="paymentMode=='false'"
+                                class="same-text">&#8377;{{remitterDetails.BankitLimit--remitterDetails.FinoLimit--remitterDetails.PaySprintLimit--remitterDetails.RazorLimit}} </span></strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-history">             
+                    <p-tabView (onChange)="handleChange($event)">
+                      <ng-container *ngFor="let row of pipeList;">
+                        <p-tabPanel [header]="row.apiServiceName">
+                          <ng-container *ngTemplateOutlet="beneficiaryDetailTemp"></ng-container>
+                        </p-tabPanel>
+                      </ng-container>                     
+                    </p-tabView>
+                    <div class="row">
+                      <div class="col-sm-12">
+                     <ng-template #beneficiaryDetailTemp>
+                      <p-table responsiveLayout="stack"  class="table-rt table-beneficial" #dt [value]="beneficiaryDetails"
+                        [rowHover]="true" [rows]="500" [showCurrentPageReport]="true" [rowsPerPageOptions]="[500]"
+                        [loading]="commonService.isLoader" [paginator]="false" [filterDelay]="0"  
+                        [globalFilterFields]="['Bank','BeneficiaryName','Ifsc','BeneficiaryAcc','transferAmount']"                       >
+                        <ng-template pTemplate="caption">
+                          <div class="row table-header">
+                            <div class="col-md-3 col-sm-6">                             
+                              <input pInputText class="form-control" type="text"
+                                (input)="dt.filterGlobal(changeText($event.currentTarget), 'contains')" placeholder="Search" />
+                            </div>
+                          </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th width="2%">S#</th>                            
+                            <th pSortableColumn="BeneficiaryName" width="22%">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Beneficiary Name                               
+                              </div>
+                            </th>
+                            <th pSortableColumn="Bank" width="25%">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Bank                              
+                              </div>
+                            </th>
+                            <th pSortableColumn="BeneficiaryAcc" width="15%">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Account Number                                 
+                                </div>
+                              </th>
+                            <th pSortableColumn="Ifsc" width="5%">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                IFSC                               
+                              </div>
+                            </th>
+                           
+                            <th width="5%">
+                              Amount
+                            </th>
+                            <th width="18%">
+                              Mode
+                            </th>                            
+                            <th></th>
+                            <th></th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-cp let-i="rowIndex">
+                          <tr class="p-selectable-row"  [ngClass]="{'active-tr': (cp.selected == i), 'disabled-tr': (cp.selected != i)}">
+                            <td (click)="selectRow(i)">
+                              <span class="">{{i+1}}</span>                              
+                            </td>                            
+                            <td (click)="selectRow(i)" class="txt_12">
+                             <strong> {{cp.BeneficiaryName}}</strong>
+                            </td>
+                            <td (click)="selectRow(i)">
+                              {{cp.Bank}}
+                            </td>
+                            
+                            <td class="account-number" (click)="selectRow(i)"><strong>{{cp.BeneficiaryAcc}}</strong></td>
+                            <td (click)="selectRow(i)">{{cp.Ifsc}}</td>
+                            <td>
+                              <input type="text" OnlyNumber autocomplete="off" class="form-control mobile-100-width" style="width: 70px; padding: 5px 7px;"
+                                placeholder="Amount" name="transferAmount" [(ngModel)]="cp.transferAmount" (keyup)="updateAmount($event, i)"
+                                [disabled]="cp.selected != i">
+                            </td>
+                            <td class="txt-center">
+                                <button [disabled]="cp.selected != i" type="button" class="btn btn-sm btn-success"
+                                (click)="processPayment(cp,'IMPS')">IMPS</button>&nbsp;
+                                <button [disabled]="cp.selected != i" type="button" class="btn btn-sm btn-warning"
+                                (click)="processPayment(cp,'NEFT')">NEFT</button>                         
+                    
+                            </td>
+                            <td><button [disabled]="cp.selected != i" type="button"  title="{{cp.IsVerified==1?'Re-Verify':'Verify'}} " (click)="verifyBeneficiary(cp)" class="btn {{cp.IsVerified==1?'btn-success':'btn-danger'}}">
+                              <i class="fa fa-check-circle fa-6"></i></button></td>
+                            <td> <button [disabled]="cp.selected != i" type="button" (click)="onDeleteMpin(cp)" class="btn btn-danger">
+                              <i class="fa fa-trash-o"></i></button></td>
+                        
+                          </tr> 
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td colspan="9">No records found.</td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </ng-template>
+                    </div>
+                  </div>                
+            </div>
+           
+        </div>
+        
+    </div>
+</div>
+</div>
