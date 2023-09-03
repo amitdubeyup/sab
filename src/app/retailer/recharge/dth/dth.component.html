@@ -42,7 +42,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-12" *ngIf="utilityModal.board=='4'?true:false">
+              <div class="col-sm-12" *ngIf="utilityModal.board=='4'">
                 <div class="form-group">
                   <label class="form-label">Bill Unit<span class="required ml-1">*</span></label>
                   <input type="number" class="form-control" placeholder="Bill Unit" name="unit" [(ngModel)]="utilityModal.unit" #unit="ngModel" [ngClass]="{ 'is-invalid': utilityForm.submitted && unit.invalid }" required>
