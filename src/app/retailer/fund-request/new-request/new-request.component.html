@@ -35,7 +35,7 @@
                                          </div>
                                         </div>
                                         <div class="col-sm-6 form-group">
-                                            <label> Mode</label>                                            
+                                            <label> Mode</label>
                                             <ng-select [items]="paymentList" bindLabel="name" name="TxnMode"
                                              bindValue="id" [(ngModel)]="fundRequest.TxnMode"
                                             #TxnMode="ngModel" placeholder="Select Mode"
@@ -102,8 +102,8 @@
                                 <input type="submit" name="BtnNext" value="Proccess" class="btn btn-primary"> &nbsp; &nbsp;
                                 <input type="button" name="BtnClose" value="Back" (click)="btnclose();"
                                 class="btn btn-info">&nbsp;
-                                
-                               
+
+
                             </div>
                         </div>
                         <div class="panel-body" *ngIf="isNext">
@@ -192,7 +192,7 @@
                                     <br>
                                     <b>The Board of Directors,</b>
                                     <br>
-                                    <b>FleetPay India Private Limited</b>
+                                    <b>SambhavPay India Private Limited</b>
                                     <br>
                                     <b>First floor, F-02, A-88, Sector-4</b>
                                     <br>
@@ -202,21 +202,21 @@
                                     <br>
                                     <p>Dear Sir/Madam,</p>
 
-                                    <p>I, <b>{{commonService.userPram?.companyName}}</b>, hereby undertake and explicitly agree to indemnify FLEETPAY INDIA TECHNOLOGY PRIVATE LIMITED (FleetPay) towards the following points:</p>
-                                    <p>FLEETPAY INDIA TECHNOLOGY PRIVATE LIMITED is providing us a platform to Wallet Top-Up/ Transfer/Receive by using various payment mode i.e., IMPS/NEFT/RTGS/UPI and many more from person to person (P2P) and person to merchant (P2M) against a separate consideration.</p>
+                                    <p>I, <b>{{commonService.userPram?.companyName}}</b>, hereby undertake and explicitly agree to indemnify SAMBHAVPAY INDIA TECHNOLOGY PRIVATE LIMITED (SambhavPay) towards the following points:</p>
+                                    <p>SAMBHAVPAY INDIA TECHNOLOGY PRIVATE LIMITED is providing us a platform to Wallet Top-Up/ Transfer/Receive by using various payment mode i.e., IMPS/NEFT/RTGS/UPI and many more from person to person (P2P) and person to merchant (P2M) against a separate consideration.</p>
                                     <p>I am wholly owned responsibility to arrange KYC/meeting accordance to statutory requirements and other required/mandatory documents/information from the sender/ receiver/both along with the reasons of the transactions.</p>
                                     <p>I am responsible and abide to provide the KYC &amp;/or other mandatory documents/information along with the reasons of each transaction from the end customers to the Fleetpay India Technology Private Limited (Fleetpay) discretion.</p>
                                     <p>I am wholly and solely responsible for those transactions which would be wrongly debited or credited by me from/to another party also for any incorrect entry/entries while using Fleetpay Platform/Portal; and</p>
                                     <p>After obtaining a proper understanding of the transaction patterns, I am giving my consent to use this platform with all the Terms and Conditions of Fleetpay; also assuring that after due consent of every Sender/Receiver/Both is/are using Fleetpay Portal for Top-up/Transfer/Receive by using various payment mode i.e., IMPS/NEFT/RTGS/UPI and many more.</p>
                                     <br>
                                     <p>Thanking you,</p>
-                                  
+
                                     <b>{{commonService.userPram?.companyName}}
                                         <br>
                                         (Merchant’s/Agent’s Name)
                                         <br>
                                         Seal and Signature
-                                        <br>                                      
+                                        <br>
                                         Timestamp : {{activeDt | date: 'dd-MM-yyyy hh:mm:ss aa'}}
                                     </b>
                                 </div>

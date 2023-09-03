@@ -2,14 +2,18 @@
 
 * {
   margin: 0;
-  padding: 10px;
+  padding: 10px 0px;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
 .logo {
-  top: -32px;
+  width: 60%;
+  margin: auto;
   position: relative;
+  z-index: 99999;
 }
+
 body {
   min-height: 100vh;
   display: flex;
@@ -20,13 +24,14 @@ body {
 
 .wrapper {
   position: relative;
-  max-width: 470px;
+  max-width: 425px;
   width: 100%;
   border-radius: 12px;
   padding: 20px 30px 5px;
   background: #112256;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  margin: auto;
 }
 
 .form.login {
@@ -43,8 +48,8 @@ body {
 }
 
 .wrapper.active .form.login {
-  bottom: -15%;
-  border-radius: 35%;
+  bottom: -16%;
+  border-radius: 50%;
   box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -60,6 +65,11 @@ body {
   color: #333;
   opacity: 0.6;
 }
+
+.login-header {
+  margin-top: 40px !important;
+}
+
 
 .wrapper.active .form.login header {
   opacity: 1;
