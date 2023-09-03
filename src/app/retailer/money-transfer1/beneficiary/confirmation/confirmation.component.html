@@ -1,151 +1,143 @@
-<app-retailer-layout></app-retailer-layout> 
+<app-retailer-layout></app-retailer-layout>
 <div id="main-content">
-    <div class="block-header mb-1">
-        <div class="row clearfix">
-            <div class="col-md-6 col-sm-12">
-                <h2>Money Transfer</h2>
-            </div>            
-            <div class="col-md-6 col-sm-12 text-right">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
-                </ul>               
-            </div>
-        </div>
+  <div class="block-header mb-1">
+    <div class="row clearfix">
+      <div class="col-md-6 col-sm-12">
+        <h2>Money Transfer</h2>
+      </div>
+      <div class="col-md-6 col-sm-12 text-right">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ul>
+      </div>
     </div>
-    <div class="chat-marging">
+  </div>
+  <div class="chat-marging">
     <div class="card chat-app">
-        <div class="chat">
-            <div class="chat-header clearfix">
-              <div class="row clearfix">
-                <div class="col-lg-6">
-                    <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                        <img src="assets/images/customer-64.png" alt="avatar">
-                    </a>
-                    <div class="chat-about">
-                        <h6 class="m-b-0">{{remitterDetails.RemitterName}}</h6>
-                        <strong>{{remitterDetails.MobileNo}} | <span class="text-danger">{{beneficiaryDetails.paymentMode}}</span></strong>
-                    </div>
-                </div>
-                <div class="col-lg-6 text-right">
-                    <div class="">
-                        <h6 class="m-b-0">AVAILABLE LIMIT</h6>
-                        <strong class="txt_17"><span *ngIf="paymentMode=='true'"
-                            class="same-text">&#8377;{{remitterDetails.RazorLimit}}</span>
-                          <span *ngIf="paymentMode=='false'"
-                            class="same-text">&#8377;{{remitterDetails.BankitLimit--remitterDetails.FinoLimit--remitterDetails.PaySprintLimit--remitterDetails.RazorLimit}} </span></strong>
-                    </div>
-                </div>
-            </div>
-            </div>
-            <div class="chat-history">  
-                <div class="col-12">
-                    <div class="card-group mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title">Beneficiary Name: </h6>
-                                <p class="card-text">{{beneficiaryDetails?.BeneficiaryName}}</p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title">Account No: </h6>
-                                <p class="card-text">{{beneficiaryDetails?.BeneficiaryAcc}}</p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title">Bank:</h6>
-                                <p class="card-text">{{beneficiaryDetails?.Bank}}</p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title">IFSC:</h6>
-                                <p class="card-text">{{beneficiaryDetails?.Ifsc}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-                 <div class="row">
-                 
-              <div class="col-sm-6 amount-table">
-                <div class="card">
-                  <div class="card-body">
-                <table class="table">
-                  <thead>
-                    <tr class="primary">
-                      <th colspan="3">Number Of Transaction</th>
-                    </tr>
-                    <tr>
-                      <th>S#</th>
-                      <th>Amount</th>
-                      <th>Charge</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let fare of fareList; let i = index;">
-                      <td>{{i+1}}.</td>
-                      <td>&#8377;{{fare?.trnsAmount}}</td>
-                      <td>&#8377;{{fare?.trnsCharge}}</td>
-                    </tr>
-                    <tr class="tfoot">
-                      <td>Total</td>
-                      <td>&#8377;{{totalAmount}}</td>
-                      <td>&#8377;{{totalCharge}}</td>
-                    </tr>
-                    <tr>
-                      <th colspan="3" class="price-text-center"><span>Total Amount : </span>
-                          &#8377;{{totalFareFinal}}/-</th>
-                    </tr>
-                  </tbody>
-                </table>
+      <div class="chat">
+        <div class="chat-header clearfix">
+          <div class="row clearfix">
+            <div class="col-lg-6">
+              <div class="chat-about">
+                <h6 class="m-b-0">{{remitterDetails.RemitterName}}</h6>
+                <strong>{{remitterDetails.MobileNo}} | <span class="text-danger">{{beneficiaryDetails.paymentMode}}</span></strong>
               </div>
             </div>
+            <div class="col-lg-6 text-right">
+              <div class="">
+                <h6 class="m-b-0">AVAILABLE LIMIT</h6>
+                <strong class="txt_17"><span *ngIf="paymentMode=='true'" class="same-text">&#8377;{{remitterDetails.RazorLimit}}</span>
+                  <span *ngIf="paymentMode=='false'" class="same-text">&#8377;{{remitterDetails.BankitLimit--remitterDetails.FinoLimit--remitterDetails.PaySprintLimit--remitterDetails.RazorLimit}} </span></strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-history">
+          <div class="col-12">
+            <div class="card-group mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Beneficiary Name: </h6>
+                  <p class="card-text">{{beneficiaryDetails?.BeneficiaryName}}</p>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Account No: </h6>
+                  <p class="card-text">{{beneficiaryDetails?.BeneficiaryAcc}}</p>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Bank:</h6>
+                  <p class="card-text">{{beneficiaryDetails?.Bank}}</p>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">IFSC:</h6>
+                  <p class="card-text">{{beneficiaryDetails?.Ifsc}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-sm-6 amount-table">
+              <div class="card">
+                <div class="card-body">
+                  <table class="table">
+                    <thead>
+                      <tr class="primary">
+                        <th colspan="3">Number Of Transaction</th>
+                      </tr>
+                      <tr>
+                        <th>S#</th>
+                        <th>Amount</th>
+                        <th>Charge</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let fare of fareList; let i = index;">
+                        <td>{{i+1}}.</td>
+                        <td>&#8377;{{fare?.trnsAmount}}</td>
+                        <td>&#8377;{{fare?.trnsCharge}}</td>
+                      </tr>
+                      <tr class="tfoot">
+                        <td>Total</td>
+                        <td>&#8377;{{totalAmount}}</td>
+                        <td>&#8377;{{totalCharge}}</td>
+                      </tr>
+                      <tr>
+                        <th colspan="3" class="price-text-center"><span>Total Amount : </span>
+                          &#8377;{{totalFareFinal}}/-</th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
             <div class="col-sm-6 confirmation-table">
               <div class="card">
                 <div class="card-body">
-              <form (ngSubmit)="f.form.valid && confirmPayment()" autocomplete="off" #f="ngForm">
-                <div class="row mpin-table">
-                  <div class="col-12">
-                    <div class="head">
-                      Enter MPIN
+                  <form (ngSubmit)="f.form.valid && confirmPayment()" autocomplete="off" #f="ngForm">
+                    <div class="row mpin-table">
+                      <div class="col-12">
+                        <div class="head">
+                          Enter MPIN
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <label>MPIN<sup>*</sup></label>
+                      </div>
+                      <div class="col-10">
+                        <input type="password" class="form-control" name="mPin" [(ngModel)]="mPin" #mPins="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mPins.invalid }" placeholder="Enter MPIN" required>
+                        <div *ngIf="f.submitted && mPins.invalid" class="invalid-feedback">
+                          <div *ngIf="mPins.errors">MPIN is required</div>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <label>Remark<sup></sup></label>
+                      </div>
+                      <div class="col-10">
+                        <input type="text" class="form-control" name="remark" [(ngModel)]="remark" #remarks="ngModel" placeholder="Remark">
+                      </div>
+                      <div class="col-12 text-center">
+
+                        <button type="submit" [disabled]="commonService.isLoader" class="btn btn-primary submit-button"> Confirm</button>
+                        <button type="button" class="btn btn-warning submit-button" (click)="cancel()"> Cancel</button>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-2">
-                    <label>MPIN<sup>*</sup></label>
-                  </div>
-                  <div class="col-10">
-                    <input type="password" class="form-control" name="mPin" [(ngModel)]="mPin" #mPins="ngModel"
-                      [ngClass]="{ 'is-invalid': f.submitted && mPins.invalid }" placeholder="Enter MPIN" required>
-                    <div *ngIf="f.submitted && mPins.invalid" class="invalid-feedback">
-                      <div *ngIf="mPins.errors">MPIN is required</div>
-                    </div>
-                  </div>
-                  <div class="col-2">
-                    <label>Remark<sup></sup></label>
-                  </div>
-                  <div class="col-10">
-                    <input type="text" class="form-control" name="remark" [(ngModel)]="remark" #remarks="ngModel"
-                       placeholder="Remark" >                      
-                  </div>
-                  <div class="col-12 text-center">
-                   
-                    <button type="submit" [disabled]="commonService.isLoader"                      
-                    class="btn btn-primary submit-button"> Confirm</button>
-                    <button type="button" class="btn btn-warning submit-button" (click)="cancel()"> Cancel</button>
-                  </div>
+                  </form>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
-            </div>
-            </div>           
-            </div>
-           
         </div>
-        
+
+      </div>
+
     </div>
-</div>
+  </div>
 </div>

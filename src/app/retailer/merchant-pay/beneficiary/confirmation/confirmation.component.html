@@ -1,15 +1,15 @@
-<app-retailer-layout></app-retailer-layout> 
+<app-retailer-layout></app-retailer-layout>
 <div id="main-content">
     <div class="block-header mb-1">
         <div class="row clearfix">
             <div class="col-md-6 col-sm-12">
                 <h2>Money Transfer</h2>
-            </div>            
+            </div>
             <div class="col-md-6 col-sm-12 text-right">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
                     <li class="breadcrumb-item active">Dashboard</li>
-                </ul>               
+                </ul>
             </div>
         </div>
     </div>
@@ -19,9 +19,6 @@
             <div class="chat-header clearfix">
               <div class="row clearfix">
                 <div class="col-lg-6">
-                    <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                        <img src="assets/images/customer-64.png" alt="avatar">
-                    </a>
                     <div class="chat-about">
                         <h6 class="m-b-0">{{remitterDetails.RemitterName}}</h6>
                         <strong>{{remitterDetails.MobileNo}} | <span class="text-danger">{{beneficiaryDetails.paymentMode}}</span></strong>
@@ -38,7 +35,7 @@
                 </div>
             </div>
             </div>
-            <div class="chat-history">  
+            <div class="chat-history">
                 <div class="col-12">
                     <div class="card-group mb-4">
                         <div class="card">
@@ -66,9 +63,9 @@
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
                  <div class="row">
-                 
+
               <div class="col-sm-6 amount-table">
                 <div class="card">
                   <div class="card-body">
@@ -128,11 +125,11 @@
                   </div>
                   <div class="col-10">
                     <input type="text" class="form-control" name="remark" [(ngModel)]="remark" #remarks="ngModel"
-                       placeholder="Remark" >                      
+                       placeholder="Remark" >
                   </div>
                   <div class="col-12 text-center">
-                   
-                    <button type="submit" [disabled]="commonService.isLoader"                      
+
+                    <button type="submit" [disabled]="commonService.isLoader"
                     class="btn btn-primary submit-button"> Confirm</button>
                     <button type="button" class="btn btn-warning submit-button" (click)="cancel()"> Cancel</button>
                   </div>
@@ -141,11 +138,11 @@
             </div>
           </div>
             </div>
-            </div>           
             </div>
-           
+            </div>
+
         </div>
-        
+
     </div>
 </div>
 </div>
