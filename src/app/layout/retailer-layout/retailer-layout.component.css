@@ -30,7 +30,7 @@
 .top-container {
   display: flex;
   text-align: left;
-  padding-right: 14px;
+  padding-right: 0px;
 }
 
 .profile-image {
@@ -55,5 +55,5 @@
 .submenu {
   position: relative;
   right: -5px;
-  top: 10px;
+  top: 0px;
 }
