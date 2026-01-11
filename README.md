@@ -1,8 +1,8 @@
-# sab
+# sab-project-angular
 
 ![Angular](https://img.shields.io/badge/Angular-DD0031?style=flat&logo=angular&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.5.
+![Angular](https://img.shields.io/badge/Angular-DD0031?style=flat&logo=angular&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
 
 ## 🚀 Tech Stack
 
@@ -18,8 +18,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ```bash
 # Clone the repository
-git clone https://github.com/amitdubeyup/sab.git
-cd sab
+git clone https://github.com/amitdubeyup/sab-project-angular.git
+cd sab-project-angular
 
 # Install dependencies
 npm install
@@ -60,7 +60,7 @@ npm test
 ## 📁 Project Structure
 
 ```
-sab/
+sab-project-angular/
 ├── src/
 ├── package.json
 ├── tsconfig.json
